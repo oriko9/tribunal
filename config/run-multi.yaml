@@ -1,0 +1,17 @@
+# Mode B — a separate model per agent.
+# Same charge sheet, same prompts. The only thing that changes from mode A is
+# which model sits behind each seat. That is what makes the comparison honest.
+schema_version: 1
+mode: multi_model
+label: "B — seven prompts, several models"
+default_model: "MODEL_ID_TBD"
+agents:
+  jon_snow:            { model: "MODEL_ID_TBD" }
+  tyrion_lannister:    { model: "MODEL_ID_TBD" }
+  daenerys_targaryen:  { model: "MODEL_ID_TBD" }
+  grey_worm:           { model: "MODEL_ID_TBD" }
+  judge_barak_model:   { model: "MODEL_ID_TBD" }
+  judge_elon_model:    { model: "MODEL_ID_TBD" }
+  judge_shamgar_model: { model: "MODEL_ID_TBD" }
+budget:
+  max_usd_per_run: 0.50

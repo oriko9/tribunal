@@ -6,14 +6,16 @@ Guiding principle: **it has to work, not be perfect.**
 Deadline: 2026-09-09 (one week from 2026-09-02).
 
 ## Current status
-Day 1 in progress. Repository created, charge sheet specified.
+Day 2 done. Seven prompts written and versioned at 1.0.0.
+Nothing pushed to GitHub yet: the remote is set, the push must be run locally.
+Work continues in Claude Code, opened on this folder in VS Code.
 
 ## The seven-day plan
 
 | Day | Date | Goal | Status |
 |-----|------|------|--------|
-| 1 | 09-02 | Repo skeleton, CLAUDE.md, charge sheet as a spec, PLAN.md | in progress |
-| 2 | 09-03 | Seven prompt files, versioned | not started |
+| 1 | 09-02 | Repo skeleton, CLAUDE.md, charge sheet as a spec, PLAN.md | done |
+| 2 | 09-03 | Seven prompt files, versioned | done |
 | 3 | 09-04 | Orchestrator in TypeScript; mode A runs locally | not started |
 | 4 | 09-05 | Two verification gates; failures surface as failures | not started |
 | 5 | 09-06 | One-button screen, deployed to Vercel | not started |
@@ -27,7 +29,15 @@ Day 1 in progress. Repository created, charge sheet specified.
 - [x] specs/charge-sheet.yaml — requirement #1
 - [x] README.md
 - [x] PLAN.md
-- [ ] First commits pushed to GitHub
+- [x] Remote added (github.com/oriko9/tribunal)
+- [ ] First push (must be run locally; no network from the assistant's shell)
+
+## Day 2 checklist
+- [x] prompts/_shared.yaml — rules injected into all seven agents
+- [x] Four advocate prompts, versioned 1.0.0
+- [x] Three judge prompts, versioned 1.0.0
+- [x] docs/PROMPT-CHANGELOG.md
+- [x] config/run-single.yaml and config/run-multi.yaml (model ids pending OpenRouter)
 
 ## Decisions taken
 
@@ -39,6 +49,10 @@ Day 1 in progress. Repository created, charge sheet specified.
 | D4 | Agreed facts carry IDs (F1..F5) | Lets the verification gate check that an opinion is grounded in facts that actually exist |
 | D5 | Advocates run in parallel and do not see each other; judges likewise | No dialogue is required. Independence is what makes three distinct opinions possible |
 | D6 | Repo documents in English | The dossier and all course material are in English |
+| D7 | Every agent returns JSON against an output contract in its own prompt file | The contract is what the verification gate on Day 4 checks against |
+| D8 | Judges return `protocol_steps`, an ordered record of how they decided | The required output is a protocol, not only three verdicts |
+| D9 | Advocates return a `concessions` list; judges return `strongest_opposing_point` | Forces engagement with the other side instead of a one-sided brief, and gives the gate something to check |
+| D10 | Shared rules live in prompts/_shared.yaml, not copied into seven files | One change, one version bump, seven agents |
 
 ## Open questions
 - [ ] OpenRouter account — needed by Day 3. Mocked until then.
@@ -50,5 +64,8 @@ Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-03 — Seven prompts written at 1.0.0 with output contracts, shared
+  rules extracted, prompt changelog opened, both run configurations scaffolded.
+  Model identifiers left as MODEL_ID_TBD pending the OpenRouter account.
 - 2026-09-02 — Repository created. Charge sheet written as a structured
   specification with identified agreed facts. Context file and plan committed.

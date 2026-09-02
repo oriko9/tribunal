@@ -1,0 +1,16 @@
+# Mode A — one model for all seven agents.
+# The only variable that separates the agents here is the prompt.
+schema_version: 1
+mode: single_model
+label: "A — one model, seven prompts"
+default_model: "MODEL_ID_TBD"   # set once the OpenRouter account exists; prefer a free tier model
+agents:
+  jon_snow:            { model: default }
+  tyrion_lannister:    { model: default }
+  daenerys_targaryen:  { model: default }
+  grey_worm:           { model: default }
+  judge_barak_model:   { model: default }
+  judge_elon_model:    { model: default }
+  judge_shamgar_model: { model: default }
+budget:
+  max_usd_per_run: 0.50

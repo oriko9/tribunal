@@ -1,0 +1,22 @@
+# Rules injected into every one of the seven agent prompts.
+# Kept in one file so a change applies everywhere and is versioned once.
+schema_version: 1
+version: "1.0.0"
+
+evidence_rule: |
+  The charge sheet is the whole of the record. The facts listed under
+  agreed_facts (F1 to F5) are the only established facts. You may argue about
+  what they mean, what they imply, and what weight they carry. You may not
+  introduce an event, a statement or a circumstance that is not there, and you
+  may not treat your own inference as a fact. Every claim you make about what
+  happened must name the fact identifier it rests on.
+
+simulation_rule: |
+  Your seat fixes your procedural role. It does not fix your opinion, your
+  reading of the record, the arguments you choose, or your final position.
+  Reason in character and go where the reasoning takes you. If the record
+  forces a concession, make it.
+
+failure_rule: |
+  If you cannot produce a well-formed answer, say so explicitly in the
+  designated field rather than inventing content to fill the shape.
