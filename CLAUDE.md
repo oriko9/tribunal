@@ -40,4 +40,5 @@ No database: each run is written to runs/<timestamp>.json and committed.
 ## Working discipline
 - Commit before invoking the agent on a task, and after.
 - Atomic commits, honest messages. No single squashed "final" commit.
-- PLAN.md is updated as work happens, not at the end.
+- PLAN.md is updated in the same turn as the work, never afterwards. It is the
+  single source of truth for project status; see the note at the top of it.

@@ -5,6 +5,18 @@ Guiding principle: **it has to work, not be perfect.**
 
 Deadline: 2026-09-09 (one week from 2026-09-02).
 
+## How this document is kept
+
+This file is the single source of truth for where the project stands. Any agent
+or session that does work here updates it in the same turn as the work: mark the
+day, add what was built, record any decision taken and why. Do not defer it to
+the end of the day and do not reconstruct it afterwards. The course grades the
+trail, and a trail written later is worth less than one written as it happened.
+
+The chat session that planned this project keeps a mirror of this file. The
+mirror is read from here; it never writes back. If the two disagree, this file
+wins.
+
 ## Current status
 Day 2 done. Seven prompts written and versioned at 1.0.0.
 Nothing pushed to GitHub yet: the remote is set, the push must be run locally.
