@@ -8,8 +8,8 @@
     "node": ">=20"
   },
   "scripts": {
-    "tribunal": "tsx src/cli.ts",
-    "smoke": "tsx src/smoke.ts",
+    "tribunal": "node --env-file-if-exists=.env.local --import tsx src/cli.ts",
+    "smoke": "node --env-file-if-exists=.env.local --import tsx src/smoke.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

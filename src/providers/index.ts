@@ -25,12 +25,24 @@ export interface ProviderSelection {
  * @param models the model id each seat resolved to, checked before the run so
  *   an unset placeholder fails at startup rather than seven calls in.
  */
+/**
+ * A variable present but empty is a variable not set. The committed template
+ * ships every name with an empty value, so this is the normal case, not an
+ * edge one.
+ */
+function value(env: NodeJS.ProcessEnv, name: string): string | undefined {
+  const raw = env[name];
+  if (raw === undefined) return undefined;
+  const trimmed = raw.trim();
+  return trimmed === "" ? undefined : trimmed;
+}
+
 export function selectProvider(
   env: NodeJS.ProcessEnv,
   agentIds: readonly string[],
   models: Readonly<Record<string, string>>,
 ): ProviderSelection {
-  const requested = (env[PROVIDER_ENV_VAR] ?? "mock").trim();
+  const requested = value(env, PROVIDER_ENV_VAR) ?? "mock";
 
   if (!PROVIDER_NAMES.includes(requested as ProviderName)) {
     throw new TribunalError(
@@ -44,11 +56,12 @@ export function selectProvider(
     return { provider: new MockProvider(faultsFromEnv(env, agentIds)), name };
   }
 
-  const apiKey = env[API_KEY_ENV_VAR];
-  if (apiKey === undefined || apiKey.trim() === "") {
+  const apiKey = value(env, API_KEY_ENV_VAR);
+  if (apiKey === undefined) {
     throw new TribunalError(
       `is not set, and ${PROVIDER_ENV_VAR}=openrouter was requested. ` +
-        `Export the key in the shell; it must not be written into a committed file.`,
+        `Put the key in .env.local, which is git-ignored and loaded automatically ` +
+        `(copy .env.local.example to start). It must never be written into a committed file.`,
       API_KEY_ENV_VAR,
     );
   }
@@ -63,7 +76,7 @@ export function selectProvider(
     );
   }
 
-  const timeout = env["TRIBUNAL_TIMEOUT_MS"];
+  const timeout = value(env, "TRIBUNAL_TIMEOUT_MS");
   const timeoutMs = timeout === undefined ? undefined : Number(timeout);
   if (timeoutMs !== undefined && (!Number.isFinite(timeoutMs) || timeoutMs <= 0)) {
     throw new TribunalError(`is [${timeout}], which is not a positive number`, "TRIBUNAL_TIMEOUT_MS");

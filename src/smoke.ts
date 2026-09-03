@@ -454,18 +454,58 @@ const SECRET_PATTERNS: readonly RegExp[] = [
   /sk-[A-Za-z0-9]{32,}/,
 ];
 
+const ENV_TEMPLATE = ".env.local.example";
+const ENV_FILE = ".env.local";
+
+/** A real environment file, as opposed to the committed template. */
+function isSecretBearing(name: string): boolean {
+  return /^\.env(\..+)?$/.test(name) && !name.endsWith(".example");
+}
+
 async function checkSecrets(): Promise<void> {
   section("Secret hygiene");
 
-  await checkAsync("the environment file is ignored by git", async () => {
-    const ignore = await readFile(join(repoRoot, ".gitignore"), "utf8");
-    must(
-      ignore.split(/\r?\n/).some((line) => line.trim() === ".env"),
-      ".env is not listed in .gitignore",
-    );
+  await checkAsync("every environment file is ignored by git", async () => {
+    const ignored = (await readFile(join(repoRoot, ".gitignore"), "utf8"))
+      .split(/\r?\n/)
+      .map((line) => line.trim());
+    for (const name of [".env", ENV_FILE]) {
+      must(ignored.includes(name), `${name} is not listed in .gitignore`);
+    }
   });
 
-  await checkAsync("no file in the repository contains an API key", async () => {
+  await checkAsync(`${ENV_TEMPLATE} is committed and carries no real values`, async () => {
+    const template = await readFile(join(repoRoot, ENV_TEMPLATE), "utf8");
+    for (const name of [
+      "OPENROUTER_API_KEY",
+      "TRIBUNAL_PROVIDER",
+      "TRIBUNAL_MOCK_FAULTS",
+      "TRIBUNAL_TIMEOUT_MS",
+    ]) {
+      must(template.includes(`${name}=`), `${ENV_TEMPLATE} does not document ${name}`);
+    }
+    const keyLine = template
+      .split(/\r?\n/)
+      .find((line) => line.startsWith("OPENROUTER_API_KEY="));
+    must(keyLine === "OPENROUTER_API_KEY=", `${ENV_TEMPLATE} ships a value for the key`);
+  });
+
+  await checkAsync(`the npm scripts load ${ENV_FILE}`, async () => {
+    // Without this flag the key could sit in the file and never reach the code.
+    const manifest = JSON.parse(await readFile(join(repoRoot, "package.json"), "utf8")) as {
+      scripts?: Record<string, string>;
+    };
+    for (const name of ["tribunal", "smoke"]) {
+      const script = manifest.scripts?.[name];
+      must(script !== undefined, `there is no ${name} script`);
+      must(
+        script.includes(`--env-file-if-exists=${ENV_FILE}`),
+        `the ${name} script does not load ${ENV_FILE}`,
+      );
+    }
+  });
+
+  await checkAsync("no committed file contains an API key", async () => {
     const skip = new Set(["node_modules", ".git", "dist", ".vercel"]);
     const offenders: string[] = [];
     const entries = await readdir(repoRoot, { withFileTypes: true, recursive: true });
@@ -473,6 +513,9 @@ async function checkSecrets(): Promise<void> {
       if (!entry.isFile()) continue;
       const parts = entry.parentPath.split(/[\\/]/);
       if (parts.some((part) => skip.has(part))) continue;
+      // .env.local is where a key belongs. It is git-ignored, and it is checked
+      // for that above rather than for its contents here.
+      if (isSecretBearing(entry.name)) continue;
       const path = join(entry.parentPath, entry.name);
       // The gate names the patterns it looks for, so reading itself would
       // always trip it.

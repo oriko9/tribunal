@@ -20,5 +20,17 @@ established fact in the system.
     runs/      committed output of each run: protocol, verdicts, cost
     docs/      decisions, prompt changelog, lessons learned
 
+## Running it
+    cp .env.local.example .env.local     # git-ignored; loaded automatically
+    npm install
+    npm run smoke                        # free verification gate, calls no model
+    npm run tribunal -- single           # or: -- multi
+
+Without a key the run uses the mock provider: synthetic replies, nothing spent.
+To run against real models, paste an OpenRouter key into `OPENROUTER_API_KEY` in
+`.env.local` and set `TRIBUNAL_PROVIDER=openrouter`. The key is read on the
+server only and never reaches the browser. Every variable is documented in
+`.env.local.example`.
+
 ## Status
 Work in progress. See PLAN.md.
