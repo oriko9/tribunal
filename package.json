@@ -9,6 +9,7 @@
   },
   "scripts": {
     "tribunal": "tsx src/cli.ts",
+    "smoke": "tsx src/smoke.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

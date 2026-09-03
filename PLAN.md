@@ -28,7 +28,7 @@ Work continues in Claude Code, opened on this folder in VS Code.
 |-----|------|------|--------|
 | 1 | 09-02 | Repo skeleton, CLAUDE.md, charge sheet as a spec, PLAN.md | done |
 | 2 | 09-03 | Seven prompt files, versioned | done |
-| 3 | 09-04 | Orchestrator in TypeScript; mode A runs locally | not started |
+| 3 | 09-04 | Orchestrator in TypeScript; mode A runs locally | in progress |
 | 4 | 09-05 | Two verification gates; failures surface as failures | not started |
 | 5 | 09-06 | One-button screen, deployed to Vercel | not started |
 | 6 | 09-07 | Mode B (a model per agent), cost report, A/B comparison run committed | not started |
@@ -51,6 +51,16 @@ Work continues in Claude Code, opened on this folder in VS Code.
 - [x] docs/PROMPT-CHANGELOG.md
 - [x] config/run-single.yaml and config/run-multi.yaml (model ids pending OpenRouter)
 
+## Day 3 checklist
+- [x] TypeScript scaffold: package.json, tsconfig, dependencies (yaml, tsx)
+- [x] Input layer: every file read and validated at run time, nothing hardcoded
+- [x] Message assembly: shared rules + own seat prompt + verbatim charge sheet
+- [x] `npm run smoke` — the free verification gate, 23 properties, exits non-zero
+- [ ] Provider layer: interface, mock, OpenRouter client
+- [ ] Orchestrator: 4 advocates concurrent, then 3 judges concurrent
+- [ ] Run file written to runs/, with per-call usage and totals
+- [ ] Mode A runs end to end against the mock
+
 ## Decisions taken
 
 | # | Decision | Why |
@@ -65,6 +75,10 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | D8 | Judges return `protocol_steps`, an ordered record of how they decided | The required output is a protocol, not only three verdicts |
 | D9 | Advocates return a `concessions` list; judges return `strongest_opposing_point` | Forces engagement with the other side instead of a one-sided brief, and gives the gate something to check |
 | D10 | Shared rules live in prompts/_shared.yaml, not copied into seven files | One change, one version bump, seven agents |
+| D11 | The charge sheet is injected into every agent as its literal YAML source, not as a re-serialisation | What an agent reads is then byte-identical to the committed specification, and no field can be silently dropped in transit |
+| D12 | Shared rules are read as an open map of every string field in `_shared.yaml` | A rule added to that file reaches all seven agents with no code change. Requirement #2 says prompts are the unit of change, not code |
+| D13 | Independence is structural, not instructed: `buildAdvocateMessages` has no parameter that can carry another advocate, `buildJudgeMessages` none for another judge | An instruction can be disobeyed by a model. A missing function parameter cannot |
+| D14 | `npm run smoke` is a committed gate that calls no model and exits non-zero | It can run before every run and every commit at zero cost. It also proves the seam between files: if the charge sheet's permitted verdicts change, the judge prompts must change with them |
 
 ## Open questions
 - [ ] OpenRouter account — needed by Day 3. Mocked until then.
@@ -76,6 +90,14 @@ Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-04 — Day 3 started. TypeScript scaffold, then the input layer: the
+  charge sheet, the shared rules, the seven prompts and the run configuration
+  are all read and validated at run time and a load failure is fatal. Message
+  assembly written. `npm run smoke` added as a committed verification gate —
+  23 properties, no model call, non-zero exit. Its two failure paths were
+  exercised deliberately: a config that names an agent with no prompt file, and
+  a charge sheet whose permitted verdicts drift from the judge prompts. Both
+  were caught and both files were restored.
 - 2026-09-03 — Seven prompts written at 1.0.0 with output contracts, shared
   rules extracted, prompt changelog opened, both run configurations scaffolded.
   Model identifiers left as MODEL_ID_TBD pending the OpenRouter account.
