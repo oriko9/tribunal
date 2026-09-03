@@ -19,7 +19,10 @@ import { ProviderError, TribunalError } from "./errors.js";
 import { loadRunInputs, repoRoot } from "./load.js";
 import { buildAdvocateMessages, buildJudgeMessages } from "./messages.js";
 import type { AdvocateSubmission } from "./messages.js";
+import { deliberate } from "./orchestrator.js";
 import { FAULT_ENV_VAR, FAULT_KINDS, parseFaultSpec } from "./providers/faults.js";
+import { renderProtocol } from "./protocol.js";
+import { buildRunFile } from "./runfile.js";
 import { API_KEY_ENV_VAR, MockProvider, PROVIDER_ENV_VAR, UNSET_MODEL, selectProvider } from "./providers/index.js";
 import type { PromptFile, RunInputs } from "./types.js";
 
@@ -449,6 +452,123 @@ async function checkProviders(inputs: RunInputs): Promise<void> {
   });
 }
 
+async function checkDeliberation(inputs: RunInputs): Promise<void> {
+  section("The protocol, end to end against the mock");
+
+  const clean = new MockProvider();
+  const report = await deliberate(inputs, clean);
+  const runFile = buildRunFile(inputs, clean, report);
+  const protocol = renderProtocol(runFile, inputs);
+
+  check("four advocates and three opinions are recorded", () => {
+    must(runFile.advocates.length === 4, `${runFile.advocates.length} advocates recorded`);
+    const opinions = Object.keys(runFile.opinions);
+    must(opinions.length === 3, `${opinions.length} opinions recorded`);
+    // Three named siblings, never a single combined object.
+    for (const prompt of inputs.judges) {
+      must(prompt.id in runFile.opinions, `no opinion recorded for ${prompt.id}`);
+    }
+  });
+
+  check("every seat returned usable output", () => {
+    for (const record of [...runFile.advocates, ...Object.values(runFile.opinions)]) {
+      must(record.status === "ok", `${record.agent_id} is ${record.status}`);
+    }
+  });
+
+  check("no agent's text was altered on the way into the record", () => {
+    for (const record of [...runFile.advocates, ...Object.values(runFile.opinions)]) {
+      must(record.raw_text !== null, `${record.agent_id} recorded no raw text`);
+      must(
+        JSON.stringify(JSON.parse(record.raw_text)) === JSON.stringify(record.output),
+        `${record.agent_id}: the recorded output differs from the recorded raw text`,
+      );
+    }
+  });
+
+  check("the run totals are the sum of the per-call usage", () => {
+    const rows = runFile.usage.calls;
+    const totals = runFile.usage.totals;
+    must(rows.length === 7, `${rows.length} usage rows for 7 seats`);
+    const tokens = rows.reduce((sum, row) => sum + (row.total_tokens ?? 0), 0);
+    must(totals.total_tokens === tokens, `totals say ${totals.total_tokens}, rows say ${tokens}`);
+    const cost = rows.reduce((sum, row) => sum + (row.cost_usd ?? 0), 0);
+    must(Math.abs(totals.cost_usd - cost) < 1e-8, `totals say ${totals.cost_usd}, rows say ${cost}`);
+  });
+
+  check("the protocol prints all seven seats and combines nothing", () => {
+    for (const prompt of [...inputs.advocates, ...inputs.judges]) {
+      must(protocol.includes(prompt.display_name), `${prompt.display_name} is missing from the protocol`);
+    }
+    for (const prompt of inputs.judges) {
+      const headings = protocol.split("\n").filter((line) => line === `### ${prompt.display_name}`);
+      must(headings.length === 1, `${prompt.id} has ${headings.length} sections, expected exactly 1`);
+    }
+    must(protocol.includes("**not combined**"), "the protocol does not state that it combines nothing");
+    // Each opinion carries its own verdict; there is no run-level verdict.
+    for (const record of Object.values(runFile.opinions)) {
+      const verdict = (record.output as Record<string, unknown>)["verdict"];
+      must(
+        protocol.includes(`**Verdict:** \`${String(verdict)}\``),
+        `the verdict of ${record.agent_id} is not printed in its own section`,
+      );
+    }
+  });
+
+  section("The protocol when a seat fails");
+  const judgeId = inputs.judges[1]?.id;
+  must(judgeId !== undefined, "no second judge to fail");
+  const faulty = new MockProvider(parseFaultSpec(`${judgeId}=missing_field:verdict`, agentIdsOf(inputs)));
+  const faultyReport = await deliberate(inputs, faulty);
+  const faultyRun = buildRunFile(inputs, faulty, faultyReport);
+  const faultyProtocol = renderProtocol(faultyRun, inputs);
+
+  check("a failed seat is recorded as a failure, not as a result", () => {
+    const record = faultyRun.opinions[judgeId];
+    must(record !== undefined, `${judgeId} is missing from the record entirely`);
+    must(record.status === "failed", `${judgeId} is ${record.status}`);
+    must(record.failure?.kind === "contract_mismatch", `unexpected failure kind ${record.failure?.kind}`);
+    must(faultyRun.run.status === "incomplete", "the run still calls itself complete");
+  });
+
+  check("a failed seat keeps its section instead of being dropped", () => {
+    const name = inputs.judges[1]?.display_name ?? "";
+    must(faultyProtocol.includes(`### ${name}`), `${name} was omitted from the protocol`);
+    must(
+      faultyProtocol.includes("This seat produced no usable output."),
+      "the protocol does not say plainly that the seat failed",
+    );
+    must(
+      !faultyProtocol.includes(`**Verdict:** \`undefined\``),
+      "the protocol invented a verdict for a seat that returned none",
+    );
+    // The other two opinions are untouched by their sibling's failure.
+    for (const other of Object.values(faultyRun.opinions)) {
+      if (other.agent_id === judgeId) continue;
+      must(other.status === "ok", `${other.agent_id} was affected by another seat's failure`);
+    }
+  });
+
+  section("The protocol when an advocate fails");
+  const advocateId = inputs.advocates[2]?.id;
+  must(advocateId !== undefined, "no third advocate to fail");
+  const brokenAdvocate = new MockProvider(
+    parseFaultSpec(`${advocateId}=transport_error`, agentIdsOf(inputs)),
+  );
+  const brokenReport = await deliberate(inputs, brokenAdvocate);
+  const brokenRun = buildRunFile(inputs, brokenAdvocate, brokenReport);
+
+  check("the judges do not sit on an incomplete set of arguments", () => {
+    const failed = brokenRun.advocates.find((record) => record.agent_id === advocateId);
+    must(failed?.status === "failed", `${advocateId} is ${failed?.status}`);
+    must(failed?.failure?.kind === "transport", `unexpected failure kind ${failed?.failure?.kind}`);
+    for (const record of Object.values(brokenRun.opinions)) {
+      must(record.status === "not_run", `${record.agent_id} sat anyway (${record.status})`);
+      must(record.output === null, `${record.agent_id} produced an opinion without four arguments`);
+    }
+  });
+}
+
 const SECRET_PATTERNS: readonly RegExp[] = [
   /sk-or-v1-[A-Za-z0-9]{8,}/,
   /sk-[A-Za-z0-9]{32,}/,
@@ -550,6 +670,7 @@ async function main(): Promise<void> {
   checkInputs(single);
   checkMessages(single);
   await checkProviders(single);
+  await checkDeliberation(single);
   await checkSecrets();
 
   // Mode B must stay loadable and complete even while it is not the mode in

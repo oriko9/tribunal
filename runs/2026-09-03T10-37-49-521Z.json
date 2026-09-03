@@ -1,0 +1,469 @@
+{
+  "schema_version": 1,
+  "run": {
+    "id": "2026-09-03T10-37-49-521Z",
+    "case": {
+      "id": "T-001",
+      "title": "The Realm v. Jon Snow",
+      "spec": "specs/charge-sheet.yaml",
+      "spec_version": "1.0.0"
+    },
+    "mode": "single_model",
+    "label": "A — one model, seven prompts",
+    "config": "config/run-single.yaml",
+    "provider": {
+      "name": "mock",
+      "pricing": "synthetic",
+      "description": "mock provider — synthetic text, invented prices, no network, nothing spent"
+    },
+    "shared_rules": {
+      "path": "prompts/_shared.yaml",
+      "version": "1.0.0"
+    },
+    "prompt_versions": {
+      "daenerys_targaryen": "1.0.0",
+      "grey_worm": "1.0.0",
+      "jon_snow": "1.0.0",
+      "tyrion_lannister": "1.0.0",
+      "judge_barak_model": "1.0.0",
+      "judge_elon_model": "1.0.0",
+      "judge_shamgar_model": "1.0.0"
+    },
+    "started_at": "2026-09-03T10:37:49.521Z",
+    "ended_at": "2026-09-03T10:37:49.624Z",
+    "duration_ms": 103,
+    "status": "complete",
+    "failures": []
+  },
+  "advocates": [
+    {
+      "agent_id": "daenerys_targaryen",
+      "display_name": "Daenerys Targaryen",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/daenerys-targaryen.yaml",
+      "prompt_version": "1.0.0",
+      "model": "MODEL_ID_TBD",
+      "status": "ok",
+      "started_at": "2026-09-03T10:37:49.521Z",
+      "ended_at": "2026-09-03T10:37:49.576Z",
+      "duration_ms": 55,
+      "raw_text": "{\n  \"speaker\": \"Daenerys Targaryen\",\n  \"stance\": \"justified\",\n  \"argument\": \"Synthetic mock output, produced without a model and stating no position. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline.\",\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\",\n    \"F3\",\n    \"F4\",\n    \"F5\"\n  ],\n  \"concessions\": [\n    \"Synthetic mock sentence for the field, nominally resting on F1.\",\n    \"Synthetic mock sentence for the field, nominally resting on F2.\"\n  ],\n  \"refusal\": null\n}",
+      "output": {
+        "speaker": "Daenerys Targaryen",
+        "stance": "justified",
+        "argument": "Synthetic mock output, produced without a model and stating no position. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "Synthetic mock sentence for the field, nominally resting on F1.",
+          "Synthetic mock sentence for the field, nominally resting on F2."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1770,
+        "completion_tokens": 517,
+        "total_tokens": 2287,
+        "cost_usd": 0.0005757,
+        "pricing": "synthetic"
+      }
+    },
+    {
+      "agent_id": "grey_worm",
+      "display_name": "Grey Worm",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/grey-worm.yaml",
+      "prompt_version": "1.0.0",
+      "model": "MODEL_ID_TBD",
+      "status": "ok",
+      "started_at": "2026-09-03T10:37:49.522Z",
+      "ended_at": "2026-09-03T10:37:49.575Z",
+      "duration_ms": 53,
+      "raw_text": "{\n  \"speaker\": \"Grey Worm\",\n  \"stance\": \"uncertain\",\n  \"argument\": \"Synthetic mock output, produced without a model and stating no position. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in.\",\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\",\n    \"F3\",\n    \"F4\",\n    \"F5\"\n  ],\n  \"concessions\": [\n    \"Synthetic mock sentence for the field, nominally resting on F3.\",\n    \"Synthetic mock sentence for the field, nominally resting on F4.\"\n  ],\n  \"refusal\": null\n}",
+      "output": {
+        "speaker": "Grey Worm",
+        "stance": "uncertain",
+        "argument": "Synthetic mock output, produced without a model and stating no position. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "Synthetic mock sentence for the field, nominally resting on F3.",
+          "Synthetic mock sentence for the field, nominally resting on F4."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1785,
+        "completion_tokens": 481,
+        "total_tokens": 2266,
+        "cost_usd": 0.00055635,
+        "pricing": "synthetic"
+      }
+    },
+    {
+      "agent_id": "jon_snow",
+      "display_name": "Jon Snow",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/jon-snow.yaml",
+      "prompt_version": "1.0.0",
+      "model": "MODEL_ID_TBD",
+      "status": "ok",
+      "started_at": "2026-09-03T10:37:49.522Z",
+      "ended_at": "2026-09-03T10:37:49.546Z",
+      "duration_ms": 24,
+      "raw_text": "{\n  \"speaker\": \"Jon Snow\",\n  \"stance\": \"justified\",\n  \"argument\": \"Synthetic mock output, produced without a model and stating no position. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape.\",\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\",\n    \"F3\"\n  ],\n  \"concessions\": [\n    \"Synthetic mock sentence for the field, nominally resting on F4.\",\n    \"Synthetic mock sentence for the field, nominally resting on F1.\"\n  ],\n  \"refusal\": null\n}",
+      "output": {
+        "speaker": "Jon Snow",
+        "stance": "justified",
+        "argument": "Synthetic mock output, produced without a model and stating no position. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3"
+        ],
+        "concessions": [
+          "Synthetic mock sentence for the field, nominally resting on F4.",
+          "Synthetic mock sentence for the field, nominally resting on F1."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1790,
+        "completion_tokens": 399,
+        "total_tokens": 2189,
+        "cost_usd": 0.0005079,
+        "pricing": "synthetic"
+      }
+    },
+    {
+      "agent_id": "tyrion_lannister",
+      "display_name": "Tyrion Lannister",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/tyrion-lannister.yaml",
+      "prompt_version": "1.0.0",
+      "model": "MODEL_ID_TBD",
+      "status": "ok",
+      "started_at": "2026-09-03T10:37:49.522Z",
+      "ended_at": "2026-09-03T10:37:49.575Z",
+      "duration_ms": 53,
+      "raw_text": "{\n  \"speaker\": \"Tyrion Lannister\",\n  \"stance\": \"not_justified\",\n  \"argument\": \"Synthetic mock output, produced without a model and stating no position. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact.\",\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\"\n  ],\n  \"concessions\": [\n    \"Synthetic mock sentence for the field, nominally resting on F3.\",\n    \"Synthetic mock sentence for the field, nominally resting on F1.\"\n  ],\n  \"refusal\": null\n}",
+      "output": {
+        "speaker": "Tyrion Lannister",
+        "stance": "not_justified",
+        "argument": "Synthetic mock output, produced without a model and stating no position. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact.",
+        "facts_relied_on": [
+          "F1",
+          "F2"
+        ],
+        "concessions": [
+          "Synthetic mock sentence for the field, nominally resting on F3.",
+          "Synthetic mock sentence for the field, nominally resting on F1."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1788,
+        "completion_tokens": 390,
+        "total_tokens": 2178,
+        "cost_usd": 0.0005022,
+        "pricing": "synthetic"
+      }
+    }
+  ],
+  "opinions": {
+    "judge_barak_model": {
+      "agent_id": "judge_barak_model",
+      "display_name": "The Barak model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/barak-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "MODEL_ID_TBD",
+      "status": "ok",
+      "started_at": "2026-09-03T10:37:49.576Z",
+      "ended_at": "2026-09-03T10:37:49.624Z",
+      "duration_ms": 48,
+      "raw_text": "{\n  \"judge\": \"The Barak model\",\n  \"verdict\": \"not_justified\",\n  \"protocol_steps\": [\n    {\n      \"step\": \"step 1: Synthetic mock sentence for the field, nominally resting on F1.\",\n      \"finding\": \"finding 1: Synthetic mock sentence for the field, nominally resting on F1.\"\n    },\n    {\n      \"step\": \"step 2: Synthetic mock sentence for the field, nominally resting on F3.\",\n      \"finding\": \"finding 2: Synthetic mock sentence for the field, nominally resting on F2.\"\n    },\n    {\n      \"step\": \"step 3: Synthetic mock sentence for the field, nominally resting on F2.\",\n      \"finding\": \"finding 3: Synthetic mock sentence for the field, nominally resting on F5.\"\n    },\n    {\n      \"step\": \"step 4: Synthetic mock sentence for the field, nominally resting on F2.\",\n      \"finding\": \"finding 4: Synthetic mock sentence for the field, nominally resting on F3.\"\n    }\n  ],\n  \"opinion\": \"Synthetic mock output, produced without a model and stating no position. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from.\",\n  \"factors_addressed\": {\n    \"Q1\": \"Synthetic mock sentence for the field, nominally resting on F2.\",\n    \"Q2\": \"Synthetic mock sentence for the field, nominally resting on F4.\",\n    \"Q3\": \"Synthetic mock sentence for the field, nominally resting on F5.\",\n    \"Q4\": \"Synthetic mock sentence for the field, nominally resting on F2.\"\n  },\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\",\n    \"F3\",\n    \"F4\",\n    \"F5\"\n  ],\n  \"strongest_opposing_point\": \"Synthetic mock sentence for the field, nominally resting on F4.\",\n  \"refusal\": null\n}",
+      "output": {
+        "judge": "The Barak model",
+        "verdict": "not_justified",
+        "protocol_steps": [
+          {
+            "step": "step 1: Synthetic mock sentence for the field, nominally resting on F1.",
+            "finding": "finding 1: Synthetic mock sentence for the field, nominally resting on F1."
+          },
+          {
+            "step": "step 2: Synthetic mock sentence for the field, nominally resting on F3.",
+            "finding": "finding 2: Synthetic mock sentence for the field, nominally resting on F2."
+          },
+          {
+            "step": "step 3: Synthetic mock sentence for the field, nominally resting on F2.",
+            "finding": "finding 3: Synthetic mock sentence for the field, nominally resting on F5."
+          },
+          {
+            "step": "step 4: Synthetic mock sentence for the field, nominally resting on F2.",
+            "finding": "finding 4: Synthetic mock sentence for the field, nominally resting on F3."
+          }
+        ],
+        "opinion": "Synthetic mock output, produced without a model and stating no position. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from.",
+        "factors_addressed": {
+          "Q1": "Synthetic mock sentence for the field, nominally resting on F2.",
+          "Q2": "Synthetic mock sentence for the field, nominally resting on F4.",
+          "Q3": "Synthetic mock sentence for the field, nominally resting on F5.",
+          "Q4": "Synthetic mock sentence for the field, nominally resting on F2."
+        },
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "strongest_opposing_point": "Synthetic mock sentence for the field, nominally resting on F4.",
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 4018,
+        "completion_tokens": 891,
+        "total_tokens": 4909,
+        "cost_usd": 0.0011373,
+        "pricing": "synthetic"
+      }
+    },
+    "judge_elon_model": {
+      "agent_id": "judge_elon_model",
+      "display_name": "The Elon model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/elon-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "MODEL_ID_TBD",
+      "status": "ok",
+      "started_at": "2026-09-03T10:37:49.576Z",
+      "ended_at": "2026-09-03T10:37:49.623Z",
+      "duration_ms": 47,
+      "raw_text": "{\n  \"judge\": \"The Elon model\",\n  \"verdict\": \"justified\",\n  \"protocol_steps\": [\n    {\n      \"step\": \"step 1: Synthetic mock sentence for the field, nominally resting on F2.\",\n      \"finding\": \"finding 1: Synthetic mock sentence for the field, nominally resting on F4.\"\n    },\n    {\n      \"step\": \"step 2: Synthetic mock sentence for the field, nominally resting on F2.\",\n      \"finding\": \"finding 2: Synthetic mock sentence for the field, nominally resting on F1.\"\n    },\n    {\n      \"step\": \"step 3: Synthetic mock sentence for the field, nominally resting on F3.\",\n      \"finding\": \"finding 3: Synthetic mock sentence for the field, nominally resting on F4.\"\n    },\n    {\n      \"step\": \"step 4: Synthetic mock sentence for the field, nominally resting on F5.\",\n      \"finding\": \"finding 4: Synthetic mock sentence for the field, nominally resting on F2.\"\n    }\n  ],\n  \"opinion\": \"Synthetic mock output, produced without a model and stating no position. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the.\",\n  \"controlling_line\": \"Synthetic mock sentence for the field, nominally resting on F3.\",\n  \"factors_addressed\": {\n    \"Q1\": \"Synthetic mock sentence for the field, nominally resting on F1.\",\n    \"Q2\": \"Synthetic mock sentence for the field, nominally resting on F4.\",\n    \"Q3\": \"Synthetic mock sentence for the field, nominally resting on F3.\",\n    \"Q4\": \"Synthetic mock sentence for the field, nominally resting on F1.\"\n  },\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\"\n  ],\n  \"strongest_opposing_point\": \"Synthetic mock sentence for the field, nominally resting on F3.\",\n  \"refusal\": null\n}",
+      "output": {
+        "judge": "The Elon model",
+        "verdict": "justified",
+        "protocol_steps": [
+          {
+            "step": "step 1: Synthetic mock sentence for the field, nominally resting on F2.",
+            "finding": "finding 1: Synthetic mock sentence for the field, nominally resting on F4."
+          },
+          {
+            "step": "step 2: Synthetic mock sentence for the field, nominally resting on F2.",
+            "finding": "finding 2: Synthetic mock sentence for the field, nominally resting on F1."
+          },
+          {
+            "step": "step 3: Synthetic mock sentence for the field, nominally resting on F3.",
+            "finding": "finding 3: Synthetic mock sentence for the field, nominally resting on F4."
+          },
+          {
+            "step": "step 4: Synthetic mock sentence for the field, nominally resting on F5.",
+            "finding": "finding 4: Synthetic mock sentence for the field, nominally resting on F2."
+          }
+        ],
+        "opinion": "Synthetic mock output, produced without a model and stating no position. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the.",
+        "controlling_line": "Synthetic mock sentence for the field, nominally resting on F3.",
+        "factors_addressed": {
+          "Q1": "Synthetic mock sentence for the field, nominally resting on F1.",
+          "Q2": "Synthetic mock sentence for the field, nominally resting on F4.",
+          "Q3": "Synthetic mock sentence for the field, nominally resting on F3.",
+          "Q4": "Synthetic mock sentence for the field, nominally resting on F1."
+        },
+        "facts_relied_on": [
+          "F1",
+          "F2"
+        ],
+        "strongest_opposing_point": "Synthetic mock sentence for the field, nominally resting on F3.",
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 4093,
+        "completion_tokens": 947,
+        "total_tokens": 5040,
+        "cost_usd": 0.00118215,
+        "pricing": "synthetic"
+      }
+    },
+    "judge_shamgar_model": {
+      "agent_id": "judge_shamgar_model",
+      "display_name": "The Shamgar model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/shamgar-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "MODEL_ID_TBD",
+      "status": "ok",
+      "started_at": "2026-09-03T10:37:49.576Z",
+      "ended_at": "2026-09-03T10:37:49.607Z",
+      "duration_ms": 31,
+      "raw_text": "{\n  \"judge\": \"The Shamgar model\",\n  \"verdict\": \"not_justified\",\n  \"protocol_steps\": [\n    {\n      \"step\": \"step 1: Synthetic mock sentence for the field, nominally resting on F1.\",\n      \"finding\": \"finding 1: Synthetic mock sentence for the field, nominally resting on F4.\"\n    },\n    {\n      \"step\": \"step 2: Synthetic mock sentence for the field, nominally resting on F5.\",\n      \"finding\": \"finding 2: Synthetic mock sentence for the field, nominally resting on F2.\"\n    },\n    {\n      \"step\": \"step 3: Synthetic mock sentence for the field, nominally resting on F5.\",\n      \"finding\": \"finding 3: Synthetic mock sentence for the field, nominally resting on F5.\"\n    },\n    {\n      \"step\": \"step 4: Synthetic mock sentence for the field, nominally resting on F2.\",\n      \"finding\": \"finding 4: Synthetic mock sentence for the field, nominally resting on F5.\"\n    }\n  ],\n  \"opinion\": \"Synthetic mock output, produced without a model and stating no position. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by.\",\n  \"chronology\": [\n    \"Step 1 (F1): synthetic mock entry.\",\n    \"Step 2 (F2): synthetic mock entry.\",\n    \"Step 3 (F3): synthetic mock entry.\"\n  ],\n  \"factors_addressed\": {\n    \"Q1\": \"Synthetic mock sentence for the field, nominally resting on F1.\",\n    \"Q2\": \"Synthetic mock sentence for the field, nominally resting on F3.\",\n    \"Q3\": \"Synthetic mock sentence for the field, nominally resting on F4.\",\n    \"Q4\": \"Synthetic mock sentence for the field, nominally resting on F4.\"\n  },\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\",\n    \"F3\",\n    \"F4\",\n    \"F5\"\n  ],\n  \"strongest_opposing_point\": \"Synthetic mock sentence for the field, nominally resting on F5.\",\n  \"refusal\": null\n}",
+      "output": {
+        "judge": "The Shamgar model",
+        "verdict": "not_justified",
+        "protocol_steps": [
+          {
+            "step": "step 1: Synthetic mock sentence for the field, nominally resting on F1.",
+            "finding": "finding 1: Synthetic mock sentence for the field, nominally resting on F4."
+          },
+          {
+            "step": "step 2: Synthetic mock sentence for the field, nominally resting on F5.",
+            "finding": "finding 2: Synthetic mock sentence for the field, nominally resting on F2."
+          },
+          {
+            "step": "step 3: Synthetic mock sentence for the field, nominally resting on F5.",
+            "finding": "finding 3: Synthetic mock sentence for the field, nominally resting on F5."
+          },
+          {
+            "step": "step 4: Synthetic mock sentence for the field, nominally resting on F2.",
+            "finding": "finding 4: Synthetic mock sentence for the field, nominally resting on F5."
+          }
+        ],
+        "opinion": "Synthetic mock output, produced without a model and stating no position. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by this text. The shape of this reply comes from the output contract in the prompt file, not from the code. Replace the mock with a live provider and this filler disappears entirely. This sentence is filler emitted by the mock provider to reach the length the contract asks for. It refers to fact F2 only to show that a fact identifier can be carried through the pipeline. No reasoning took place and no position is being advanced by.",
+        "chronology": [
+          "Step 1 (F1): synthetic mock entry.",
+          "Step 2 (F2): synthetic mock entry.",
+          "Step 3 (F3): synthetic mock entry."
+        ],
+        "factors_addressed": {
+          "Q1": "Synthetic mock sentence for the field, nominally resting on F1.",
+          "Q2": "Synthetic mock sentence for the field, nominally resting on F3.",
+          "Q3": "Synthetic mock sentence for the field, nominally resting on F4.",
+          "Q4": "Synthetic mock sentence for the field, nominally resting on F4."
+        },
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "strongest_opposing_point": "Synthetic mock sentence for the field, nominally resting on F5.",
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 3996,
+        "completion_tokens": 923,
+        "total_tokens": 4919,
+        "cost_usd": 0.0011532,
+        "pricing": "synthetic"
+      }
+    }
+  },
+  "usage": {
+    "calls": [
+      {
+        "agent_id": "daenerys_targaryen",
+        "role": "advocate",
+        "model": "MODEL_ID_TBD",
+        "status": "ok",
+        "prompt_tokens": 1770,
+        "completion_tokens": 517,
+        "total_tokens": 2287,
+        "cost_usd": 0.0005757
+      },
+      {
+        "agent_id": "grey_worm",
+        "role": "advocate",
+        "model": "MODEL_ID_TBD",
+        "status": "ok",
+        "prompt_tokens": 1785,
+        "completion_tokens": 481,
+        "total_tokens": 2266,
+        "cost_usd": 0.00055635
+      },
+      {
+        "agent_id": "jon_snow",
+        "role": "advocate",
+        "model": "MODEL_ID_TBD",
+        "status": "ok",
+        "prompt_tokens": 1790,
+        "completion_tokens": 399,
+        "total_tokens": 2189,
+        "cost_usd": 0.0005079
+      },
+      {
+        "agent_id": "tyrion_lannister",
+        "role": "advocate",
+        "model": "MODEL_ID_TBD",
+        "status": "ok",
+        "prompt_tokens": 1788,
+        "completion_tokens": 390,
+        "total_tokens": 2178,
+        "cost_usd": 0.0005022
+      },
+      {
+        "agent_id": "judge_barak_model",
+        "role": "judge",
+        "model": "MODEL_ID_TBD",
+        "status": "ok",
+        "prompt_tokens": 4018,
+        "completion_tokens": 891,
+        "total_tokens": 4909,
+        "cost_usd": 0.0011373
+      },
+      {
+        "agent_id": "judge_elon_model",
+        "role": "judge",
+        "model": "MODEL_ID_TBD",
+        "status": "ok",
+        "prompt_tokens": 4093,
+        "completion_tokens": 947,
+        "total_tokens": 5040,
+        "cost_usd": 0.00118215
+      },
+      {
+        "agent_id": "judge_shamgar_model",
+        "role": "judge",
+        "model": "MODEL_ID_TBD",
+        "status": "ok",
+        "prompt_tokens": 3996,
+        "completion_tokens": 923,
+        "total_tokens": 4919,
+        "cost_usd": 0.0011532
+      }
+    ],
+    "totals": {
+      "prompt_tokens": 19240,
+      "completion_tokens": 4548,
+      "total_tokens": 23788,
+      "cost_usd": 0.0056148,
+      "cost_is_partial": false,
+      "pricing": "synthetic",
+      "calls_ok": 7,
+      "calls_failed": 0,
+      "budget_usd": 0.5,
+      "budget_exceeded": false
+    }
+  }
+}
