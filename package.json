@@ -10,6 +10,7 @@
   "scripts": {
     "tribunal": "node --env-file-if-exists=.env.local --import tsx src/cli.ts",
     "smoke": "node --env-file-if-exists=.env.local --import tsx src/smoke.ts",
+    "models": "node --env-file-if-exists=.env.local --import tsx src/models.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
