@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "run": {
+    "id": "2026-09-03T15-52-06-756Z",
+    "case": {
+      "id": "T-001",
+      "title": "The Realm v. Jon Snow",
+      "spec": "specs/charge-sheet.yaml",
+      "spec_version": "1.0.0"
+    },
+    "mode": "single_model",
+    "label": "A — one model, seven prompts",
+    "config": "config/run-single.yaml",
+    "provider": {
+      "name": "openrouter",
+      "pricing": "provider",
+      "description": "openrouter — live calls, real cost, key from OPENROUTER_API_KEY, timeout 120000ms"
+    },
+    "shared_rules": {
+      "path": "prompts/_shared.yaml",
+      "version": "1.0.0"
+    },
+    "prompt_versions": {
+      "daenerys_targaryen": "1.0.0",
+      "grey_worm": "1.0.0",
+      "jon_snow": "1.0.0",
+      "tyrion_lannister": "1.0.0",
+      "judge_barak_model": "1.0.0",
+      "judge_elon_model": "1.0.0",
+      "judge_shamgar_model": "1.0.0"
+    },
+    "started_at": "2026-09-03T15:52:06.756Z",
+    "ended_at": "2026-09-03T15:52:07.534Z",
+    "duration_ms": 778,
+    "status": "incomplete",
+    "failures": [
+      "daenerys_targaryen: transport — HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":",
+      "grey_worm: transport — HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":",
+      "jon_snow: transport — HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":",
+      "tyrion_lannister: transport — HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":",
+      "judge_barak_model: not_run — the judges did not sit: 4 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow, tyrion_lannister), and the protocol has every judge read all four arguments",
+      "judge_elon_model: not_run — the judges did not sit: 4 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow, tyrion_lannister), and the protocol has every judge read all four arguments",
+      "judge_shamgar_model: not_run — the judges did not sit: 4 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow, tyrion_lannister), and the protocol has every judge read all four arguments"
+    ]
+  },
+  "advocates": [
+    {
+      "agent_id": "daenerys_targaryen",
+      "display_name": "Daenerys Targaryen",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/daenerys-targaryen.yaml",
+      "prompt_version": "1.0.0",
+      "model": "google/gemma-4-31b-it:free",
+      "status": "failed",
+      "started_at": "2026-09-03T15:52:06.756Z",
+      "ended_at": "2026-09-03T15:52:07.387Z",
+      "duration_ms": 631,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "grey_worm",
+      "display_name": "Grey Worm",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/grey-worm.yaml",
+      "prompt_version": "1.0.0",
+      "model": "google/gemma-4-31b-it:free",
+      "status": "failed",
+      "started_at": "2026-09-03T15:52:06.792Z",
+      "ended_at": "2026-09-03T15:52:07.388Z",
+      "duration_ms": 596,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "jon_snow",
+      "display_name": "Jon Snow",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/jon-snow.yaml",
+      "prompt_version": "1.0.0",
+      "model": "google/gemma-4-31b-it:free",
+      "status": "failed",
+      "started_at": "2026-09-03T15:52:06.793Z",
+      "ended_at": "2026-09-03T15:52:07.382Z",
+      "duration_ms": 589,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "tyrion_lannister",
+      "display_name": "Tyrion Lannister",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/tyrion-lannister.yaml",
+      "prompt_version": "1.0.0",
+      "model": "google/gemma-4-31b-it:free",
+      "status": "failed",
+      "started_at": "2026-09-03T15:52:06.794Z",
+      "ended_at": "2026-09-03T15:52:07.534Z",
+      "duration_ms": 740,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-31b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":"
+      },
+      "usage": null
+    }
+  ],
+  "opinions": {
+    "judge_barak_model": {
+      "agent_id": "judge_barak_model",
+      "display_name": "The Barak model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/barak-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "google/gemma-4-31b-it:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 4 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow, tyrion_lannister), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_elon_model": {
+      "agent_id": "judge_elon_model",
+      "display_name": "The Elon model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/elon-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "google/gemma-4-31b-it:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 4 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow, tyrion_lannister), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_shamgar_model": {
+      "agent_id": "judge_shamgar_model",
+      "display_name": "The Shamgar model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/shamgar-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "google/gemma-4-31b-it:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 4 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow, tyrion_lannister), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    }
+  },
+  "usage": {
+    "calls": [
+      {
+        "agent_id": "daenerys_targaryen",
+        "role": "advocate",
+        "model": "google/gemma-4-31b-it:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "grey_worm",
+        "role": "advocate",
+        "model": "google/gemma-4-31b-it:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "jon_snow",
+        "role": "advocate",
+        "model": "google/gemma-4-31b-it:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "tyrion_lannister",
+        "role": "advocate",
+        "model": "google/gemma-4-31b-it:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_barak_model",
+        "role": "judge",
+        "model": "google/gemma-4-31b-it:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_elon_model",
+        "role": "judge",
+        "model": "google/gemma-4-31b-it:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_shamgar_model",
+        "role": "judge",
+        "model": "google/gemma-4-31b-it:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      }
+    ],
+    "totals": {
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "cost_usd": 0,
+      "cost_is_partial": false,
+      "pricing": "provider",
+      "calls_ok": 0,
+      "calls_failed": 7,
+      "budget_usd": 0.5,
+      "budget_exceeded": false
+    }
+  }
+}

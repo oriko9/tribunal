@@ -41,3 +41,13 @@ writes a word, and that grows as the arguments do.
 
 _none found_
 
+## Live attempts against mode A
+
+Manually maintained below this line. `npm run models` regenerates everything
+above it; this section records what happened when a model from the table was
+actually put in `config/run-single.yaml` and run.
+
+| Date | Model | Result |
+|---|---|---|
+| 2026-09-03 | `google/gemma-4-31b-it:free` | All 7 calls failed identically: HTTP 429 from OpenRouter within ~0.6s, `limit_source: "upstream_provider_shared_pool"`, provider Google AI Studio. Not our own 20/min or 50/day account limit — the free tier of this specific model was saturated across all OpenRouter users at the time. Recorded as evidence: `runs/2026-09-03T15-52-06-756Z.{json,md}`. The pipeline surfaced this as a loud failure on every advocate and correctly left the judges `not_run`, rather than substituting anything. |
+

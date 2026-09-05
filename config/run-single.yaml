@@ -3,7 +3,7 @@
 schema_version: 1
 mode: single_model
 label: "A — one model, seven prompts"
-default_model: "MODEL_ID_TBD"   # set once the OpenRouter account exists; prefer a free tier model
+default_model: "google/gemma-4-31b-it:free"   # from docs/free-models.md — free tier, 262k context, 32,768 max completion tokens
 agents:
   jon_snow:            { model: default }
   tyrion_lannister:    { model: default }

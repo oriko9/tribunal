@@ -330,12 +330,17 @@ async function checkProviders(inputs: RunInputs): Promise<void> {
     );
   });
   check("a live run against unset model ids is refused before any call is made", () => {
+    // Built rather than read from a config file: which config is still at
+    // MODEL_ID_TBD is a fact about the repo today, not a fact this check
+    // should depend on. It must catch the placeholder regardless of whether
+    // config/run-single.yaml has since been given a real model id.
+    const unsetModels = Object.fromEntries(agentIds.map((id) => [id, UNSET_MODEL]));
     refuses(
       () =>
         selectProvider(
           { [PROVIDER_ENV_VAR]: "openrouter", [API_KEY_ENV_VAR]: "not-a-real-key" } as NodeJS.ProcessEnv,
           agentIds,
-          models,
+          unsetModels,
         ),
       UNSET_MODEL,
     );
