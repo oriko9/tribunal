@@ -18,9 +18,11 @@ mirror is read from here; it never writes back. If the two disagree, this file
 wins.
 
 ## Current status
-Day 3 done. Mode A runs end to end against the mock provider: seven agents,
-four then three, two files written per run. Pushed to github.com/oriko9/tribunal.
-No live model has been called yet — that waits on the OpenRouter account.
+Day 3 done, and Day 5 (go live) done out of order — see the reordering below.
+Mode A has now run live against a real OpenRouter model, committed as
+evidence, with two earlier attempts also committed showing free-tier models
+that were rate-limited upstream. Day 4 (verification gates) is next: the
+09-05 live run already surfaced a real gap for it to close.
 Work continues in Claude Code, opened on this folder in VS Code.
 
 ## The seven-day plan
@@ -30,9 +32,9 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | 1 | 09-02 | Repo skeleton, CLAUDE.md, charge sheet as a spec, PLAN.md | done |
 | 2 | 09-03 | Seven prompt files, versioned | done |
 | 3 | 09-04 | Orchestrator in TypeScript; mode A runs locally | done |
-| 4 | 09-05 | Two verification gates; failures surface as failures | not started |
-| 5 | 09-06 | One-button screen, deployed to Vercel | not started |
-| 6 | 09-07 | Mode B (a model per agent), cost report, A/B comparison run committed | not started |
+| 4 | 09-06 | Two verification gates; failures surface as failures | not started |
+| 5 | 09-05 | Go live: model discovery, one live run of mode A, evidence recorded | done |
+| 6 | 09-07 | One-button screen, deployed to Vercel | not started |
 | 7 | 09-08 | README, LESSONS.md, merge-ready | not started |
 
 ## Day 1 checklist
@@ -51,6 +53,14 @@ Work continues in Claude Code, opened on this folder in VS Code.
 - [x] Three judge prompts, versioned 1.0.0
 - [x] docs/PROMPT-CHANGELOG.md
 - [x] config/run-single.yaml and config/run-multi.yaml (model ids pending OpenRouter)
+
+## Day 5 checklist (moved ahead of Day 4 — see below)
+- [x] `npm run models` — queries OpenRouter, filters to free + >=32k context,
+      writes docs/free-models.md as evidence rather than a terminal choice
+- [x] Three live models tried against mode A, in order, all recorded
+- [x] At least one fully successful live run committed, both files
+- [x] Real model deviations from the mock captured in the run files and in
+      docs/free-models.md, not fixed yet — that is Day 4's job
 
 ## Day 3 checklist
 - [x] TypeScript scaffold: package.json, tsconfig, dependencies (yaml, tsx)
@@ -90,19 +100,46 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | D19 | JSON recovered from a fenced or wrapped reply is accepted, but recorded as `parse: "extracted"` | The contract forbids fencing and real models do it anyway. The deviation is visible in the run file rather than silently normalised; Day 4's gate can decide to reject it |
 | D20 | Cost is never estimated. A call that reports none contributes nothing and the total is marked a floor | An invented number in a cost report is worse than an absent one |
 | D21 | Run ids use hyphens where an ISO timestamp uses colons | Colons are not legal in Windows filenames. The true ISO instant is inside both files |
+| D22 | Day 5 (go live) moved ahead of Day 6 (the screen) | Nothing had ever met a real model before 09-05, and the run configs still said MODEL_ID_TBD. Building a UI on top of a pipeline that has never seen a real reply risks discovering the real failure modes after the screen is built around the wrong assumptions. Go live first, build the screen around what was actually learned |
+| D23 | `npm run models` writes its findings to docs/free-models.md instead of leaving them in a terminal | The choice of model has to be evidence in the repository, not a decision made and forgotten in a session. The file states plainly that it is a snapshot and should be regenerated before being relied on again |
+| D24 | The first two models tried (`google/gemma-4-31b-it:free`, `z-ai/glm-5.2:free`) both hit `limit_source: upstream_provider_shared_pool` — the free tier of a given model saturated across all OpenRouter users, not our own account's 20/min or 50/day cap | Recorded rather than retried silently: a free model can be unusable at a given moment for reasons outside this project entirely, and the run file and docs/free-models.md both say so |
+| D25 | The first fully successful live run surfaced a real contract violation the mock cannot: two of three judges exceeded the 300-500 word opinion range (580 and 617 words) | This is now first-hand evidence for Day 4's verification gates, not a hypothetical. It was recorded, not fixed — fixing it is a gate's job, not a run's |
 
 ## Open questions
-- [ ] OpenRouter account — the only thing standing between this and a live run.
-      Everything else is wired: paste the key into .env.local, set
-      TRIBUNAL_PROVIDER=openrouter, replace MODEL_ID_TBD in the configs.
+- [x] OpenRouter account — created, key in .env.local, first live run committed.
 - [x] GitHub repository — created, remote added, pushed.
-- [ ] Which free models on OpenRouter are currently available and adequate.
+- [x] Which free models on OpenRouter are currently available and adequate —
+      see docs/free-models.md. Answer as of 09-05: availability is volatile.
+      Two of three tried models were unusable at the moment they were tried
+      for reasons outside this project (shared free-tier saturation), not
+      because they were badly chosen. config/run-single.yaml currently points
+      at nvidia/nemotron-3-super-120b-a12b:free, the one that cleared all
+      seven calls; re-run npm run models before a graded run in case that has
+      changed.
+- [ ] Whether the two judges that overran the 300-500 word opinion range on
+      09-05 do so consistently or only that once — Day 4's gates need to
+      catch it either way, but it affects whether prompt wording (not just
+      the gate) is worth revisiting.
 
 ## Out of scope, on purpose
 Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-05 — Day 5 moved ahead of Day 4 and Day 6, and done: nothing had met
+  a real model before today. `npm run models` queried OpenRouter live (424
+  models scanned, 21 clear the free + >=32k-context filter) and wrote
+  docs/free-models.md as the evidence for model choice. Three models were
+  tried against mode A, in order, each committed: google/gemma-4-31b-it:free
+  (all 7 calls hit an upstream shared-pool 429), z-ai/glm-5.2:free (3 of 4
+  advocates hit the same kind of 429, but tyrion_lannister returned a real,
+  fenced-JSON reply that the orchestrator recovered), and
+  nvidia/nemotron-3-super-120b-a12b:free (all 7 seats succeeded — the first
+  fully successful live run). The successful run also surfaced the first real
+  contract violation the mock could never produce: two of three judges wrote
+  opinions well outside the stated 300-500 word range. Nothing was fixed; it
+  was recorded as evidence for Day 4's gates. config/run-single.yaml now
+  points at the model that succeeded.
 - 2026-09-04 — Day 3 finished. The orchestrator runs: four advocates
   concurrently, then three judges concurrently, each judge reading the charge
   sheet and all four arguments and none of them reading another judge. Mode A
