@@ -3,7 +3,7 @@
 schema_version: 1
 mode: single_model
 label: "A — one model, seven prompts"
-default_model: "google/gemma-4-31b-it:free"   # from docs/free-models.md — free tier, 262k context, 32,768 max completion tokens
+default_model: "z-ai/glm-5.2:free"   # from docs/free-models.md — free tier, 256k context, 230,400 max completion tokens; gemma-4-31b-it was upstream rate-limited
 agents:
   jon_snow:            { model: default }
   tyrion_lannister:    { model: default }

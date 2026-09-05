@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "run": {
+    "id": "2026-09-05T17-33-45-295Z",
+    "case": {
+      "id": "T-001",
+      "title": "The Realm v. Jon Snow",
+      "spec": "specs/charge-sheet.yaml",
+      "spec_version": "1.0.0"
+    },
+    "mode": "single_model",
+    "label": "A — one model, seven prompts",
+    "config": "config/run-single.yaml",
+    "provider": {
+      "name": "openrouter",
+      "pricing": "provider",
+      "description": "openrouter — live calls, real cost, key from OPENROUTER_API_KEY, timeout 120000ms"
+    },
+    "shared_rules": {
+      "path": "prompts/_shared.yaml",
+      "version": "1.0.0"
+    },
+    "prompt_versions": {
+      "daenerys_targaryen": "1.0.0",
+      "grey_worm": "1.0.0",
+      "jon_snow": "1.0.0",
+      "tyrion_lannister": "1.0.0",
+      "judge_barak_model": "1.0.0",
+      "judge_elon_model": "1.0.0",
+      "judge_shamgar_model": "1.0.0"
+    },
+    "started_at": "2026-09-05T17:33:45.295Z",
+    "ended_at": "2026-09-05T17:33:49.181Z",
+    "duration_ms": 3886,
+    "status": "incomplete",
+    "failures": [
+      "daenerys_targaryen: transport — HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"z-ai/glm-5.2:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Decart\",\"is_byok\":false,\"provider_error_code\":\"upstream_429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry sho",
+      "grey_worm: transport — HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"z-ai/glm-5.2:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Decart\",\"is_byok\":false,\"provider_error_code\":\"upstream_429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry sho",
+      "jon_snow: transport — HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"z-ai/glm-5.2:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Decart\",\"is_byok\":false,\"provider_error_code\":\"upstream_429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry sho",
+      "judge_barak_model: not_run — the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments",
+      "judge_elon_model: not_run — the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments",
+      "judge_shamgar_model: not_run — the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments"
+    ]
+  },
+  "advocates": [
+    {
+      "agent_id": "daenerys_targaryen",
+      "display_name": "Daenerys Targaryen",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/daenerys-targaryen.yaml",
+      "prompt_version": "1.0.0",
+      "model": "z-ai/glm-5.2:free",
+      "status": "failed",
+      "started_at": "2026-09-05T17:33:45.296Z",
+      "ended_at": "2026-09-05T17:33:46.215Z",
+      "duration_ms": 919,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"z-ai/glm-5.2:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Decart\",\"is_byok\":false,\"provider_error_code\":\"upstream_429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry sho"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "grey_worm",
+      "display_name": "Grey Worm",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/grey-worm.yaml",
+      "prompt_version": "1.0.0",
+      "model": "z-ai/glm-5.2:free",
+      "status": "failed",
+      "started_at": "2026-09-05T17:33:45.321Z",
+      "ended_at": "2026-09-05T17:33:46.503Z",
+      "duration_ms": 1182,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"z-ai/glm-5.2:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Decart\",\"is_byok\":false,\"provider_error_code\":\"upstream_429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry sho"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "jon_snow",
+      "display_name": "Jon Snow",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/jon-snow.yaml",
+      "prompt_version": "1.0.0",
+      "model": "z-ai/glm-5.2:free",
+      "status": "failed",
+      "started_at": "2026-09-05T17:33:45.322Z",
+      "ended_at": "2026-09-05T17:33:46.294Z",
+      "duration_ms": 972,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"z-ai/glm-5.2:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Decart\",\"is_byok\":false,\"provider_error_code\":\"upstream_429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry sho"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "tyrion_lannister",
+      "display_name": "Tyrion Lannister",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/tyrion-lannister.yaml",
+      "prompt_version": "1.0.0",
+      "model": "z-ai/glm-5.2:free",
+      "status": "ok",
+      "started_at": "2026-09-05T17:33:45.323Z",
+      "ended_at": "2026-09-05T17:33:49.181Z",
+      "duration_ms": 3858,
+      "raw_text": "```json\n{\n  \"speaker\": \"Tyrion Lannister\",\n  \"stance\": \"justified\",\n  \"argument\": \"I should say plainly what my testimony is worth. I am F3's source. I resigned, I was imprisoned, and I told Jon his sisters would be next. So I am not a disinterested witness. I had motive to want Daenerys stopped, and I should have been cross-examined harder than I was. Accept my words with that salt. But the facts remain. King's Landing had surrendered (F1). The bells rang. Resistance ceased. And Daenerys burned civilians anyway, on a scale that defied any military necessity. That is not my opinion; that is the record. Then she told her assembled forces the campaign would continue beyond King's Landing (F2). Jon saw the city. He heard the speech. He knew what had happened and what was promised next. I told him his own family was in the path of that promise (F3). He tried the alternative I would have recommended. He asked her for mercy, for shared judgment, for anything resembling restraint (F4). She refused. She made her will the sole measure of good. Now, the hard part. She was unarmed when he killed her (F5). He used their intimacy to close the distance. He convened no council, attempted no detention, sought no public surrender. These are real failures. But ask yourselves: detention by whom? She commanded the only army present. A council with what authority? She had just declared her judgment supreme and unquestionable (F4). The safer alternative the prosecution demands is an alternative that did not exist. She had an army, a dragon, and the conviction that mercy was treason. Jon had a knife and the knowledge that thousands more would burn. He chose the many over the one. I have spent my life negotiating with people who could be reasoned with. She could not be. He tried, and she refused. What was left?\",\n  \"facts_relied_on\": [\"F1\", \"F2\", \"F3\", \"F4\", \"F5\"],\n  \"concessions\": [\"My testimony in F3 comes from a man who had already resigned and been imprisoned; I had personal motive to want Daenerys stopped, and my evidence should be weighed accordingly.\", \"Daenerys was unarmed and not attacking when Jon killed her (F5); this is the gravest fact against us and I do not pretend otherwise.\", \"Jon attempted no formal process, no detention, no public surrender of power (F5); had a genuine alternative existed, his failure to pursue it would be damning.\"],\n  \"refusal\": null\n}\n```",
+      "output": {
+        "speaker": "Tyrion Lannister",
+        "stance": "justified",
+        "argument": "I should say plainly what my testimony is worth. I am F3's source. I resigned, I was imprisoned, and I told Jon his sisters would be next. So I am not a disinterested witness. I had motive to want Daenerys stopped, and I should have been cross-examined harder than I was. Accept my words with that salt. But the facts remain. King's Landing had surrendered (F1). The bells rang. Resistance ceased. And Daenerys burned civilians anyway, on a scale that defied any military necessity. That is not my opinion; that is the record. Then she told her assembled forces the campaign would continue beyond King's Landing (F2). Jon saw the city. He heard the speech. He knew what had happened and what was promised next. I told him his own family was in the path of that promise (F3). He tried the alternative I would have recommended. He asked her for mercy, for shared judgment, for anything resembling restraint (F4). She refused. She made her will the sole measure of good. Now, the hard part. She was unarmed when he killed her (F5). He used their intimacy to close the distance. He convened no council, attempted no detention, sought no public surrender. These are real failures. But ask yourselves: detention by whom? She commanded the only army present. A council with what authority? She had just declared her judgment supreme and unquestionable (F4). The safer alternative the prosecution demands is an alternative that did not exist. She had an army, a dragon, and the conviction that mercy was treason. Jon had a knife and the knowledge that thousands more would burn. He chose the many over the one. I have spent my life negotiating with people who could be reasoned with. She could not be. He tried, and she refused. What was left?",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "My testimony in F3 comes from a man who had already resigned and been imprisoned; I had personal motive to want Daenerys stopped, and my evidence should be weighed accordingly.",
+          "Daenerys was unarmed and not attacking when Jon killed her (F5); this is the gravest fact against us and I do not pretend otherwise.",
+          "Jon attempted no formal process, no detention, no public surrender of power (F5); had a genuine alternative existed, his failure to pursue it would be damning."
+        ],
+        "refusal": null
+      },
+      "parse": "extracted",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1765,
+        "completion_tokens": 759,
+        "total_tokens": 2524,
+        "cost_usd": 0,
+        "pricing": "provider"
+      }
+    }
+  ],
+  "opinions": {
+    "judge_barak_model": {
+      "agent_id": "judge_barak_model",
+      "display_name": "The Barak model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/barak-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "z-ai/glm-5.2:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_elon_model": {
+      "agent_id": "judge_elon_model",
+      "display_name": "The Elon model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/elon-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "z-ai/glm-5.2:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_shamgar_model": {
+      "agent_id": "judge_shamgar_model",
+      "display_name": "The Shamgar model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/shamgar-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "z-ai/glm-5.2:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    }
+  },
+  "usage": {
+    "calls": [
+      {
+        "agent_id": "daenerys_targaryen",
+        "role": "advocate",
+        "model": "z-ai/glm-5.2:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "grey_worm",
+        "role": "advocate",
+        "model": "z-ai/glm-5.2:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "jon_snow",
+        "role": "advocate",
+        "model": "z-ai/glm-5.2:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "tyrion_lannister",
+        "role": "advocate",
+        "model": "z-ai/glm-5.2:free",
+        "status": "ok",
+        "prompt_tokens": 1765,
+        "completion_tokens": 759,
+        "total_tokens": 2524,
+        "cost_usd": 0
+      },
+      {
+        "agent_id": "judge_barak_model",
+        "role": "judge",
+        "model": "z-ai/glm-5.2:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_elon_model",
+        "role": "judge",
+        "model": "z-ai/glm-5.2:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_shamgar_model",
+        "role": "judge",
+        "model": "z-ai/glm-5.2:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      }
+    ],
+    "totals": {
+      "prompt_tokens": 1765,
+      "completion_tokens": 759,
+      "total_tokens": 2524,
+      "cost_usd": 0,
+      "cost_is_partial": false,
+      "pricing": "provider",
+      "calls_ok": 1,
+      "calls_failed": 6,
+      "budget_usd": 0.5,
+      "budget_exceeded": false
+    }
+  }
+}
