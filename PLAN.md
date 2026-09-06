@@ -144,16 +144,33 @@ Work continues in Claude Code, opened on this folder in VS Code.
       catch it either way, but it affects whether prompt wording (not just
       the gate) is worth revisiting. Still open with paid models: nothing
       about switching provider fixes a contract the models aren't held to.
-- [ ] What mode A and mode B actually cost against paid models — the point of
-      running mode A alone first before committing to a seven-model mode B
-      run. See runs/ and docs/models.md, "Live attempts against paid models",
-      once run.
+- [x] What mode A costs against paid models — $0.013167, all seven seats,
+      openai/gpt-5-nano, 09-06. See docs/models.md, "Live attempts against
+      paid models". Mode B's cost is still open: not run this session, by
+      instruction, pending review of mode A's number first.
 
 ## Out of scope, on purpose
 Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-06 (later) — Moved off the free tier. Two mode B attempts had
+  already shown it couldn't sustain a run; renamed docs/free-models.md to
+  docs/models.md and opened it with why, keeping the full attempt history as
+  the evidence for the decision. npm run models extended to preserve two
+  hand-maintained zones across regeneration instead of one, and verified by
+  re-running it. Both configs switched to paid models: mode A to
+  openai/gpt-5-nano across all seven seats; mode B to seven distinct paid
+  models, pairing the three judges — who read the most — with the more
+  capable ones. Before spending anything, proved the budget guard: same
+  seven-seat mock run priced identically under two configs differing only
+  in max_usd_per_run, one exited 1 over budget, the other 0 — isolating
+  budget as the one variable, not a run failure. Two permanent checks added
+  to npm run smoke for it (57 total). Then ran mode A live, once, for real
+  money: $0.013167 for 49,515 tokens, all seven seats clean, budget not
+  exceeded. One new contract deviation — all three judges came in under the
+  300-500 word floor this time, the mirror of nemotron's overrun on 09-05.
+  Mode B not run this turn, by instruction, pending review of this cost.
 - 2026-09-06 — Mode B run live for the first time: the graded requirement
   that the model behind each of the seven seats can differ. `npm run models`
   re-run to refresh the snapshot first, which exposed and then fixed a bug —
