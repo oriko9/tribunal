@@ -18,11 +18,16 @@ mirror is read from here; it never writes back. If the two disagree, this file
 wins.
 
 ## Current status
-Day 3 done, and Day 5 (go live) done out of order — see the reordering below.
-Mode A has now run live against a real OpenRouter model, committed as
-evidence, with two earlier attempts also committed showing free-tier models
-that were rate-limited upstream. Day 4 (verification gates) is next: the
-09-05 live run already surfaced a real gap for it to close.
+Day 3 done, and Day 5 (go live) done out of order, spilling from 09-05 into
+09-06 to cover mode B — see the reordering below. Mode A has run live and
+completed cleanly once. Mode B — the graded requirement that a model can be
+swapped per seat — has now been attempted live twice, and both attempts were
+incomplete: too many of the seven independently-chosen free models were
+unavailable at the moment of the call for the judges ever to sit. That
+absence of a completed mode B run, and the comparison document that says so
+plainly, is itself now part of the evidence. Day 4 (verification gates) is
+next: both the 09-05 mode A run and the two 09-06 mode B attempts have
+surfaced real gaps for it to close.
 Work continues in Claude Code, opened on this folder in VS Code.
 
 ## The seven-day plan
@@ -61,6 +66,16 @@ Work continues in Claude Code, opened on this folder in VS Code.
 - [x] At least one fully successful live run committed, both files
 - [x] Real model deviations from the mock captured in the run files and in
       docs/free-models.md, not fixed yet — that is Day 4's job
+- [x] `npm run models` fixed to preserve its own manually-maintained history
+      across regeneration, after a re-run silently wiped it on 09-06
+- [x] config/run-multi.yaml filled with seven distinct free model ids — the
+      graded requirement that a model is swappable per seat, live for the
+      first time
+- [x] Two live attempts at mode B, both recorded regardless of outcome; both
+      were incomplete, per instruction to try once more and then stop
+- [x] docs/mode-a-vs-b.md — the comparison document, stating plainly that
+      mode B produced zero opinions in either attempt and that one run each
+      is an anecdote, not a result
 
 ## Day 3 checklist
 - [x] TypeScript scaffold: package.json, tsconfig, dependencies (yaml, tsx)
@@ -104,6 +119,9 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | D23 | `npm run models` writes its findings to docs/free-models.md instead of leaving them in a terminal | The choice of model has to be evidence in the repository, not a decision made and forgotten in a session. The file states plainly that it is a snapshot and should be regenerated before being relied on again |
 | D24 | The first two models tried (`google/gemma-4-31b-it:free`, `z-ai/glm-5.2:free`) both hit `limit_source: upstream_provider_shared_pool` — the free tier of a given model saturated across all OpenRouter users, not our own account's 20/min or 50/day cap | Recorded rather than retried silently: a free model can be unusable at a given moment for reasons outside this project entirely, and the run file and docs/free-models.md both say so |
 | D25 | The first fully successful live run surfaced a real contract violation the mock cannot: two of three judges exceeded the 300-500 word opinion range (580 and 617 words) | This is now first-hand evidence for Day 4's verification gates, not a hypothetical. It was recorded, not fixed — fixing it is a gate's job, not a run's |
+| D26 | `npm run models` now reads its own prior output and reattaches everything from the `## Live attempts` heading onward before writing the fresh report | Re-running it on 09-06 to refresh the snapshot silently deleted the 09-05 attempt history, since the script always wrote the whole file. The generated table still regenerates in full; only the hand-maintained section survives |
+| D27 | Mode B failing twice was committed as evidence rather than treated as a blocker to route around with a third attempt | The instruction was to try once more and then stop regardless of outcome, and the absence of a completed mode B run is itself the finding: a run with seven independent free models is more exposed to any one of them being unavailable than a run with one model repeated seven times |
+| D28 | docs/mode-a-vs-b.md states outright that one run of mode A and two attempts at mode B is an anecdote, and names the one narrower claim the evidence does support | A comparison document that lets a single run imply a general property of single- vs multi-model orchestration would be worse than no comparison at all |
 
 ## Open questions
 - [x] OpenRouter account — created, key in .env.local, first live run committed.
@@ -120,12 +138,41 @@ Work continues in Claude Code, opened on this folder in VS Code.
       09-05 do so consistently or only that once — Day 4's gates need to
       catch it either way, but it affects whether prompt wording (not just
       the gate) is worth revisiting.
+- [ ] Mode B has not yet produced a single judge opinion, across two live
+      attempts on 09-06. Whether a third attempt on a calmer moment for the
+      free tier would succeed is unknown — not tried today, per instruction
+      to stop after the second attempt regardless of outcome.
+- [ ] Whether the seven models chosen for mode B were a fair test: two of the
+      four advocate failures (ThinkingMachines' inkling and inkling-small)
+      were an access-tier 403, not congestion — that model was arguably
+      miscategorised as usable from its OpenRouter listing alone. Worth a
+      pass over docs/free-models.md's selection criteria before trying again.
 
 ## Out of scope, on purpose
 Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-06 — Mode B run live for the first time: the graded requirement
+  that the model behind each of the seven seats can differ. `npm run models`
+  re-run to refresh the snapshot first, which exposed and then fixed a bug —
+  the script had been silently discarding its own manually-maintained
+  history on every regeneration; restored the 09-05 entries and made the
+  script preserve that section going forward. config/run-multi.yaml filled
+  with seven distinct free model ids, one per seat. Attempt 1 lost 3 of 4
+  advocates (two upstream 429s, one call that never returned and was
+  aborted on the 120s timeout); attempt 2, seven entirely different model
+  ids per instruction, lost 2 of 4 advocates to a new failure kind — an
+  access-tier 403 from both ThinkingMachines models, gated away from a
+  plain chat request despite being listed free. Both attempts stopped
+  before the judges could sit, since the protocol requires all four
+  arguments; per instruction, no third attempt was made. Both runs
+  committed as evidence regardless of the incomplete result, and both
+  logged in docs/free-models.md. docs/mode-a-vs-b.md written comparing the
+  09-05 mode A run against both mode B attempts: it states plainly that
+  mode B produced no opinions to compare, that one run each is an anecdote,
+  and names the one claim the evidence does support without generalising
+  further. ~8 live calls spent today, against a 21-call ceiling.
 - 2026-09-05 — Day 5 moved ahead of Day 4 and Day 6, and done: nothing had met
   a real model before today. `npm run models` queried OpenRouter live (424
   models scanned, 21 clear the free + >=32k-context filter) and wrote
