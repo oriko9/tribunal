@@ -501,6 +501,21 @@ async function checkDeliberation(inputs: RunInputs): Promise<void> {
     must(Math.abs(totals.cost_usd - cost) < 1e-8, `totals say ${totals.cost_usd}, rows say ${cost}`);
   });
 
+  check("the budget guard flags a run over budget and clears one under it", () => {
+    // Same run, same cost, two configured budgets: the causal variable is
+    // isolated to the field the CLI's exit code actually reads.
+    const over = buildRunFile({ ...inputs, config: { ...inputs.config, max_usd_per_run: 1e-9 } }, clean, report);
+    const under = buildRunFile({ ...inputs, config: { ...inputs.config, max_usd_per_run: 1000 } }, clean, report);
+    must(over.usage.totals.cost_usd === under.usage.totals.cost_usd, "the two configs priced the same run differently");
+    must(over.usage.totals.budget_exceeded, "a run costing far more than the budget was not flagged");
+    must(!under.usage.totals.budget_exceeded, "a run costing far less than the budget was flagged anyway");
+  });
+
+  check("no budget configured means no budget to exceed", () => {
+    const unbudgeted = buildRunFile({ ...inputs, config: { ...inputs.config, max_usd_per_run: null } }, clean, report);
+    must(!unbudgeted.usage.totals.budget_exceeded, "a run with no configured budget was flagged as over one");
+  });
+
   check("the protocol prints all seven seats and combines nothing", () => {
     for (const prompt of [...inputs.advocates, ...inputs.judges]) {
       must(protocol.includes(prompt.display_name), `${prompt.display_name} is missing from the protocol`);
