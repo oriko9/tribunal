@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "run": {
+    "id": "2026-09-06T07-24-33-092Z",
+    "case": {
+      "id": "T-001",
+      "title": "The Realm v. Jon Snow",
+      "spec": "specs/charge-sheet.yaml",
+      "spec_version": "1.0.0"
+    },
+    "mode": "multi_model",
+    "label": "B — seven prompts, several models",
+    "config": "config/run-multi.yaml",
+    "provider": {
+      "name": "openrouter",
+      "pricing": "provider",
+      "description": "openrouter — live calls, real cost, key from OPENROUTER_API_KEY, timeout 120000ms"
+    },
+    "shared_rules": {
+      "path": "prompts/_shared.yaml",
+      "version": "1.0.0"
+    },
+    "prompt_versions": {
+      "daenerys_targaryen": "1.0.0",
+      "grey_worm": "1.0.0",
+      "jon_snow": "1.0.0",
+      "tyrion_lannister": "1.0.0",
+      "judge_barak_model": "1.0.0",
+      "judge_elon_model": "1.0.0",
+      "judge_shamgar_model": "1.0.0"
+    },
+    "started_at": "2026-09-06T07:24:33.092Z",
+    "ended_at": "2026-09-06T07:26:33.105Z",
+    "duration_ms": 120013,
+    "status": "incomplete",
+    "failures": [
+      "daenerys_targaryen: transport — The operation was aborted due to timeout",
+      "grey_worm: transport — HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Poolside\",\"is_byok\":false,\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry shortly, add your own provide",
+      "jon_snow: transport — HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-26b-a4b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hi",
+      "judge_barak_model: not_run — the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments",
+      "judge_elon_model: not_run — the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments",
+      "judge_shamgar_model: not_run — the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments"
+    ]
+  },
+  "advocates": [
+    {
+      "agent_id": "daenerys_targaryen",
+      "display_name": "Daenerys Targaryen",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/daenerys-targaryen.yaml",
+      "prompt_version": "1.0.0",
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "status": "failed",
+      "started_at": "2026-09-06T07:24:33.092Z",
+      "ended_at": "2026-09-06T07:26:33.105Z",
+      "duration_ms": 120013,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "The operation was aborted due to timeout"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "grey_worm",
+      "display_name": "Grey Worm",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/grey-worm.yaml",
+      "prompt_version": "1.0.0",
+      "model": "poolside/laguna-s-2.1:free",
+      "status": "failed",
+      "started_at": "2026-09-06T07:24:33.127Z",
+      "ended_at": "2026-09-06T07:24:33.810Z",
+      "duration_ms": 683,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Poolside\",\"is_byok\":false,\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hint\":\"Retry shortly, add your own provide"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "jon_snow",
+      "display_name": "Jon Snow",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/jon-snow.yaml",
+      "prompt_version": "1.0.0",
+      "model": "google/gemma-4-26b-a4b-it:free",
+      "status": "failed",
+      "started_at": "2026-09-06T07:24:33.128Z",
+      "ended_at": "2026-09-06T07:24:33.776Z",
+      "duration_ms": 648,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 429 Too Many Requests: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"google/gemma-4-26b-a4b-it:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations\",\"provider_name\":\"Google AI Studio\",\"is_byok\":false,\"provider_error_code\":\"429\",\"limit_source\":\"upstream_provider_shared_pool\",\"remedy_hi"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "tyrion_lannister",
+      "display_name": "Tyrion Lannister",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/tyrion-lannister.yaml",
+      "prompt_version": "1.0.0",
+      "model": "minimax/minimax-m3:free",
+      "status": "ok",
+      "started_at": "2026-09-06T07:24:33.129Z",
+      "ended_at": "2026-09-06T07:24:54.723Z",
+      "duration_ms": 21594,
+      "raw_text": "{\"speaker\":\"Tyrion Lannister\",\"stance\":\"justified\",\"argument\":\"I appear here both as advocate and as a fact in the record, and I will not pretend that makes my position sturdier. It means you must weigh me the way you weigh any other interested party: with great suspicion. So let me give you my reasons, and then the strongest objections to them.\\n\\nJon knew, at the moment he acted, three things the record fixes. He had seen the surrender of King's Landing and the destruction Daenerys visited on it after the bells (F1). He had heard her promise that this 'liberation' would continue elsewhere (F2). And he had heard me, when I was still acting as Hand and paid for the warning with my office and my freedom, tell him that she would treat his sisters and any obstacle as enemies to be removed (F3). When he asked her to show mercy and to let others share in moral judgment, she refused and claimed her own judgment as final (F4). None of this is rumour. It is the agreed record.\\n\\nThe harm threatened, on those facts, was not abstract. F1 and F2 together describe a leader who had already destroyed a surrendered city and announced more of the same. The imminence is not remote; it is the continuation of a campaign she had just publicly declared. Jon's knowledge is therefore precisely what the doctrine of defence of others requires.\\n\\nI accept the hardest parts against my own client. He killed an unarmed woman during an embrace (F5). He used intimacy as cover. He convened no council, tried no detention, sought no public abdication. These are real costs, and they rightly trouble me. But the record also tells us, in F4, that she had refused the very sharing of judgment that a council would require. Given her refusal and her announced intention, the available alternatives were not realistically available alternatives. I would have preferred a council. I would have preferred detention. I also resigned and was imprisoned for my trouble (F3), which should remind you how little that road was open.\",\"facts_relied_on\":[\"F1\",\"F2\",\"F3\",\"F4\",\"F5\"],\"concessions\":[\"Jon used intimacy to close the distance and killed an unarmed woman during an embrace (F5).\",\"He attempted no council, no detention, and no public surrender of power before acting (F5).\",\"I am myself an interested witness, having resigned and been imprisoned, which may colour my reading of F3.\",\"Even on F1 and F2, a defender must concede that the killing was chosen in a private moment rather than at the close of a documented public process.\"],\"refusal\":null}",
+      "output": {
+        "speaker": "Tyrion Lannister",
+        "stance": "justified",
+        "argument": "I appear here both as advocate and as a fact in the record, and I will not pretend that makes my position sturdier. It means you must weigh me the way you weigh any other interested party: with great suspicion. So let me give you my reasons, and then the strongest objections to them.\n\nJon knew, at the moment he acted, three things the record fixes. He had seen the surrender of King's Landing and the destruction Daenerys visited on it after the bells (F1). He had heard her promise that this 'liberation' would continue elsewhere (F2). And he had heard me, when I was still acting as Hand and paid for the warning with my office and my freedom, tell him that she would treat his sisters and any obstacle as enemies to be removed (F3). When he asked her to show mercy and to let others share in moral judgment, she refused and claimed her own judgment as final (F4). None of this is rumour. It is the agreed record.\n\nThe harm threatened, on those facts, was not abstract. F1 and F2 together describe a leader who had already destroyed a surrendered city and announced more of the same. The imminence is not remote; it is the continuation of a campaign she had just publicly declared. Jon's knowledge is therefore precisely what the doctrine of defence of others requires.\n\nI accept the hardest parts against my own client. He killed an unarmed woman during an embrace (F5). He used intimacy as cover. He convened no council, tried no detention, sought no public abdication. These are real costs, and they rightly trouble me. But the record also tells us, in F4, that she had refused the very sharing of judgment that a council would require. Given her refusal and her announced intention, the available alternatives were not realistically available alternatives. I would have preferred a council. I would have preferred detention. I also resigned and was imprisoned for my trouble (F3), which should remind you how little that road was open.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "Jon used intimacy to close the distance and killed an unarmed woman during an embrace (F5).",
+          "He attempted no council, no detention, and no public surrender of power before acting (F5).",
+          "I am myself an interested witness, having resigned and been imprisoned, which may colour my reading of F3.",
+          "Even on F1 and F2, a defender must concede that the killing was chosen in a private moment rather than at the close of a documented public process."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1883,
+        "completion_tokens": 560,
+        "total_tokens": 2443,
+        "cost_usd": 0,
+        "pricing": "provider"
+      }
+    }
+  ],
+  "opinions": {
+    "judge_barak_model": {
+      "agent_id": "judge_barak_model",
+      "display_name": "The Barak model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/barak-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "z-ai/glm-5.2:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_elon_model": {
+      "agent_id": "judge_elon_model",
+      "display_name": "The Elon model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/elon-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_shamgar_model": {
+      "agent_id": "judge_shamgar_model",
+      "display_name": "The Shamgar model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/shamgar-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "minimax/minimax-m2.7:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 3 of 4 advocates failed (daenerys_targaryen, grey_worm, jon_snow), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    }
+  },
+  "usage": {
+    "calls": [
+      {
+        "agent_id": "daenerys_targaryen",
+        "role": "advocate",
+        "model": "nvidia/nemotron-3.5-lightning:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "grey_worm",
+        "role": "advocate",
+        "model": "poolside/laguna-s-2.1:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "jon_snow",
+        "role": "advocate",
+        "model": "google/gemma-4-26b-a4b-it:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "tyrion_lannister",
+        "role": "advocate",
+        "model": "minimax/minimax-m3:free",
+        "status": "ok",
+        "prompt_tokens": 1883,
+        "completion_tokens": 560,
+        "total_tokens": 2443,
+        "cost_usd": 0
+      },
+      {
+        "agent_id": "judge_barak_model",
+        "role": "judge",
+        "model": "z-ai/glm-5.2:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_elon_model",
+        "role": "judge",
+        "model": "nvidia/nemotron-3-super-120b-a12b:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_shamgar_model",
+        "role": "judge",
+        "model": "minimax/minimax-m2.7:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      }
+    ],
+    "totals": {
+      "prompt_tokens": 1883,
+      "completion_tokens": 560,
+      "total_tokens": 2443,
+      "cost_usd": 0,
+      "cost_is_partial": false,
+      "pricing": "provider",
+      "calls_ok": 1,
+      "calls_failed": 6,
+      "budget_usd": 0.5,
+      "budget_exceeded": false
+    }
+  }
+}

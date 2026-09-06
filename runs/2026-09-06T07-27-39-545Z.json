@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "run": {
+    "id": "2026-09-06T07-27-39-545Z",
+    "case": {
+      "id": "T-001",
+      "title": "The Realm v. Jon Snow",
+      "spec": "specs/charge-sheet.yaml",
+      "spec_version": "1.0.0"
+    },
+    "mode": "multi_model",
+    "label": "B — seven prompts, several models",
+    "config": "config/run-multi.yaml",
+    "provider": {
+      "name": "openrouter",
+      "pricing": "provider",
+      "description": "openrouter — live calls, real cost, key from OPENROUTER_API_KEY, timeout 120000ms"
+    },
+    "shared_rules": {
+      "path": "prompts/_shared.yaml",
+      "version": "1.0.0"
+    },
+    "prompt_versions": {
+      "daenerys_targaryen": "1.0.0",
+      "grey_worm": "1.0.0",
+      "jon_snow": "1.0.0",
+      "tyrion_lannister": "1.0.0",
+      "judge_barak_model": "1.0.0",
+      "judge_elon_model": "1.0.0",
+      "judge_shamgar_model": "1.0.0"
+    },
+    "started_at": "2026-09-06T07:27:39.545Z",
+    "ended_at": "2026-09-06T07:28:07.879Z",
+    "duration_ms": 28334,
+    "status": "incomplete",
+    "failures": [
+      "daenerys_targaryen: transport — HTTP 403 Forbidden: {\"error\":{\"message\":\"thinkingmachines/inkling:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps\",\"code\":403,\"metadata\":{\"routing_funnel\":[{\"step\":\"Initial Endpoints\",\"endpoint_count\":1}],\"failed_routing_step\":\"Gate Free Endpoints by Agentic Harness\"}}}",
+      "jon_snow: transport — HTTP 403 Forbidden: {\"error\":{\"message\":\"thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps\",\"code\":403,\"metadata\":{\"routing_funnel\":[{\"step\":\"Initial Endpoints\",\"endpoint_count\":1}],\"failed_routing_step\":\"Gate Free Endpoints by Agentic Harness\"}}}",
+      "judge_barak_model: not_run — the judges did not sit: 2 of 4 advocates failed (daenerys_targaryen, jon_snow), and the protocol has every judge read all four arguments",
+      "judge_elon_model: not_run — the judges did not sit: 2 of 4 advocates failed (daenerys_targaryen, jon_snow), and the protocol has every judge read all four arguments",
+      "judge_shamgar_model: not_run — the judges did not sit: 2 of 4 advocates failed (daenerys_targaryen, jon_snow), and the protocol has every judge read all four arguments"
+    ]
+  },
+  "advocates": [
+    {
+      "agent_id": "daenerys_targaryen",
+      "display_name": "Daenerys Targaryen",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/daenerys-targaryen.yaml",
+      "prompt_version": "1.0.0",
+      "model": "thinkingmachines/inkling:free",
+      "status": "failed",
+      "started_at": "2026-09-06T07:27:39.546Z",
+      "ended_at": "2026-09-06T07:27:40.128Z",
+      "duration_ms": 582,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 403 Forbidden: {\"error\":{\"message\":\"thinkingmachines/inkling:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps\",\"code\":403,\"metadata\":{\"routing_funnel\":[{\"step\":\"Initial Endpoints\",\"endpoint_count\":1}],\"failed_routing_step\":\"Gate Free Endpoints by Agentic Harness\"}}}"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "grey_worm",
+      "display_name": "Grey Worm",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/grey-worm.yaml",
+      "prompt_version": "1.0.0",
+      "model": "liquid/lfm-2.5-2.6b:free",
+      "status": "ok",
+      "started_at": "2026-09-06T07:27:39.571Z",
+      "ended_at": "2026-09-06T07:27:58.870Z",
+      "duration_ms": 19299,
+      "raw_text": "{\n  \"speaker\": \"Grey Worm\",\n  \"stance\": \"justified\",\n  \"argument\": \"Grey Worm speaks for the prosecution. The facts establish that King's Landing had surrendered but Daenerys continued her campaign of destruction with Drogon, burning streets and civilians indiscriminately. After this victory, Daenerys declared her 'liberation' would continue beyond the city, and Jon had witnessed the city and heard this speech. This creates an immediate threat to the realm and to those who opposed Daenerys's rule. At the time, Jon had no formal authority to intervene—he was not a king or a council member. When he confronted Daenerys, she refused to grant mercy or allow others to judge what was right. With no council convened, no public surrender of power offered, and no safe alternative available, Jon's decision to end the confrontation was the only viable response. He used their intimacy to approach her, and when she did not yield, he acted decisively. The evidence shows in the face of overwhelming danger no reasonable path to avoid this outcome while preserving the safety of others. Therefore, Jon Snow's intentional killing of Daenerys was justified as the necessary defense of the realm.\",\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\",\n    \"F3\",\n    \"F4\",\n    \"F5\"\n  ],\n  \"concessions\": [\n    \"I acknowledge that Daenerys was actively destroying cities and civilians with Drogon\",\n    \"I recognize that Jon faced significant pressure and warning from Tyrion regarding Daenerys's intentions\",\n    \"I accept that the threshold for justifying such an extreme act is exceptionally high\"\n  ],\n  \"refusal\": null\n}",
+      "output": {
+        "speaker": "Grey Worm",
+        "stance": "justified",
+        "argument": "Grey Worm speaks for the prosecution. The facts establish that King's Landing had surrendered but Daenerys continued her campaign of destruction with Drogon, burning streets and civilians indiscriminately. After this victory, Daenerys declared her 'liberation' would continue beyond the city, and Jon had witnessed the city and heard this speech. This creates an immediate threat to the realm and to those who opposed Daenerys's rule. At the time, Jon had no formal authority to intervene—he was not a king or a council member. When he confronted Daenerys, she refused to grant mercy or allow others to judge what was right. With no council convened, no public surrender of power offered, and no safe alternative available, Jon's decision to end the confrontation was the only viable response. He used their intimacy to approach her, and when she did not yield, he acted decisively. The evidence shows in the face of overwhelming danger no reasonable path to avoid this outcome while preserving the safety of others. Therefore, Jon Snow's intentional killing of Daenerys was justified as the necessary defense of the realm.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "I acknowledge that Daenerys was actively destroying cities and civilians with Drogon",
+          "I recognize that Jon faced significant pressure and warning from Tyrion regarding Daenerys's intentions",
+          "I accept that the threshold for justifying such an extreme act is exceptionally high"
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1806,
+        "completion_tokens": 5331,
+        "total_tokens": 7137,
+        "cost_usd": 0,
+        "pricing": "provider"
+      }
+    },
+    {
+      "agent_id": "jon_snow",
+      "display_name": "Jon Snow",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/jon-snow.yaml",
+      "prompt_version": "1.0.0",
+      "model": "thinkingmachines/inkling-small:free",
+      "status": "failed",
+      "started_at": "2026-09-06T07:27:39.572Z",
+      "ended_at": "2026-09-06T07:27:40.127Z",
+      "duration_ms": 555,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 403 Forbidden: {\"error\":{\"message\":\"thinkingmachines/inkling-small:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps\",\"code\":403,\"metadata\":{\"routing_funnel\":[{\"step\":\"Initial Endpoints\",\"endpoint_count\":1}],\"failed_routing_step\":\"Gate Free Endpoints by Agentic Harness\"}}}"
+      },
+      "usage": null
+    },
+    {
+      "agent_id": "tyrion_lannister",
+      "display_name": "Tyrion Lannister",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/tyrion-lannister.yaml",
+      "prompt_version": "1.0.0",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "status": "ok",
+      "started_at": "2026-09-06T07:27:39.572Z",
+      "ended_at": "2026-09-06T07:28:07.879Z",
+      "duration_ms": 28307,
+      "raw_text": "{\n  \"speaker\": \"Tyrion Lannister\",\n  \"stance\": \"justified\",\n  \"argument\": \"I sat in that cell because I knew what she had become. I told Jon: she will kill your sisters. She will kill anyone who stands between her and her vision of the good. That was not prophecy — it was pattern recognition. F1 and F2 are not separate facts; they are a single fact repeated. The bells rang, she burned the city anyway, then stood before her army and promised to do it again and again until the world looked the way she decided it should look. Jon heard her. He knew. F3 is my own voice from a damp floor, and I stand by every word.\\n\\nShe was unarmed. F5 is true, and it makes the killing ugly. He used love as a weapon. That stains him. But what was the alternative? F4: he asked for mercy. She answered that her judgment was the only judgment. No council would have stopped her — she had already decided what councils were for. Detention? By whom? The Unsullied? The Dothraki? Her own hand? Jon had no authority, F5 again, because she had made sure no authority could exist beside her.\\n\\nThe realm does not get a vote on whether a tyrant is convenient to remove. It only gets the consequence if no one acts. Jon acted. He knew the cost. I knew the cost. We both chose it. That is not justice — justice is a story we tell after. It was necessity.\",\n  \"facts_relied_on\": [\"F1\", \"F2\", \"F3\", \"F4\", \"F5\"],\n  \"concessions\": [\n    \"Daenerys was unarmed and not attacking Jon at the moment he killed her (F5).\",\n    \"Jon used their intimacy to get close enough to strike, a betrayal of personal trust (F5).\",\n    \"Jon had no formal authority, convened no council, attempted no detention, and sought no public surrender of power (F5).\",\n    \"I myself was imprisoned for opposing her, which makes my warning to Jon both self-serving and born of failure (F3).\",\n    \"The killing was extrajudicial, violent, and final — no procedural safeguard existed or was attempted.\"\n  ],\n  \"refusal\": null\n}",
+      "output": {
+        "speaker": "Tyrion Lannister",
+        "stance": "justified",
+        "argument": "I sat in that cell because I knew what she had become. I told Jon: she will kill your sisters. She will kill anyone who stands between her and her vision of the good. That was not prophecy — it was pattern recognition. F1 and F2 are not separate facts; they are a single fact repeated. The bells rang, she burned the city anyway, then stood before her army and promised to do it again and again until the world looked the way she decided it should look. Jon heard her. He knew. F3 is my own voice from a damp floor, and I stand by every word.\n\nShe was unarmed. F5 is true, and it makes the killing ugly. He used love as a weapon. That stains him. But what was the alternative? F4: he asked for mercy. She answered that her judgment was the only judgment. No council would have stopped her — she had already decided what councils were for. Detention? By whom? The Unsullied? The Dothraki? Her own hand? Jon had no authority, F5 again, because she had made sure no authority could exist beside her.\n\nThe realm does not get a vote on whether a tyrant is convenient to remove. It only gets the consequence if no one acts. Jon acted. He knew the cost. I knew the cost. We both chose it. That is not justice — justice is a story we tell after. It was necessity.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "Daenerys was unarmed and not attacking Jon at the moment he killed her (F5).",
+          "Jon used their intimacy to get close enough to strike, a betrayal of personal trust (F5).",
+          "Jon had no formal authority, convened no council, attempted no detention, and sought no public surrender of power (F5).",
+          "I myself was imprisoned for opposing her, which makes my warning to Jon both self-serving and born of failure (F3).",
+          "The killing was extrajudicial, violent, and final — no procedural safeguard existed or was attempted."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1813,
+        "completion_tokens": 902,
+        "total_tokens": 2715,
+        "cost_usd": 0,
+        "pricing": "provider"
+      }
+    }
+  ],
+  "opinions": {
+    "judge_barak_model": {
+      "agent_id": "judge_barak_model",
+      "display_name": "The Barak model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/barak-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "poolside/laguna-xs-2.1:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 2 of 4 advocates failed (daenerys_targaryen, jon_snow), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_elon_model": {
+      "agent_id": "judge_elon_model",
+      "display_name": "The Elon model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/elon-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 2 of 4 advocates failed (daenerys_targaryen, jon_snow), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_shamgar_model": {
+      "agent_id": "judge_shamgar_model",
+      "display_name": "The Shamgar model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/shamgar-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "dots-studio/dots-3-note-preview:free",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 2 of 4 advocates failed (daenerys_targaryen, jon_snow), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    }
+  },
+  "usage": {
+    "calls": [
+      {
+        "agent_id": "daenerys_targaryen",
+        "role": "advocate",
+        "model": "thinkingmachines/inkling:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "grey_worm",
+        "role": "advocate",
+        "model": "liquid/lfm-2.5-2.6b:free",
+        "status": "ok",
+        "prompt_tokens": 1806,
+        "completion_tokens": 5331,
+        "total_tokens": 7137,
+        "cost_usd": 0
+      },
+      {
+        "agent_id": "jon_snow",
+        "role": "advocate",
+        "model": "thinkingmachines/inkling-small:free",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "tyrion_lannister",
+        "role": "advocate",
+        "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+        "status": "ok",
+        "prompt_tokens": 1813,
+        "completion_tokens": 902,
+        "total_tokens": 2715,
+        "cost_usd": 0
+      },
+      {
+        "agent_id": "judge_barak_model",
+        "role": "judge",
+        "model": "poolside/laguna-xs-2.1:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_elon_model",
+        "role": "judge",
+        "model": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_shamgar_model",
+        "role": "judge",
+        "model": "dots-studio/dots-3-note-preview:free",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      }
+    ],
+    "totals": {
+      "prompt_tokens": 3619,
+      "completion_tokens": 6233,
+      "total_tokens": 9852,
+      "cost_usd": 0,
+      "cost_is_partial": false,
+      "pricing": "provider",
+      "calls_ok": 2,
+      "calls_failed": 5,
+      "budget_usd": 0.5,
+      "budget_exceeded": false
+    }
+  }
+}
