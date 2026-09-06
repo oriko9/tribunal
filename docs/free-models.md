@@ -1,7 +1,7 @@
 # Free models on OpenRouter
 
-Generated 2026-09-03T15:50:54.836Z by `npm run models`, querying https://openrouter.ai/api/v1/models.
-424 models scanned; a model is free here when both its prompt and
+Generated 2026-09-06T07:23:29.931Z by `npm run models`, querying https://openrouter.ai/api/v1/models.
+431 models scanned; a model is free here when both its prompt and
 completion pricing are exactly 0, as reported by the endpoint at the time this
 file was generated. OpenRouter's free tier changes over time — this is a
 snapshot, not a standing guarantee. Re-run `npm run models` before relying on it.
@@ -23,6 +23,7 @@ writes a word, and that grows as the arguments do.
 | `nvidia/nemotron-3.5-lightning:free` | 1,000,000 | 65,536 | none reported |
 | `nvidia/nemotron-3-ultra-550b-a55b:free` | 1,000,000 | 65,536 | none reported |
 | `dots-studio/dots-3-note-preview:free` | 512,000 | 460,800 | none reported |
+| `inclusionai/ling-3.0-flash-sante:free` | 262,144 | 32,768 | none reported |
 | `inclusionai/ling-3.0-flash-fin:free` | 262,144 | 32,768 | none reported |
 | `poolside/laguna-s-2.1:free` | 262,144 | 32,768 | none reported |
 | `poolside/laguna-xs-2.1:free` | 262,144 | 32,768 | none reported |
@@ -40,6 +41,7 @@ writes a word, and that grows as the arguments do.
 ## Free but rejected for context length under 32,000
 
 _none found_
+
 
 ## Live attempts against mode A
 

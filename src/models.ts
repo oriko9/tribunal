@@ -5,7 +5,7 @@
 // docs/free-models.md. The choice of model for a live run should be traceable
 // to this file, not to a choice made and forgotten in a terminal.
 
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { TribunalError } from "./errors.js";
 import { repoRoot } from "./load.js";
@@ -13,6 +13,8 @@ import { API_KEY_ENV_VAR } from "./providers/openrouter.js";
 
 const ENDPOINT = "https://openrouter.ai/api/v1/models";
 const MIN_CONTEXT_LENGTH = 32_000;
+/** Everything from this heading onward is hand-maintained and survives regeneration. */
+const MANUAL_SECTION_HEADING = "## Live attempts against mode A";
 
 interface OpenRouterModel {
   id: string;
@@ -165,9 +167,24 @@ async function main(): Promise<void> {
   console.log("");
   console.log(renderTable(free));
 
-  const report = renderReport(free, rejectedForContext, models.length);
   const outPath = join(repoRoot, "docs", "free-models.md");
-  await writeFile(outPath, report, "utf8");
+
+  // The report above this line is generated fresh every run. Below the manual
+  // heading, an operator records what actually happened when a model was put
+  // in a run config and run — that history must survive regeneration, not be
+  // silently overwritten by the next `npm run models`.
+  let manualSection = "";
+  try {
+    const existing = await readFile(outPath, "utf8");
+    const at = existing.indexOf(MANUAL_SECTION_HEADING);
+    if (at !== -1) manualSection = existing.slice(at);
+  } catch {
+    // No prior file: nothing to preserve.
+  }
+
+  const report = renderReport(free, rejectedForContext, models.length);
+  const withManualSection = manualSection === "" ? report : `${report}\n${manualSection}`;
+  await writeFile(outPath, withManualSection, "utf8");
   console.log(`\nWritten to ${outPath}`);
 
   if (free.length === 0) {
