@@ -1,9 +1,14 @@
 // Model discovery, run once, as evidence rather than a terminal scrollback.
 //
 // Queries OpenRouter's public model catalogue, keeps only entries priced at
-// zero for both prompt and completion tokens, and writes what it found to
-// docs/free-models.md. The choice of model for a live run should be traceable
+// zero for both prompt and completion tokens, and writes what it found into
+// docs/models.md. The choice of model for a live run should be traceable
 // to this file, not to a choice made and forgotten in a terminal.
+//
+// docs/models.md carries two hand-maintained parts this script must never
+// overwrite: the opening rationale (why the project is or isn't on the free
+// tier) above the generated table, and the attempt history below it. Only the
+// table itself, between those two fixed headings, is regenerated each run.
 
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -13,8 +18,10 @@ import { API_KEY_ENV_VAR } from "./providers/openrouter.js";
 
 const ENDPOINT = "https://openrouter.ai/api/v1/models";
 const MIN_CONTEXT_LENGTH = 32_000;
-/** Everything from this heading onward is hand-maintained and survives regeneration. */
-const MANUAL_SECTION_HEADING = "## Live attempts against mode A";
+/** The generated table starts here. Everything before it is hand-maintained and preserved. */
+const GENERATED_SECTION_HEADING = "## Free models on OpenRouter";
+/** Everything from this heading onward is hand-maintained and preserved. */
+const MANUAL_TAIL_HEADING = "## Live attempts against mode A";
 
 interface OpenRouterModel {
   id: string;
@@ -122,7 +129,7 @@ function renderReport(
 ): string {
   const generatedAt = new Date().toISOString();
   return [
-    "# Free models on OpenRouter",
+    GENERATED_SECTION_HEADING,
     "",
     `Generated ${generatedAt} by \`npm run models\`, querying ${ENDPOINT}.`,
     `${totalScanned} models scanned; a model is free here when both its prompt and`,
@@ -135,11 +142,14 @@ function renderReport(
     "sheet and all four advocate arguments, close to 4,000 tokens before the model",
     "writes a word, and that grows as the arguments do.",
     "",
-    "## Free models, sorted by context length (descending)",
+    "Kept for the record, not for a future pick: see the rationale above this",
+    "section for why the project moved off the free tier.",
+    "",
+    "### Free models, sorted by context length (descending)",
     "",
     renderTable(free),
     "",
-    `## Free but rejected for context length under ${MIN_CONTEXT_LENGTH.toLocaleString()}`,
+    `### Free but rejected for context length under ${MIN_CONTEXT_LENGTH.toLocaleString()}`,
     "",
     renderTable(rejectedForContext),
     "",
@@ -167,24 +177,28 @@ async function main(): Promise<void> {
   console.log("");
   console.log(renderTable(free));
 
-  const outPath = join(repoRoot, "docs", "free-models.md");
+  const outPath = join(repoRoot, "docs", "models.md");
 
-  // The report above this line is generated fresh every run. Below the manual
-  // heading, an operator records what actually happened when a model was put
-  // in a run config and run — that history must survive regeneration, not be
-  // silently overwritten by the next `npm run models`.
-  let manualSection = "";
+  // Only the table between the two fixed headings is generated fresh every
+  // run. The opening rationale above it and the attempt history below it are
+  // hand-maintained and must survive regeneration, not be silently
+  // overwritten by the next `npm run models`.
+  let head = "";
+  let tail = "";
   try {
     const existing = await readFile(outPath, "utf8");
-    const at = existing.indexOf(MANUAL_SECTION_HEADING);
-    if (at !== -1) manualSection = existing.slice(at);
+    const generatedAt = existing.indexOf(GENERATED_SECTION_HEADING);
+    const tailAt = existing.indexOf(MANUAL_TAIL_HEADING);
+    if (generatedAt !== -1) head = existing.slice(0, generatedAt);
+    if (tailAt !== -1) tail = existing.slice(tailAt);
   } catch {
-    // No prior file: nothing to preserve.
+    // No prior file: nothing to preserve. head/tail stay empty; the file
+    // starts as just the generated table until an operator adds the rest.
   }
 
   const report = renderReport(free, rejectedForContext, models.length);
-  const withManualSection = manualSection === "" ? report : `${report}\n${manualSection}`;
-  await writeFile(outPath, withManualSection, "utf8");
+  const withManualSections = `${head}${report}${tail === "" ? "" : `\n${tail}`}`;
+  await writeFile(outPath, withManualSections, "utf8");
   console.log(`\nWritten to ${outPath}`);
 
   if (free.length === 0) {

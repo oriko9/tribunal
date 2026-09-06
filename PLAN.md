@@ -122,31 +122,32 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | D26 | `npm run models` now reads its own prior output and reattaches everything from the `## Live attempts` heading onward before writing the fresh report | Re-running it on 09-06 to refresh the snapshot silently deleted the 09-05 attempt history, since the script always wrote the whole file. The generated table still regenerates in full; only the hand-maintained section survives |
 | D27 | Mode B failing twice was committed as evidence rather than treated as a blocker to route around with a third attempt | The instruction was to try once more and then stop regardless of outcome, and the absence of a completed mode B run is itself the finding: a run with seven independent free models is more exposed to any one of them being unavailable than a run with one model repeated seven times |
 | D28 | docs/mode-a-vs-b.md states outright that one run of mode A and two attempts at mode B is an anecdote, and names the one narrower claim the evidence does support | A comparison document that lets a single run imply a general property of single- vs multi-model orchestration would be worse than no comparison at all |
+| D29 | Both run configs moved to paid models on 09-06; docs/free-models.md renamed to docs/models.md and opened with why, not just relisted as evidence | The free tier could not sustain even one full mode B run across two attempts. The file is renamed rather than superseded by a new one because the full attempt history is the evidence for the decision, and it needed to stay attached to the decision it justifies |
+| D30 | `npm run models` now preserves two hand-maintained zones across regeneration — the opening rationale above the table and the attempt history below it — not only the trailing one as before | The rename added a second manual section above the generated table. The same class of bug the 09-06 fix addressed (silent overwrite) would otherwise have recurred immediately on the next regeneration |
 
 ## Open questions
 - [x] OpenRouter account — created, key in .env.local, first live run committed.
 - [x] GitHub repository — created, remote added, pushed.
 - [x] Which free models on OpenRouter are currently available and adequate —
-      see docs/free-models.md. Answer as of 09-05: availability is volatile.
-      Two of three tried models were unusable at the moment they were tried
-      for reasons outside this project (shared free-tier saturation), not
-      because they were badly chosen. config/run-single.yaml currently points
-      at nvidia/nemotron-3-super-120b-a12b:free, the one that cleared all
-      seven calls; re-run npm run models before a graded run in case that has
-      changed.
+      answered and then superseded. Availability was volatile enough (three
+      distinct failure kinds across four live choices, mode B never reaching
+      the judges in two attempts) that the project moved to paid models on
+      09-06. See docs/models.md, "Why this project moved off the free tier."
+- [x] Whether a third free-tier attempt at mode B on a calmer moment would
+      succeed — closed without testing, superseded by the move to paid
+      models rather than answered directly.
+- [x] Whether the seven models chosen for mode B's second free-tier attempt
+      were a fair test — closed for the same reason: moot once the free tier
+      itself was abandoned rather than one selection within it.
 - [ ] Whether the two judges that overran the 300-500 word opinion range on
       09-05 do so consistently or only that once — Day 4's gates need to
       catch it either way, but it affects whether prompt wording (not just
-      the gate) is worth revisiting.
-- [ ] Mode B has not yet produced a single judge opinion, across two live
-      attempts on 09-06. Whether a third attempt on a calmer moment for the
-      free tier would succeed is unknown — not tried today, per instruction
-      to stop after the second attempt regardless of outcome.
-- [ ] Whether the seven models chosen for mode B were a fair test: two of the
-      four advocate failures (ThinkingMachines' inkling and inkling-small)
-      were an access-tier 403, not congestion — that model was arguably
-      miscategorised as usable from its OpenRouter listing alone. Worth a
-      pass over docs/free-models.md's selection criteria before trying again.
+      the gate) is worth revisiting. Still open with paid models: nothing
+      about switching provider fixes a contract the models aren't held to.
+- [ ] What mode A and mode B actually cost against paid models — the point of
+      running mode A alone first before committing to a seven-model mode B
+      run. See runs/ and docs/models.md, "Live attempts against paid models",
+      once run.
 
 ## Out of scope, on purpose
 Database, authentication, a form for entering new cases, a "past cases" page,

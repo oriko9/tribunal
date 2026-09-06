@@ -1,6 +1,42 @@
-# Free models on OpenRouter
+# Models
 
-Generated 2026-09-06T07:23:29.931Z by `npm run models`, querying https://openrouter.ai/api/v1/models.
+## Why this project moved off the free tier
+
+Two live attempts at mode B on 2026-09-06 settled the question of whether the
+free tier can support a seven-model run: it cannot, not reliably enough to be
+worth another try. Across four live model choices tried before that decision
+— two in mode A (09-03, 09-05), seven across the two mode B attempts (09-06)
+— the free tier produced three distinct failure kinds that had nothing to do
+with this project's code, its prompts, or its own account limits:
+
+- **Upstream shared-pool rate limiting** (`limit_source:
+  upstream_provider_shared_pool`) — the free tier of a given model saturated
+  across every OpenRouter user at the moment of the call. Hit
+  `google/gemma-4-31b-it:free`, most of `z-ai/glm-5.2:free`, and two of mode
+  B attempt 1's seven.
+- **A silent timeout** — a call that never returns anything at all and is
+  aborted by our own 120 s client-side timeout, not a provider error.
+  Mode B attempt 1's `nvidia/nemotron-3.5-lightning:free`.
+- **An access-tier 403** — a model listed as free that rejects a plain chat
+  request outright (`"only available on agentic harnesses"`). Both
+  ThinkingMachines models in mode B attempt 2.
+
+Mode B — the graded requirement that a different model can sit behind each
+seat — never once reached the judges in either attempt: both times, too few
+of the seven independently-chosen free models were available at the same
+moment for the protocol's "all four arguments or the judges do not sit" rule
+to be satisfied. The full attempt history is kept below, unedited, as the
+evidence for this decision. See `docs/mode-a-vs-b.md` for the comparison this
+was run to produce.
+
+The seven models now assigned in `config/run-single.yaml` and
+`config/run-multi.yaml` are paid. A live run now costs real money — see
+`runs/` for what each one actually cost, recorded per call and as a run
+total, never estimated.
+
+## Free models on OpenRouter
+
+Generated 2026-09-06T07:47:49.740Z by `npm run models`, querying https://openrouter.ai/api/v1/models.
 431 models scanned; a model is free here when both its prompt and
 completion pricing are exactly 0, as reported by the endpoint at the time this
 file was generated. OpenRouter's free tier changes over time — this is a
@@ -11,7 +47,10 @@ excluded from the table below: a judge's prompt already carries the charge
 sheet and all four advocate arguments, close to 4,000 tokens before the model
 writes a word, and that grows as the arguments do.
 
-## Free models, sorted by context length (descending)
+Kept for the record, not for a future pick: see the rationale above this
+section for why the project moved off the free tier.
+
+### Free models, sorted by context length (descending)
 
 | Model id | Context length | Max completion tokens | Per-request limits |
 |---|---|---|---|
@@ -38,7 +77,7 @@ writes a word, and that grows as the arguments do.
 | `nvidia/nemotron-3.5-content-safety:free` | 128,000 | 8,192 | none reported |
 | `liquid/lfm-2.5-2.6b:free` | 65,536 | 8,192 | none reported |
 
-## Free but rejected for context length under 32,000
+### Free but rejected for context length under 32,000
 
 _none found_
 
@@ -46,8 +85,8 @@ _none found_
 ## Live attempts against mode A
 
 Manually maintained below this line. `npm run models` regenerates everything
-above it; this section records what happened when a model from the table was
-actually put in `config/run-single.yaml` and run.
+between the two headings above it; this section records what happened when a
+model from the table was actually put in `config/run-single.yaml` and run.
 
 | Date | Model | Result |
 |---|---|---|
@@ -77,6 +116,13 @@ upstream shared-pool rate limiting, a silent timeout, and an access-tier
 403 — none of them something a mock could have shown, and none of them our
 own OpenRouter account limit. Assigning seven independent models to one run
 multiplies the chances that at least one of them is having a bad moment,
-which is exactly what both attempts show. See `docs/mode-a-vs-b.md` for the
-comparison against mode A this was run to produce.
+which is exactly what both attempts show, and is the reason recorded above
+for moving both run configurations to paid models.
 
+## Live attempts against paid models
+
+Manually maintained. Records what happened once `config/run-single.yaml` and
+`config/run-multi.yaml` were pointed at paid models on 2026-09-06.
+
+| Date | Config | Models | Result |
+|---|---|---|---|

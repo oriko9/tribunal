@@ -1,9 +1,13 @@
 # Mode A — one model for all seven agents.
 # The only variable that separates the agents here is the prompt.
+#
+# Paid, as of 2026-09-06. Free-tier models were tried through 09-06 and could
+# not sustain a run: see docs/models.md, "Why this project moved off the free
+# tier". A live run now costs real money — see runs/ for what it actually cost.
 schema_version: 1
 mode: single_model
 label: "A — one model, seven prompts"
-default_model: "nvidia/nemotron-3-super-120b-a12b:free"   # from docs/free-models.md — 262k context, 235,929 max completion tokens; gemma-4-31b-it and glm-5.2 both hit upstream shared-pool limits
+default_model: "openai/gpt-5-nano"
 agents:
   jon_snow:            { model: default }
   tyrion_lannister:    { model: default }

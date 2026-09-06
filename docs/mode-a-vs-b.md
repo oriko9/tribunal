@@ -3,7 +3,7 @@
 Comparing `runs/2026-09-05T17-35-07-358Z` (mode A, one model behind all seven
 seats) against `runs/2026-09-06T07-24-33-092Z` and
 `runs/2026-09-06T07-27-39-545Z` (mode B, seven distinct models — two attempts,
-per `docs/free-models.md`). Same charge sheet, same seven prompts, same code
+per `docs/models.md`). Same charge sheet, same seven prompts, same code
 in all three; only the model or models behind the seats differ.
 
 **What this document does not support.** One run of mode A and two attempts

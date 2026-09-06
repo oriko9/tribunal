@@ -2,29 +2,23 @@
 # Same charge sheet, same prompts. The only thing that changes from mode A is
 # which model sits behind each seat. That is what makes the comparison honest.
 #
-# Seven distinct free models, chosen from docs/free-models.md (generated
-# 2026-09-06). Picked for provider diversity and a plausible general-purpose
-# read from the model name, avoiding entries that sound specialised (finance,
-# health, code-only, content-safety) and the openrouter/free meta-router,
-# which does not pin one specific model behind the seat.
-#
-# Second selection, 2026-09-06: the first set (google/gemma-4-26b-a4b-it,
-# minimax/minimax-m3, nvidia/nemotron-3.5-lightning, poolside/laguna-s-2.1,
-# z-ai/glm-5.2, nvidia/nemotron-3-super-120b-a12b, minimax/minimax-m2.7) lost
-# 3 of 4 advocates to upstream rate limits and a timeout — see
-# docs/free-models.md. This is seven different ids, none repeated from that
-# attempt, tried once more per instruction before stopping either way.
+# Paid, as of 2026-09-06. Two live attempts at seven distinct free models both
+# failed to reach the judges — see docs/models.md, "Why this project moved off
+# the free tier", and the attempt history there for what each one hit. This
+# selection pairs the judges, who read the most (the charge sheet and all four
+# advocate arguments), with the more capable models; the advocates get lighter
+# ones. A live run now costs real money — see runs/ for what it actually cost.
 schema_version: 1
 mode: multi_model
 label: "B — seven prompts, several models"
 default_model: "MODEL_ID_TBD"   # multi_model never resolves "default"; every seat below is explicit
 agents:
-  jon_snow:            { model: "thinkingmachines/inkling-small:free" }
-  tyrion_lannister:    { model: "nvidia/nemotron-3-ultra-550b-a55b:free" }
-  daenerys_targaryen:  { model: "thinkingmachines/inkling:free" }
-  grey_worm:           { model: "liquid/lfm-2.5-2.6b:free" }
-  judge_barak_model:   { model: "poolside/laguna-xs-2.1:free" }
-  judge_elon_model:    { model: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free" }
-  judge_shamgar_model: { model: "dots-studio/dots-3-note-preview:free" }
+  jon_snow:            { model: "openai/gpt-5-nano" }
+  tyrion_lannister:    { model: "openai/gpt-5.4-mini" }
+  daenerys_targaryen:  { model: "openai/gpt-oss-120b" }
+  grey_worm:           { model: "openai/gpt-oss-20b" }
+  judge_barak_model:   { model: "openai/gpt-5.6-luna" }
+  judge_elon_model:    { model: "anthropic/claude-haiku-4.5" }
+  judge_shamgar_model: { model: "google/gemini-3.1-flash-lite" }
 budget:
   max_usd_per_run: 0.50
