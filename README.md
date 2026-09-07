@@ -8,6 +8,16 @@ judicial method, then read the charge sheet and all four arguments and each
 produce an opinion. The three opinions are reported side by side and are never
 combined into a single verdict.
 
+## Live
+
+**https://tribunal-green.vercel.app** — pick a committed run, press the
+button. It reads a run already committed to `runs/`; it never triggers a
+live deliberation. A live run takes 56-96s and Vercel's free serverless
+functions time out at 60s, so a click-to-run screen would fail
+intermittently and spend real money on every click. See
+`docs/mode-a-vs-b.md` for why, and `api/runs.ts` for the one function this
+site calls — it only reads a run file and never touches the OpenRouter key.
+
 ## The case
 T-001, The Realm v. Jon Snow. See `specs/charge-sheet.yaml` — the charge sheet
 is a structured specification, not prose, and it is the only source of
@@ -19,6 +29,8 @@ established fact in the system.
     config/    run configurations (single-model and multi-model)
     runs/      committed output of each run: protocol, verdicts, cost
     docs/      decisions, prompt changelog, lessons learned
+    api/       the one serverless function: reads a committed run, nothing else
+    public/    the read-only web page
 
 ## Running it
     cp .env.local.example .env.local     # git-ignored; loaded automatically

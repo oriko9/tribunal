@@ -18,19 +18,17 @@ mirror is read from here; it never writes back. If the two disagree, this file
 wins.
 
 ## Current status
-Day 3 and Day 5 (go live) done, the latter out of order and spilling from
-09-05 through 09-07 to cover both modes on both tiers. Mode A and mode B have
-each run live, complete, against paid models, and docs/mode-a-vs-b.md
-compares them in full; mode B's honest record along the way is one success
-in three live attempts. Day 6 (the web app) is now in progress: the screen
-is built and verified locally in a real browser against real committed run
-files, reading from runs/ rather than triggering a live call — a live run's
-56-96s exceeds Vercel's free-function 60s timeout, so a click-to-run screen
-would fail intermittently and spend money every time. Deploying is the one
-step left, blocked on the user authenticating the Vercel CLI. Day 4
-(verification gates) is still open, with real evidence to build against: the
-word-count contract has now been missed low, high, and every combination in
-between, across both modes and both tiers.
+Days 3, 5 (go live) and 6 (the web app) are done, the middle two out of order
+and together spanning 09-05 through 09-07. Mode A and mode B have each run
+live, complete, against paid models, and docs/mode-a-vs-b.md compares them in
+full; mode B's honest record along the way is one success in three live
+attempts. The app is live at https://tribunal-green.vercel.app: it reads an
+already-committed run from runs/ and never triggers a live call, since a live
+run's 56-96s exceeds Vercel's free-function 60s timeout. Verified both
+locally and against the deployed URL itself, in an actual headless browser.
+Day 4 (verification gates) is the one day left, with real evidence to build
+against: the word-count contract has now been missed low, high, and every
+combination in between, across both modes and both tiers.
 Work continues in Claude Code, opened on this folder in VS Code.
 
 ## The seven-day plan
@@ -42,7 +40,7 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | 3 | 09-04 | Orchestrator in TypeScript; mode A runs locally | done |
 | 4 | 09-06 | Two verification gates; failures surface as failures | not started |
 | 5 | 09-05 | Go live: model discovery, one live run of mode A, evidence recorded | done |
-| 6 | 09-07 | One-button screen, deployed to Vercel | in progress |
+| 6 | 09-07 | One-button screen, deployed to Vercel | done |
 | 7 | 09-08 | README, LESSONS.md, merge-ready | not started |
 
 ## Day 1 checklist
@@ -107,8 +105,11 @@ Work continues in Claude Code, opened on this folder in VS Code.
       failed seat rendering its own card rather than being dropped
 - [x] Verified in an actual headless browser against the real handler and
       real committed run files — not just by reading the code
-- [ ] Deployed to Vercel — blocked on `vercel login`, which needs the user
-- [ ] URL added to README.md and PLAN.md, pushed
+- [x] Deployed to Vercel: https://tribunal-green.vercel.app — verified live,
+      not just at build time: static page, both API paths, the path-traversal
+      guard, and a full render in an actual headless browser against the
+      deployed URL itself (not the local harness)
+- [x] URL added to README.md and PLAN.md, pushed
 
 ## Day 3 checklist
 - [x] TypeScript scaffold: package.json, tsconfig, dependencies (yaml, tsx)
@@ -164,6 +165,8 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | D35 | `api/runs.ts` validates the `id` query parameter against the exact pattern `runId()` produces before it ever reaches a file path | Closes path traversal without needing a dependency; an id that doesn't match the pattern a run could actually have is rejected with 400 before any filesystem call |
 | D36 | The three opinions are sorted by agent id (alphabetical: barak, elon, shamgar) in the frontend rather than trusting the JSON key order as-is | Belt and suspenders on the same fixed-order rule the backend already gives structurally: explicit, verifiable sort code makes "not sorted by verdict" true by construction, not by accident of object key insertion order |
 | D37 | Verified the frontend in an actual headless browser (Playwright, temporarily installed with `--no-save`, package-lock.json reverted after) against a throwaway local harness that runs the real `api/runs.ts` handler — not just by reading the code | `vercel dev` requires an authenticated CLI session, which wasn't available yet at this point in the build. The harness let the real handler and real committed run files be exercised end to end, screenshots included, without needing that login or touching any committed file |
+| D38 | After deploying, re-verified against the live URL itself — static page, both API paths, the path-traversal guard, and a full browser render — rather than trusting a green build log | A successful `vercel --prod` proves the build compiled, not that `includeFiles` actually bundled `runs/` correctly in the deployed function or that the deployed page behaves like the local one. Confirmed live: the default selection, the not-combined notice, and zero console errors all matched the local result |
+| D39 | GitHub auto-deploy-on-push was left unset after the CLI's own attempt to wire it failed at deploy time | Not something this task asked for. Fixing a GitHub-Vercel integration failure is a separate decision with its own authorization step (granting Vercel access to the repo); every future push needs `vercel --prod` run again until that's set up deliberately |
 
 ## Open questions
 - [x] OpenRouter account — created, key in .env.local, first live run committed.
@@ -194,17 +197,27 @@ Work continues in Claude Code, opened on this folder in VS Code.
       09-06, the OpenRouter key's own spending cap earlier on 09-07). Mode
       B's honest record is one success in three live attempts across two
       days.
-- [ ] Deploying to Vercel needs an authenticated CLI session. `vercel whoami`
-      returns "Logged out" as of 09-07. Steps 1-4 of the web app (scaffold,
-      backend, frontend, local verification) are done and committed; step 5
-      (deploy) is blocked on the user running `vercel login` themselves — an
-      interactive browser flow the agent cannot complete on their behalf.
+- [x] Deploying to Vercel needed an authenticated CLI session — the user ran
+      `vercel login`; deployed straight after. Project: shugga/tribunal.
+      GitHub auto-deploy-on-push was attempted by the CLI and failed
+      ("Failed to connect oriko9/tribunal to project") — not something this
+      task asked for, left unset rather than chased. Every push from here
+      still needs `vercel --prod` run again to update the live site.
 
 ## Out of scope, on purpose
 Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-07 (deploy) — Day 6 finished. User authenticated the Vercel CLI;
+  deployed straight after: https://tribunal-green.vercel.app, project
+  shugga/tribunal. GitHub auto-deploy-on-push failed at connect time and was
+  left unset rather than chased — out of scope for this task. Re-verified
+  against the live URL itself rather than trusting the build log: static
+  page 200, both API paths correct, path-traversal guard still returns 400,
+  and a full headless-browser render against the deployed site matched the
+  local result — correct default selection, not-combined notice present,
+  zero console errors. URL added to README.md and this file, then pushed.
 - 2026-09-07 (later) — Day 6 started: the web app. Corrected CLAUDE.md, which
   still said one serverless function runs the deliberation — no longer true,
   now that a live run's 56-96s exceeds Vercel's 60s free-function timeout.
