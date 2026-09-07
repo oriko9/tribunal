@@ -18,16 +18,17 @@ mirror is read from here; it never writes back. If the two disagree, this file
 wins.
 
 ## Current status
-Day 3 done, and Day 5 (go live) done out of order, spilling from 09-05 into
-09-06 to cover mode B — see the reordering below. Mode A has run live and
-completed cleanly once. Mode B — the graded requirement that a model can be
-swapped per seat — has now been attempted live twice, and both attempts were
-incomplete: too many of the seven independently-chosen free models were
-unavailable at the moment of the call for the judges ever to sit. That
-absence of a completed mode B run, and the comparison document that says so
-plainly, is itself now part of the evidence. Day 4 (verification gates) is
-next: both the 09-05 mode A run and the two 09-06 mode B attempts have
-surfaced real gaps for it to close.
+Day 3 done, and Day 5 (go live) done out of order, spilling from 09-05 through
+09-07 to cover both modes on both tiers — see the reordering below. The free
+tier could not sustain mode B across two attempts (09-06), which is itself
+why both configs moved to paid models. Mode A and mode B have now each run
+live, complete, against paid models (09-06 and 09-07), and docs/mode-a-vs-b.md
+compares them in full. Mode B's honest record along the way: one success in
+three live attempts across two days, the other two failing for two different
+reasons neither related to the project's own code. Day 4 (verification gates)
+is next, with real evidence to build against: the word-count contract has now
+been missed low, high, and every combination in between, across both modes
+and both tiers.
 Work continues in Claude Code, opened on this folder in VS Code.
 
 ## The seven-day plan
@@ -71,11 +72,24 @@ Work continues in Claude Code, opened on this folder in VS Code.
 - [x] config/run-multi.yaml filled with seven distinct free model ids — the
       graded requirement that a model is swappable per seat, live for the
       first time
-- [x] Two live attempts at mode B, both recorded regardless of outcome; both
-      were incomplete, per instruction to try once more and then stop
-- [x] docs/mode-a-vs-b.md — the comparison document, stating plainly that
-      mode B produced zero opinions in either attempt and that one run each
-      is an anecdote, not a result
+- [x] Two live attempts at mode B on the free tier, both recorded regardless
+      of outcome; both were incomplete, per instruction to try once more and
+      then stop
+- [x] Both configs switched to paid models (09-06) after the free tier
+      proved unable to sustain mode B
+- [x] Budget guard proven against the mock before any real money was spent:
+      same run, same cost, two configs differing only in max_usd_per_run,
+      one exits 1 over budget, the other 0 — two permanent checks added
+- [x] Mode A run live against a paid model, complete, real cost recorded
+- [x] Mode B run live against seven paid models — first attempt hit the
+      OpenRouter key's own spending cap; stopped and asked rather than
+      retrying; second attempt, after the user raised the limit, succeeded
+      completely — first time mode B has ever reached the judges
+- [x] docs/mode-a-vs-b.md — completed in full: the free-tier section stands
+      as its own record (mode B produced zero opinions there), and a second
+      section compares the paid mode A and mode B runs on verdicts, opinion
+      alikeness, word counts, tokens, cost and wall-clock time, under the
+      same "anecdote, not a result" framing
 
 ## Day 3 checklist
 - [x] TypeScript scaffold: package.json, tsconfig, dependencies (yaml, tsx)
@@ -124,6 +138,8 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | D28 | docs/mode-a-vs-b.md states outright that one run of mode A and two attempts at mode B is an anecdote, and names the one narrower claim the evidence does support | A comparison document that lets a single run imply a general property of single- vs multi-model orchestration would be worse than no comparison at all |
 | D29 | Both run configs moved to paid models on 09-06; docs/free-models.md renamed to docs/models.md and opened with why, not just relisted as evidence | The free tier could not sustain even one full mode B run across two attempts. The file is renamed rather than superseded by a new one because the full attempt history is the evidence for the decision, and it needed to stay attached to the decision it justifies |
 | D30 | `npm run models` now preserves two hand-maintained zones across regeneration — the opening rationale above the table and the attempt history below it — not only the trailing one as before | The rename added a second manual section above the generated table. The same class of bug the 09-06 fix addressed (silent overwrite) would otherwise have recurred immediately on the next regeneration |
+| D31 | When mode B's first paid attempt hit a new failure kind (the OpenRouter key's own spending cap), the agent stopped and asked rather than retrying | A retry without the user raising the limit was likely to fail again or worse, since the successful concurrent calls had already drawn the balance down. Spending more real money on a predictable repeat failure is not a call to make unilaterally |
+| D32 | The 300-500 word judge contract has now been missed low, low, on-target, and high across four judge calls in two paid runs, plus one advocate miss (grey_worm, under its floor) in the same run mode B finally succeeded in | Recorded as a third data point per instruction; nothing changed in the prompts or a gate in response. Whether the fix belongs in the gate, the prompts, or both is still an open question for Day 4, now with more evidence behind it |
 
 ## Open questions
 - [x] OpenRouter account — created, key in .env.local, first live run committed.
@@ -144,16 +160,40 @@ Work continues in Claude Code, opened on this folder in VS Code.
       catch it either way, but it affects whether prompt wording (not just
       the gate) is worth revisiting. Still open with paid models: nothing
       about switching provider fixes a contract the models aren't held to.
-- [x] What mode A costs against paid models — $0.013167, all seven seats,
-      openai/gpt-5-nano, 09-06. See docs/models.md, "Live attempts against
-      paid models". Mode B's cost is still open: not run this session, by
-      instruction, pending review of mode A's number first.
+- [x] What mode A and mode B cost against paid models — mode A $0.013167
+      (09-06, openai/gpt-5-nano, all seven seats); mode B $0.025956 (09-07,
+      seven distinct models, roughly double mode A's, over half of it one
+      call: judge_elon_model on claude-haiku-4.5). See docs/models.md and
+      docs/mode-a-vs-b.md's completed paid comparison.
+- [x] Whether mode B can reach the judges at all, on any tier — yes, once,
+      on 09-07, after two prior live failures (free-tier unavailability on
+      09-06, the OpenRouter key's own spending cap earlier on 09-07). Mode
+      B's honest record is one success in three live attempts across two
+      days.
 
 ## Out of scope, on purpose
 Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-07 — Mode B run live against the seven paid models. First attempt
+  failed before the judges could sit: the OpenRouter key's own spending cap
+  rejected tyrion_lannister's call (openai/gpt-5.4-mini) with HTTP 402 —
+  a third, new failure kind, this time on our own account rather than a
+  model. Recorded as evidence, then stopped and asked rather than retrying,
+  since a retry was likely to repeat the failure or worsen it. The user
+  raised the key's limit; the retry succeeded completely — first time mode
+  B has ever produced three opinions. All three verdicts matched mode A's
+  09-06 run (not_justified). docs/mode-a-vs-b.md's final section, left
+  explicitly open until now, is complete: verdicts, opinion alikeness, word
+  counts, tokens, real cost ($0.025956, roughly double mode A's), wall-clock
+  time (96.3s vs mode A's 56.2s), and failures, all under the same
+  "anecdote, not a result" framing as the free-tier comparison above it.
+  Word-count contract missed three different ways in this one run: an
+  advocate under its floor for the first time, one judge over its ceiling
+  and fenced, two judges in range — recorded, nothing changed per
+  instruction. Mode B's honest record: one success in three live attempts
+  across two days.
 - 2026-09-06 (later) — Moved off the free tier. Two mode B attempts had
   already shown it couldn't sustain a run; renamed docs/free-models.md to
   docs/models.md and opened it with why, keeping the full attempt history as
