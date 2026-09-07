@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/runs.ts": {
+      "includeFiles": "runs/**"
+    }
+  }
+}

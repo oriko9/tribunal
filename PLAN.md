@@ -18,17 +18,19 @@ mirror is read from here; it never writes back. If the two disagree, this file
 wins.
 
 ## Current status
-Day 3 done, and Day 5 (go live) done out of order, spilling from 09-05 through
-09-07 to cover both modes on both tiers — see the reordering below. The free
-tier could not sustain mode B across two attempts (09-06), which is itself
-why both configs moved to paid models. Mode A and mode B have now each run
-live, complete, against paid models (09-06 and 09-07), and docs/mode-a-vs-b.md
-compares them in full. Mode B's honest record along the way: one success in
-three live attempts across two days, the other two failing for two different
-reasons neither related to the project's own code. Day 4 (verification gates)
-is next, with real evidence to build against: the word-count contract has now
-been missed low, high, and every combination in between, across both modes
-and both tiers.
+Day 3 and Day 5 (go live) done, the latter out of order and spilling from
+09-05 through 09-07 to cover both modes on both tiers. Mode A and mode B have
+each run live, complete, against paid models, and docs/mode-a-vs-b.md
+compares them in full; mode B's honest record along the way is one success
+in three live attempts. Day 6 (the web app) is now in progress: the screen
+is built and verified locally in a real browser against real committed run
+files, reading from runs/ rather than triggering a live call — a live run's
+56-96s exceeds Vercel's free-function 60s timeout, so a click-to-run screen
+would fail intermittently and spend money every time. Deploying is the one
+step left, blocked on the user authenticating the Vercel CLI. Day 4
+(verification gates) is still open, with real evidence to build against: the
+word-count contract has now been missed low, high, and every combination in
+between, across both modes and both tiers.
 Work continues in Claude Code, opened on this folder in VS Code.
 
 ## The seven-day plan
@@ -40,7 +42,7 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | 3 | 09-04 | Orchestrator in TypeScript; mode A runs locally | done |
 | 4 | 09-06 | Two verification gates; failures surface as failures | not started |
 | 5 | 09-05 | Go live: model discovery, one live run of mode A, evidence recorded | done |
-| 6 | 09-07 | One-button screen, deployed to Vercel | not started |
+| 6 | 09-07 | One-button screen, deployed to Vercel | in progress |
 | 7 | 09-08 | README, LESSONS.md, merge-ready | not started |
 
 ## Day 1 checklist
@@ -91,6 +93,23 @@ Work continues in Claude Code, opened on this folder in VS Code.
       alikeness, word counts, tokens, cost and wall-clock time, under the
       same "anecdote, not a result" framing
 
+## Day 6 checklist
+- [x] CLAUDE.md corrected: no longer claims a serverless function runs the
+      deliberation
+- [x] Vercel zero-config scaffold: public/, api/runs.ts, vercel.json
+      (includeFiles for runs/, since the function's directory doesn't carry
+      it by default)
+- [x] api/runs.ts — list + single-run read, id validated before touching the
+      filesystem, no provider code imported, no API key read
+- [x] Frontend: selector (defaulted to the 09-07 mode B complete run) +
+      button, four advocates, three opinions as fixed-order siblings with
+      verdict/protocol_steps/Q1-Q4, the not-combined notice, cost table, a
+      failed seat rendering its own card rather than being dropped
+- [x] Verified in an actual headless browser against the real handler and
+      real committed run files — not just by reading the code
+- [ ] Deployed to Vercel — blocked on `vercel login`, which needs the user
+- [ ] URL added to README.md and PLAN.md, pushed
+
 ## Day 3 checklist
 - [x] TypeScript scaffold: package.json, tsconfig, dependencies (yaml, tsx)
 - [x] Input layer: every file read and validated at run time, nothing hardcoded
@@ -140,6 +159,11 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | D30 | `npm run models` now preserves two hand-maintained zones across regeneration — the opening rationale above the table and the attempt history below it — not only the trailing one as before | The rename added a second manual section above the generated table. The same class of bug the 09-06 fix addressed (silent overwrite) would otherwise have recurred immediately on the next regeneration |
 | D31 | When mode B's first paid attempt hit a new failure kind (the OpenRouter key's own spending cap), the agent stopped and asked rather than retrying | A retry without the user raising the limit was likely to fail again or worse, since the successful concurrent calls had already drawn the balance down. Spending more real money on a predictable repeat failure is not a call to make unilaterally |
 | D32 | The 300-500 word judge contract has now been missed low, low, on-target, and high across four judge calls in two paid runs, plus one advocate miss (grey_worm, under its floor) in the same run mode B finally succeeded in | Recorded as a third data point per instruction; nothing changed in the prompts or a gate in response. Whether the fix belongs in the gate, the prompts, or both is still an open question for Day 4, now with more evidence behind it |
+| D33 | The web app renders committed runs from `runs/`; it never triggers a live deliberation | A live run takes 56-96s and Vercel's free serverless functions time out at 60s. A screen that triggered one would fail intermittently on mode B and spend real money on every click. CLAUDE.md's original "one serverless function runs the deliberation" was corrected to match, not left standing alongside code that contradicts it |
+| D34 | Zero-config Vercel layout: `public/` for the static page, one function at `api/runs.ts`, `vercel.json` only for `includeFiles` | No framework, no bundler, no build script — matches "styling minimal, don't spend effort there." `includeFiles: "runs/**"` is the one non-default setting needed, since the function's directory doesn't include `runs/` by default |
+| D35 | `api/runs.ts` validates the `id` query parameter against the exact pattern `runId()` produces before it ever reaches a file path | Closes path traversal without needing a dependency; an id that doesn't match the pattern a run could actually have is rejected with 400 before any filesystem call |
+| D36 | The three opinions are sorted by agent id (alphabetical: barak, elon, shamgar) in the frontend rather than trusting the JSON key order as-is | Belt and suspenders on the same fixed-order rule the backend already gives structurally: explicit, verifiable sort code makes "not sorted by verdict" true by construction, not by accident of object key insertion order |
+| D37 | Verified the frontend in an actual headless browser (Playwright, temporarily installed with `--no-save`, package-lock.json reverted after) against a throwaway local harness that runs the real `api/runs.ts` handler — not just by reading the code | `vercel dev` requires an authenticated CLI session, which wasn't available yet at this point in the build. The harness let the real handler and real committed run files be exercised end to end, screenshots included, without needing that login or touching any committed file |
 
 ## Open questions
 - [x] OpenRouter account — created, key in .env.local, first live run committed.
@@ -170,12 +194,36 @@ Work continues in Claude Code, opened on this folder in VS Code.
       09-06, the OpenRouter key's own spending cap earlier on 09-07). Mode
       B's honest record is one success in three live attempts across two
       days.
+- [ ] Deploying to Vercel needs an authenticated CLI session. `vercel whoami`
+      returns "Logged out" as of 09-07. Steps 1-4 of the web app (scaffold,
+      backend, frontend, local verification) are done and committed; step 5
+      (deploy) is blocked on the user running `vercel login` themselves — an
+      interactive browser flow the agent cannot complete on their behalf.
 
 ## Out of scope, on purpose
 Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-07 (later) — Day 6 started: the web app. Corrected CLAUDE.md, which
+  still said one serverless function runs the deliberation — no longer true,
+  now that a live run's 56-96s exceeds Vercel's 60s free-function timeout.
+  Scaffolded a zero-config layout: public/ for a plain HTML/CSS/JS page, one
+  function at api/runs.ts that only reads a committed run file and never
+  imports provider code or touches the API key. Built the frontend to mirror
+  src/protocol.ts's structure — advocates in prompt-file order, the three
+  opinions as siblings sorted by agent id with a fixed-order, not-combined
+  notice directly above them, a failed or not_run seat rendering its own
+  card with the real failure reason, never dropped. Verified end to end in
+  an actual headless browser (Playwright, installed temporarily, reverted
+  after) against a throwaway local harness running the real handler and the
+  real committed run files, not just by reading the code: default selection
+  correctly lands on the 09-07 mode B complete run, the not-combined notice
+  is present, switching to the 09-07 payment-cap-failure run correctly
+  renders all 4 affected seats as failure cards with nothing substituted,
+  zero console errors. Stopped before deploying, as instructed: `vercel
+  whoami` returns "Logged out" — that step needs the user to run
+  `vercel login` themselves.
 - 2026-09-07 — Mode B run live against the seven paid models. First attempt
   failed before the judges could sit: the OpenRouter key's own spending cap
   rejected tyrion_lannister's call (openai/gpt-5.4-mini) with HTTP 402 —

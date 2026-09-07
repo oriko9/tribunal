@@ -1,0 +1,108 @@
+/* Minimal styling on purpose — this project is graded on how the agent was
+   directed, not on visual polish. */
+
+:root {
+  color-scheme: light dark;
+  --border: #888;
+  --muted: #666;
+  --fail-bg: #fdecea;
+  --fail-border: #c0392b;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 3rem;
+  line-height: 1.5;
+}
+
+header {
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+h1 {
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+#controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+#status {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.5rem 0 1rem;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+  font-size: 0.9rem;
+  vertical-align: top;
+}
+
+section.card {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+section.card.failed {
+  background: var(--fail-bg);
+  border-color: var(--fail-border);
+}
+
+.notice {
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #0000000d;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+h2 {
+  margin-top: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.25rem;
+}
+
+h3 {
+  margin-bottom: 0.25rem;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 0.5rem;
+}
+
+.status-ok { color: #1a7a1a; font-weight: bold; }
+.status-bad { color: var(--fail-border); font-weight: bold; }

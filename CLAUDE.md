@@ -34,8 +34,17 @@ earns nothing.
   run and nowhere else.
 
 ## Stack
-TypeScript, deployed on Vercel. One serverless function runs the deliberation.
-No database: each run is written to runs/<timestamp>.json and committed.
+TypeScript, deployed on Vercel. No database: each run is written to
+runs/<timestamp>.json (and a matching .md protocol) and committed.
+
+The deliberation itself does not run on Vercel. A live run takes 56-96s
+depending on mode, and Vercel's free serverless functions time out at 60s —
+a screen that triggered a live run on a click would fail intermittently and
+spend real money on every attempt. Deliberation runs from the CLI
+(`npm run tribunal`) against `src/cli.ts`, and its output is committed before
+anyone can view it. The one serverless function on Vercel (`api/runs.ts`)
+only reads an already-committed run file and returns it; it never calls a
+model and never touches the OpenRouter key.
 
 ## Working discipline
 - Commit before invoking the agent on a task, and after.

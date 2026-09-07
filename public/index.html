@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Tribunal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>The Tribunal</h1>
+    <p class="subtitle">
+      T-001, The Realm v. Jon Snow. This page reads an already-committed run
+      from <code>runs/</code> — it never calls a model. See
+      <code>docs/mode-a-vs-b.md</code> for why: a live run takes 56-96s and
+      Vercel's free functions time out at 60s.
+    </p>
+  </header>
+
+  <section id="controls">
+    <label for="run-select">Committed run</label>
+    <select id="run-select" disabled>
+      <option>Loading runs…</option>
+    </select>
+    <button id="load-btn" disabled>Load run</button>
+    <span id="status" role="status"></span>
+  </section>
+
+  <main id="result"></main>
+
+  <script src="app.js"></script>
+</body>
+</html>
