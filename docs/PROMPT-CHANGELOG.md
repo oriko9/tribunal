@@ -46,12 +46,28 @@ advocates, so nothing about their instructions moved. All seven prompt
 files are bumped to 1.1.0 together so the set stays on one version line,
 even though four of them carry no content change beyond the version field.
 
-**What this is not.** One live run at 1.1.0 does not prove the wording
-change worked — a single run's word counts could move for reasons that
-have nothing to do with the prompt, and three judges succeeding once each
-is a small sample after already seeing a 33% baseline success rate. See
-the follow-up entry below for what that run actually showed, reported
-without treating it as proof either way.
+**What one live run at 1.1.0 actually showed.** Run immediately after this
+bump, mode A, `openai/gpt-5-nano`, all seven seats (`runs/2026-09-07T12-42-32-415Z`):
+Barak 302 words (in range — previously 580 then 233), Elon 248 (out of
+range — previously 617 then 523, both over), Shamgar 239 (out of range —
+previously 345, 279, 302, mostly in range). 1 of 3 judges landed inside
+300-500; 2 of 3 did not. All four advocates stayed in range, as expected
+since their wording did not change.
+
+That is a 67% deviation rate — numerically identical to the 6-of-9
+baseline this change was meant to move, on a sample of 3. What visibly
+changed is the *direction*: both misses this time undershot (248, 239)
+rather than the mix of over- and under-shoots seen before, which is
+consistent with "aim for roughly 400 and cut if you run long" landing as
+"write shorter" more than as "hit the range." It is also exactly the kind
+of pattern three data points cannot distinguish from noise.
+
+**This is not a fix, confirmed or otherwise.** One run does not prove
+whether 1.1.0 helped, hurt, or did nothing — the honest reading is that it
+is inconclusive, on a rate that looks unchanged with a failure mode that
+looks different. Whether to run more live samples before drawing a
+conclusion, adjust the wording again, or address this in the gate instead
+is left open.
 
 ## 1.0.0 — 2026-09-03
 First version of all seven prompts and the shared rules.

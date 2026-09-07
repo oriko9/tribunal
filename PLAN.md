@@ -239,12 +239,27 @@ Work continues in Claude Code, opened on this folder in VS Code.
       ("Failed to connect oriko9/tribunal to project") — not something this
       task asked for, left unset rather than chased. Every push from here
       still needs `vercel --prod` run again to update the live site.
+- [ ] Whether prompts 1.1.0 actually reduced the judge word-count deviation
+      rate — one live run at 1.1.0 (1 of 3 judges in range) is inconclusive
+      against a baseline of 67%, on a sample too small to separate a real
+      effect from noise. Would need several more live mode A runs at 1.1.0
+      to say more, which costs real money each time; not done without being
+      asked, since 09-07's run alone was the explicit ask.
 
 ## Out of scope, on purpose
 Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-07 (prompts 1.1.0, verified live) — Ran mode A live at 1.1.0
+  (openai/gpt-5-nano, all seven seats) straight after the bump below.
+  Result: Barak 302 words (in range), Elon 248 and Shamgar 239 (both
+  under the floor) — 1 of 3 judges in range, a 67% miss rate numerically
+  identical to the pre-change baseline, on a sample of one run. The
+  failure mode looked different — both misses undershot, where before it
+  was a mix of over and under — but three data points cannot tell that
+  apart from noise. Recorded as inconclusive, not as a fix, in both
+  docs/PROMPT-CHANGELOG.md and docs/models.md: runs/2026-09-07T12-42-32-415Z.
 - 2026-09-07 (prompts 1.1.0) — Acted on Day 4's evidence: bumped all seven
   prompts to 1.1.0. Added one paragraph to each judge's system_prompt
   restating the 300-500 word opinion bound with a concrete target (~400)
