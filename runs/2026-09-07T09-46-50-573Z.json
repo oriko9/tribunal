@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "run": {
+    "id": "2026-09-07T09-46-50-573Z",
+    "case": {
+      "id": "T-001",
+      "title": "The Realm v. Jon Snow",
+      "spec": "specs/charge-sheet.yaml",
+      "spec_version": "1.0.0"
+    },
+    "mode": "multi_model",
+    "label": "B — seven prompts, several models",
+    "config": "config/run-multi.yaml",
+    "provider": {
+      "name": "openrouter",
+      "pricing": "provider",
+      "description": "openrouter — live calls, real cost, key from OPENROUTER_API_KEY, timeout 120000ms"
+    },
+    "shared_rules": {
+      "path": "prompts/_shared.yaml",
+      "version": "1.0.0"
+    },
+    "prompt_versions": {
+      "daenerys_targaryen": "1.0.0",
+      "grey_worm": "1.0.0",
+      "jon_snow": "1.0.0",
+      "tyrion_lannister": "1.0.0",
+      "judge_barak_model": "1.0.0",
+      "judge_elon_model": "1.0.0",
+      "judge_shamgar_model": "1.0.0"
+    },
+    "started_at": "2026-09-07T09:46:50.573Z",
+    "ended_at": "2026-09-07T09:47:34.686Z",
+    "duration_ms": 44113,
+    "status": "incomplete",
+    "failures": [
+      "tyrion_lannister: transport — HTTP 402 Payment Required: {\"error\":{\"message\":\"This request requires more credits, or fewer max_tokens. You requested up to 65536 tokens, but can only afford 37744. To increase, visit https://openrouter.ai/workspaces/default/keys/899e4b1ca6b76603043a6ba5afcbe65e9e3869ef18a4852b0d50e4531417e7ff and adjust the key's total limit\",\"code\":402,\"metadata\":{\"limit_source\":\"openrouter_key_limit\",\"remedy_hint\":\"Raise or remove this ",
+      "judge_barak_model: not_run — the judges did not sit: 1 of 4 advocates failed (tyrion_lannister), and the protocol has every judge read all four arguments",
+      "judge_elon_model: not_run — the judges did not sit: 1 of 4 advocates failed (tyrion_lannister), and the protocol has every judge read all four arguments",
+      "judge_shamgar_model: not_run — the judges did not sit: 1 of 4 advocates failed (tyrion_lannister), and the protocol has every judge read all four arguments"
+    ]
+  },
+  "advocates": [
+    {
+      "agent_id": "daenerys_targaryen",
+      "display_name": "Daenerys Targaryen",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/daenerys-targaryen.yaml",
+      "prompt_version": "1.0.0",
+      "model": "openai/gpt-oss-120b",
+      "status": "ok",
+      "started_at": "2026-09-07T09:46:50.573Z",
+      "ended_at": "2026-09-07T09:47:29.819Z",
+      "duration_ms": 39246,
+      "raw_text": "{\"speaker\":\"Daenerys Targaryen\",\"stance\":\"not_justified\",\"argument\":\"I stand before this Tribunal to proclaim that Jon Snow's murder of me was not a justified act of defense, but a treasonous betrayal. The record is clear: after King's Landing surrendered, I employed Drogon against the streets and civilians, unleashing destruction on a vast scale (F1). Jon witnessed this horror and, as the facts confirm, heard my proclamation that the \\\"campaign of liberation\\\" would continue beyond the fallen city (F2). He therefore knew the imminent threat I posed to countless innocents. Tyrion Lannister, my own Hand, renounced his office, was imprisoned, and warned Jon that I would treat his sisters—and any who opposed me—as enemies (F3). Jon pleaded for mercy, asking that Tyrion be forgiven and that compassion be extended to the realm, yet I refused, insisting that my judgment alone would decide what is good (F4). When he finally struck, I was unarmed, not attacking, and he used the intimacy of our embrace to murder me without convening a council, seeking a public surrender, or pursuing any safer alternative (F5). While Jon may claim necessity, the facts show he possessed no legitimate authority, no viable non‑violent path, and acted out of personal grievance rather than the defense of others. Therefore, his killing cannot be deemed a lawful defense; it was an unlawful act of violence against the rightful ruler of the realm.\" ,\"facts_relied_on\":[\"F1\",\"F2\",\"F3\",\"F4\",\"F5\"],\"concessions\":[\"Jon knew the threat I posed (F2)\",\"Tyrion warned Jon of my intent (F3)\",\"I refused to show mercy (F4)\",\"I was unarmed when killed (F5)\"],\"refusal\":null}",
+      "output": {
+        "speaker": "Daenerys Targaryen",
+        "stance": "not_justified",
+        "argument": "I stand before this Tribunal to proclaim that Jon Snow's murder of me was not a justified act of defense, but a treasonous betrayal. The record is clear: after King's Landing surrendered, I employed Drogon against the streets and civilians, unleashing destruction on a vast scale (F1). Jon witnessed this horror and, as the facts confirm, heard my proclamation that the \"campaign of liberation\" would continue beyond the fallen city (F2). He therefore knew the imminent threat I posed to countless innocents. Tyrion Lannister, my own Hand, renounced his office, was imprisoned, and warned Jon that I would treat his sisters—and any who opposed me—as enemies (F3). Jon pleaded for mercy, asking that Tyrion be forgiven and that compassion be extended to the realm, yet I refused, insisting that my judgment alone would decide what is good (F4). When he finally struck, I was unarmed, not attacking, and he used the intimacy of our embrace to murder me without convening a council, seeking a public surrender, or pursuing any safer alternative (F5). While Jon may claim necessity, the facts show he possessed no legitimate authority, no viable non‑violent path, and acted out of personal grievance rather than the defense of others. Therefore, his killing cannot be deemed a lawful defense; it was an unlawful act of violence against the rightful ruler of the realm.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "Jon knew the threat I posed (F2)",
+          "Tyrion warned Jon of my intent (F3)",
+          "I refused to show mercy (F4)",
+          "I was unarmed when killed (F5)"
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1815,
+        "completion_tokens": 748,
+        "total_tokens": 2563,
+        "cost_usd": 0.00042735,
+        "pricing": "provider"
+      }
+    },
+    {
+      "agent_id": "grey_worm",
+      "display_name": "Grey Worm",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/grey-worm.yaml",
+      "prompt_version": "1.0.0",
+      "model": "openai/gpt-oss-20b",
+      "status": "ok",
+      "started_at": "2026-09-07T09:46:50.637Z",
+      "ended_at": "2026-09-07T09:47:29.179Z",
+      "duration_ms": 38542,
+      "raw_text": "{\"speaker\":\"Grey Worm\",\"stance\":\"not_justified\",\"argument\":\"From my perspective as prosecution, I see that Jon's act was not justified. At the time he acted, he knew that Daenerys had used Drogon to burn streets and civilians (F1) and that she had promised to continue liberation beyond King's Landing (F2). He also heard Tyrion warn him that Daenerys would treat his sisters and others as enemies (F3). Thus he was aware of a serious threat to the realm and to his kin. However, the act itself was not a defensive response to an imminent attack. Daenerys was unarmed and not attacking him (F5). Jon used their intimacy to get close enough to strike, without convening a council, detaining her, or seeking a public surrender of power (F5). No safer alternative was pursued. He had no formal authority to order a detainment or to declare a coup. The only alternative was to seek a council or to detain her, but he did not. Therefore, the killing was pre‑emptive and not a necessary defense. The scale of harm was real, but the means employed were disproportionate and lacked lawful justification. Consequently, Jon's killing is not justified.\",\"facts_relied_on\":[\"F1\",\"F2\",\"F3\",\"F5\"],\"concessions\":[\"Jon was aware of Daenerys' threat to the realm (F2, F3).\",\"Daenerys was unarmed and not attacking (F5).\",\"Jon lacked formal authority to act (Q4).\",\"No safer alternatives were pursued (F5).\"],\"refusal\":null}",
+      "output": {
+        "speaker": "Grey Worm",
+        "stance": "not_justified",
+        "argument": "From my perspective as prosecution, I see that Jon's act was not justified. At the time he acted, he knew that Daenerys had used Drogon to burn streets and civilians (F1) and that she had promised to continue liberation beyond King's Landing (F2). He also heard Tyrion warn him that Daenerys would treat his sisters and others as enemies (F3). Thus he was aware of a serious threat to the realm and to his kin. However, the act itself was not a defensive response to an imminent attack. Daenerys was unarmed and not attacking him (F5). Jon used their intimacy to get close enough to strike, without convening a council, detaining her, or seeking a public surrender of power (F5). No safer alternative was pursued. He had no formal authority to order a detainment or to declare a coup. The only alternative was to seek a council or to detain her, but he did not. Therefore, the killing was pre‑emptive and not a necessary defense. The scale of harm was real, but the means employed were disproportionate and lacked lawful justification. Consequently, Jon's killing is not justified.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F5"
+        ],
+        "concessions": [
+          "Jon was aware of Daenerys' threat to the realm (F2, F3).",
+          "Daenerys was unarmed and not attacking (F5).",
+          "Jon lacked formal authority to act (Q4).",
+          "No safer alternatives were pursued (F5)."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1826,
+        "completion_tokens": 2414,
+        "total_tokens": 4240,
+        "cost_usd": 0.00027792,
+        "pricing": "provider"
+      }
+    },
+    {
+      "agent_id": "jon_snow",
+      "display_name": "Jon Snow",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/jon-snow.yaml",
+      "prompt_version": "1.0.0",
+      "model": "openai/gpt-5-nano",
+      "status": "ok",
+      "started_at": "2026-09-07T09:46:50.638Z",
+      "ended_at": "2026-09-07T09:47:34.686Z",
+      "duration_ms": 44048,
+      "raw_text": "{\n  \"speaker\": \"Jon Snow\",\n  \"stance\": \"not_justified\",\n  \"argument\": \"Jon Snow here. I did not act to defend the realm by taking Daenerys's life. She was unarmed and not attacking me when I killed her, and there was no immediate threat I could lawfully counter at that moment (F5). My claim of defense rests on the belief that she would threaten the realm further, as she announced a continued campaign of liberation (F2) and had already shown a willingness to destroy civilians in King's Landing (F1). Yet even if those acts foretold danger, the record does not show a current attack or an imminent attack that would justify deadly force, and I did not have formal authority to act alone; I had not convened a council, attempted detention, or sought a public surrender of power (F5). Those are crucial safeguards; without them, there can be no legally justified defense of others or of the realm. The tribunal should weigh Q2 and Q3: the scale of the harm threatened was considerable, but the long-term danger did not arise from a presently unfolding assault; there were safer alternatives available that I failed to pursue in the heat of the moment (detention, council, or surrender) (F5). Tyrion warned that Daenerys would treat my sisters as enemies if confronted (F3), and Daenerys' refusal to let others decide what is good (F4) signals a continued, coercive rule—still not a justification for my actions. In short, the killing, though born of tragic circumstances, does not meet the tribunal's test for necessary defense given the lack of immediate threat, absence of formal authority, and the availability of safer options. Therefore, I submit it was not justified.\",\n  \"facts_relied_on\": [\"F1\", \"F2\", \"F3\", \"F4\", \"F5\"],\n  \"concessions\": [\n    \"Daenerys was unarmed and not attacking at the moment (F5).\",\n    \"I did not attempt detention, convene a council, or seek a public surrender (F5).\",\n    \"I recognize there were potential dangers in Daenerys' plans that could threaten the realm (F2).\"\n  ],\n  \"refusal\": null\n}",
+      "output": {
+        "speaker": "Jon Snow",
+        "stance": "not_justified",
+        "argument": "Jon Snow here. I did not act to defend the realm by taking Daenerys's life. She was unarmed and not attacking me when I killed her, and there was no immediate threat I could lawfully counter at that moment (F5). My claim of defense rests on the belief that she would threaten the realm further, as she announced a continued campaign of liberation (F2) and had already shown a willingness to destroy civilians in King's Landing (F1). Yet even if those acts foretold danger, the record does not show a current attack or an imminent attack that would justify deadly force, and I did not have formal authority to act alone; I had not convened a council, attempted detention, or sought a public surrender of power (F5). Those are crucial safeguards; without them, there can be no legally justified defense of others or of the realm. The tribunal should weigh Q2 and Q3: the scale of the harm threatened was considerable, but the long-term danger did not arise from a presently unfolding assault; there were safer alternatives available that I failed to pursue in the heat of the moment (detention, council, or surrender) (F5). Tyrion warned that Daenerys would treat my sisters as enemies if confronted (F3), and Daenerys' refusal to let others decide what is good (F4) signals a continued, coercive rule—still not a justification for my actions. In short, the killing, though born of tragic circumstances, does not meet the tribunal's test for necessary defense given the lack of immediate threat, absence of formal authority, and the availability of safer options. Therefore, I submit it was not justified.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "Daenerys was unarmed and not attacking at the moment (F5).",
+          "I did not attempt detention, convene a council, or seek a public surrender (F5).",
+          "I recognize there were potential dangers in Daenerys' plans that could threaten the realm (F2)."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "usage": {
+        "prompt_tokens": 1772,
+        "completion_tokens": 6273,
+        "total_tokens": 8045,
+        "cost_usd": 0.0025978,
+        "pricing": "provider"
+      }
+    },
+    {
+      "agent_id": "tyrion_lannister",
+      "display_name": "Tyrion Lannister",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/tyrion-lannister.yaml",
+      "prompt_version": "1.0.0",
+      "model": "openai/gpt-5.4-mini",
+      "status": "failed",
+      "started_at": "2026-09-07T09:46:50.638Z",
+      "ended_at": "2026-09-07T09:46:51.259Z",
+      "duration_ms": 621,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "transport",
+        "message": "HTTP 402 Payment Required: {\"error\":{\"message\":\"This request requires more credits, or fewer max_tokens. You requested up to 65536 tokens, but can only afford 37744. To increase, visit https://openrouter.ai/workspaces/default/keys/899e4b1ca6b76603043a6ba5afcbe65e9e3869ef18a4852b0d50e4531417e7ff and adjust the key's total limit\",\"code\":402,\"metadata\":{\"limit_source\":\"openrouter_key_limit\",\"remedy_hint\":\"Raise or remove this "
+      },
+      "usage": null
+    }
+  ],
+  "opinions": {
+    "judge_barak_model": {
+      "agent_id": "judge_barak_model",
+      "display_name": "The Barak model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/barak-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "openai/gpt-5.6-luna",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 1 of 4 advocates failed (tyrion_lannister), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_elon_model": {
+      "agent_id": "judge_elon_model",
+      "display_name": "The Elon model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/elon-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "anthropic/claude-haiku-4.5",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 1 of 4 advocates failed (tyrion_lannister), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    },
+    "judge_shamgar_model": {
+      "agent_id": "judge_shamgar_model",
+      "display_name": "The Shamgar model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/shamgar-model.yaml",
+      "prompt_version": "1.0.0",
+      "model": "google/gemini-3.1-flash-lite",
+      "status": "not_run",
+      "started_at": null,
+      "ended_at": null,
+      "duration_ms": null,
+      "raw_text": null,
+      "output": null,
+      "parse": null,
+      "failure": {
+        "kind": "not_run",
+        "message": "the judges did not sit: 1 of 4 advocates failed (tyrion_lannister), and the protocol has every judge read all four arguments"
+      },
+      "usage": null
+    }
+  },
+  "usage": {
+    "calls": [
+      {
+        "agent_id": "daenerys_targaryen",
+        "role": "advocate",
+        "model": "openai/gpt-oss-120b",
+        "status": "ok",
+        "prompt_tokens": 1815,
+        "completion_tokens": 748,
+        "total_tokens": 2563,
+        "cost_usd": 0.00042735
+      },
+      {
+        "agent_id": "grey_worm",
+        "role": "advocate",
+        "model": "openai/gpt-oss-20b",
+        "status": "ok",
+        "prompt_tokens": 1826,
+        "completion_tokens": 2414,
+        "total_tokens": 4240,
+        "cost_usd": 0.00027792
+      },
+      {
+        "agent_id": "jon_snow",
+        "role": "advocate",
+        "model": "openai/gpt-5-nano",
+        "status": "ok",
+        "prompt_tokens": 1772,
+        "completion_tokens": 6273,
+        "total_tokens": 8045,
+        "cost_usd": 0.0025978
+      },
+      {
+        "agent_id": "tyrion_lannister",
+        "role": "advocate",
+        "model": "openai/gpt-5.4-mini",
+        "status": "failed",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_barak_model",
+        "role": "judge",
+        "model": "openai/gpt-5.6-luna",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_elon_model",
+        "role": "judge",
+        "model": "anthropic/claude-haiku-4.5",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      },
+      {
+        "agent_id": "judge_shamgar_model",
+        "role": "judge",
+        "model": "google/gemini-3.1-flash-lite",
+        "status": "not_run",
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "total_tokens": null,
+        "cost_usd": null
+      }
+    ],
+    "totals": {
+      "prompt_tokens": 5413,
+      "completion_tokens": 9435,
+      "total_tokens": 14848,
+      "cost_usd": 0.00330307,
+      "cost_is_partial": false,
+      "pricing": "provider",
+      "calls_ok": 3,
+      "calls_failed": 4,
+      "budget_usd": 0.5,
+      "budget_exceeded": false
+    }
+  }
+}
