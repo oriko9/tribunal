@@ -116,12 +116,141 @@ reasons that have nothing to do with this project's code, its prompts, or
 its account limits, and the number of ways to fail only grows as more
 distinct models are put behind one run.
 
-## What a future run of mode B would need to say more
+## Mode A vs mode B, paid: one run each (2026-09-06 / 2026-09-07)
 
-A mode B run that actually reaches the judges — on this tier, on a good day,
-or with paid keys backing the seats — would let this document answer the
-question it was written to ask: whether seven differently-trained models
-reading the same charge sheet reach three opinions that agree with each
-other more, less, or about as often as one model does across the same three
-judge prompts. Until that run exists, this section stays open rather than
-guessed at.
+The comparison above stayed open because mode B never reached the judges on
+the free tier. It has now run once, live, against paid models — this section
+completes that comparison rather than replacing it; the free-tier findings
+above still stand as their own record.
+
+Comparing `runs/2026-09-06T07-51-57-229Z` (mode A, `openai/gpt-5-nano` behind
+all seven seats) against `runs/2026-09-07T09-59-57-177Z` (mode B, seven
+distinct paid models, one per seat). Same charge sheet, same seven prompts,
+same code in both; only the model or models behind the seats differ.
+
+**Still an anecdote.** One paid run of mode A and one paid run of mode B is
+exactly as much of a result as the free-tier comparison above was: none. A
+second live comparison does not turn an anecdote into a finding, even though
+this one, unlike the free-tier attempts, finally has three opinions on both
+sides to compare. Nothing below should be read as "mode B is as reliable as
+mode A now that both are paid," or as a general claim about how paid models
+compare to free ones. It is what happened on one morning, with these seven
+specific models, at these specific prices.
+
+### The verdicts
+
+| Judge | Mode A verdict (`openai/gpt-5-nano`, all seats) | Mode B verdict (model behind that seat) |
+|---|---|---|
+| The Barak model | `not_justified` | `not_justified` (`openai/gpt-5.6-luna`) |
+| The Elon model | `not_justified` | `not_justified` (`anthropic/claude-haiku-4.5`) |
+| The Shamgar model | `not_justified` | `not_justified` (`google/gemini-3.1-flash-lite`) |
+
+All six opinions across both runs reached the same verdict. This is reported,
+not interpreted: the three opinions in each mode are not merged, ranked or
+averaged here or anywhere else, and "all six agree" is not read as evidence
+that these seven models converge on this case, or that mode A and mode B
+produce interchangeable results — one run of each cannot support either
+claim. Nor can this comparison separate two different explanations for the
+agreement: the seven models genuinely reasoning to the same place, versus the
+four advocate arguments not differing enough between the two runs to move a
+judge either way. Nothing recorded here distinguishes those.
+
+### Whether the three opinions were more or less alike
+
+"Alike" points in different directions here depending on what is measured.
+On verdict, mode B was maximally alike mode A: all three judges landed on
+`not_justified` in both. On opinion length, mode B's three opinions were
+*less* alike each other than mode A's three were: mode A clustered tightly
+(233, 274, 279 words — a 46-word spread), while mode B's spread over 221
+words (302 to 523) against the same 300-500 word contract — one opinion
+barely inside the floor, another over the ceiling. One run cannot say
+whether that wider spread is a property of three different model families
+answering three differently-written judge prompts, or noise.
+
+### Opinion word counts
+
+| Judge | Mode A words | Mode B words | Contract range |
+|---|---|---|---|
+| The Barak model | 233 | 383 | 300–500 |
+| The Elon model | 274 | 523 | 300–500 |
+| The Shamgar model | 279 | 302 | 300–500 |
+
+Mode A missed the floor on all three judges (recorded 09-06). In mode B,
+`judge_shamgar_model` (gemini-3.1-flash-lite) just cleared the floor at 302;
+`judge_barak_model` (gpt-5.6-luna) landed mid-range at 383; `judge_elon_model`
+(claude-haiku-4.5) overshot the ceiling at 523, and that reply also arrived
+wrapped in a markdown fence the contract forbids, recovered via
+`parse: "extracted"` rather than failing outright. Across the two live models
+tried behind mode A and the three now tried as mode B's judges, the 300-500
+word contract has now been missed low, missed low again, hit, and missed
+high — four judge calls, four different outcomes, across two runs. Per
+instruction, this is recorded as a third data point and nothing is changed
+in response yet; whether the fix belongs in a gate, the prompts, or both is
+still open.
+
+Word-count drift was not limited to judges this time. `grey_worm`'s contract
+asks for 180-300 words; mode B's `grey_worm` (`openai/gpt-oss-20b`) returned
+152 — under the floor, the first advocate-level word-count miss recorded in
+this project. Mode A's `grey_worm` (gpt-5-nano) was within range at 212 words
+(also recorded 09-06).
+
+### Token counts
+
+| | Mode A | Mode B |
+|---|---|---|
+| Prompt tokens | 18,969 | 19,045 |
+| Completion tokens | 30,546 | 15,817 |
+| Total tokens | 49,515 | 34,862 |
+
+Prompt tokens are nearly identical, as expected: both runs send the same
+charge sheet and the same shared rules built from the same four prompt
+files. Completion tokens differ by nearly half. The gap is concentrated,
+not spread evenly: mode A's `daenerys_targaryen` (gpt-5-nano) alone produced
+5,810 completion tokens, where mode B's same seat (`openai/gpt-oss-120b`)
+produced 681. This is a property of these particular models' verbosity on
+this particular prompt, not a property of "mode A" or "mode B" as a design.
+
+### Real cost
+
+| | Mode A | Mode B |
+|---|---|---|
+| Total cost (provider-reported) | $0.013167 | $0.025956 |
+| Budget | $0.50 | $0.50 |
+| Exceeded | No | No |
+
+Mode B cost roughly twice mode A's. Over half of that cost is one call:
+`judge_elon_model` on `anthropic/claude-haiku-4.5` alone cost $0.014118 —
+more than the entirety of mode A's seven-call run. The other six mode B
+calls together cost $0.011838, less than mode A's total by itself. Pairing
+the seats that read the most — the three judges, each given the charge
+sheet and all four advocate arguments — with the more capable models was
+the stated intent behind this selection, and the cost breakdown shows
+exactly where that intent spent the money.
+
+### Wall-clock time
+
+| | Mode A | Mode B |
+|---|---|---|
+| Run duration | 56.2 s | 96.3 s |
+| Slowest call | 29.8 s (`daenerys_targaryen`) | 74.7 s (`grey_worm`, `openai/gpt-oss-20b`) |
+| Fastest call | 22.1 s (`tyrion_lannister`) | 4.1 s (`tyrion_lannister`, `openai/gpt-5.4-mini`) |
+
+Mode A's seven calls, all on one model, landed in a tight 22-30 s band. Mode
+B's seven calls, on seven different models, spread from 4 s to 75 s — nearly
+a 20x range inside a single run. A single-model run finishing in a tighter,
+more predictable window than a seven-model run is intuitive, and this run
+is consistent with that; one run is not proof of it.
+
+### Failures
+
+Mode A: none, in its one live run. Mode B: none, in *this* run — but this
+was mode B's third live attempt overall to reach the judges, and its second
+attempt this same day. The first attempt this morning failed before any
+judge sat: the OpenRouter key's own spending cap rejected
+`tyrion_lannister`'s call (`openai/gpt-5.4-mini`) with HTTP 402, a third
+failure kind distinct from anything the free tier produced (see
+`docs/models.md`). That failure was about the account, not about any model
+or about mode B's design, and it cleared once the key's limit was raised.
+It is recorded here because "mode B succeeded" is only true of the second
+try today, not the first — the honest total is one success in three live
+attempts across two days, and the judges have now sat exactly once.
