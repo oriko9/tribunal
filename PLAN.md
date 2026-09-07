@@ -196,6 +196,8 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | D40 | "The values the charge sheet permits" is checked against each agent's own contract enum, not one hardcoded list | Judges' verdict enum is exactly the charge sheet's permitted_verdicts (already enforced structurally). Advocates' stance contract additionally permits "uncertain", a value the charge sheet's permitted_verdicts does not list because it governs the tribunal's verdict, not an advocate's hedge. Hardcoding the charge sheet's 2-value list against stance would have turned a value every advocate prompt explicitly permits into a fault |
 | D41 | `npm run verify-runs` audits already-committed run files against today's gates; it never rewrites them | A committed run file is the record of what the orchestrator actually produced, gates included, at the time it ran. Retroactively editing that record to add gate results it didn't have would misrepresent history. The audit is read-only by design |
 | D42 | Word-count deviations are recorded and shown; the prompts are not touched in response | Explicit instruction. The gate report (10 runs, 8 deviations, all word-count, zero illegal verdicts, zero fabricated facts) is now real evidence for a separate decision about whether to fix the prompt wording, the gate's tolerance, or neither |
+| D43 | Prompts bumped to 1.1.0: a length paragraph added to each judge's `system_prompt`, restating the 300-500 word bound with a concrete target and per-direction guidance; no advocate wording changed | The evidence pointed specifically at judges (67% miss rate vs. 11% for advocates), whose word range lived only once, in the output_contract's schema note — too weak a signal for a model generating long structured reasoning. Full reasoning and evidence in docs/PROMPT-CHANGELOG.md 1.1.0 |
+| D44 | All seven prompts bumped together, even the four advocates with zero content change | Explicit instruction, to keep the set on one version line rather than advocates drifting behind at 1.0.0 while judges move to 1.1.0 |
 
 ## Open questions
 - [x] OpenRouter account — created, key in .env.local, first live run committed.
@@ -243,6 +245,18 @@ Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-07 (prompts 1.1.0) — Acted on Day 4's evidence: bumped all seven
+  prompts to 1.1.0. Added one paragraph to each judge's system_prompt
+  restating the 300-500 word opinion bound with a concrete target (~400)
+  and guidance for both directions of miss, since the evidence pointed
+  specifically at judges (6 of 9 live opinions, 67%) and not advocates (2
+  of 19, ~11%). Elon's addition also addresses a tension already present
+  in that judge's own prompt ("the route may be long... not ornamental")
+  by saying the route may be long in the judge's own thinking without the
+  written opinion's word count loosening because of it. No advocate
+  wording changed — the evidence didn't flag them — but all four are
+  bumped to 1.1.0 anyway, per instruction, so the seven stay on one
+  version line. Full rationale in docs/PROMPT-CHANGELOG.md.
 - 2026-09-07 (gates) — Day 4 finished, last of the seven days. Two gates
   built: contract conformance (word ranges, protocol_steps counts,
   factors_addressed completeness — all DEVIATIONs; verdict/stance outside
