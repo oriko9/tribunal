@@ -44,5 +44,13 @@ To run against real models, paste an OpenRouter key into `OPENROUTER_API_KEY` in
 server only and never reaches the browser. Every variable is documented in
 `.env.local.example`.
 
+Every reply is checked against two verification gates (`src/gates.ts`): its
+own contract's word ranges, step counts and factor completeness (a
+DEVIATION — recorded and shown, never a failure), and that every fact
+identifier it cites actually exists in the charge sheet (a FAILURE if not —
+this is not a result). `npm run verify-runs` re-applies both gates to every
+already-committed run in `runs/` without rewriting any of them, and is how
+they were proven against real data rather than only synthetic fixtures.
+
 ## Status
 Work in progress. See PLAN.md.

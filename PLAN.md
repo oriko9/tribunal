@@ -18,17 +18,17 @@ mirror is read from here; it never writes back. If the two disagree, this file
 wins.
 
 ## Current status
-Days 3, 5 (go live) and 6 (the web app) are done, the middle two out of order
-and together spanning 09-05 through 09-07. Mode A and mode B have each run
-live, complete, against paid models, and docs/mode-a-vs-b.md compares them in
-full; mode B's honest record along the way is one success in three live
-attempts. The app is live at https://tribunal-green.vercel.app: it reads an
-already-committed run from runs/ and never triggers a live call, since a live
-run's 56-96s exceeds Vercel's free-function 60s timeout. Verified both
-locally and against the deployed URL itself, in an actual headless browser.
-Day 4 (verification gates) is the one day left, with real evidence to build
-against: the word-count contract has now been missed low, high, and every
-combination in between, across both modes and both tiers.
+All seven days are now done. Days 5 (go live) and 6 (the web app) ran out of
+order, spanning 09-05 through 09-07; Day 4 (verification gates) closed last,
+on real evidence gathered from the days before it. Two gates now check what a
+live model actually returned — contract shape (word ranges, step counts,
+factor completeness) as recorded deviations, and fact grounding (every cited
+identifier must be real) as a failure when it isn't. Run for real against all
+10 committed runs: 8 deviations, all word-count, none of them a fabricated
+fact or an illegal verdict anywhere. Judges miss their word range far more
+than advocates do (6 of 9 live opinions vs. 2 of 19 live arguments) — real
+data now sitting behind the one open decision left: whether to fix the
+prompts, loosen the gate, or leave both as they are.
 Work continues in Claude Code, opened on this folder in VS Code.
 
 ## The seven-day plan
@@ -38,7 +38,7 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | 1 | 09-02 | Repo skeleton, CLAUDE.md, charge sheet as a spec, PLAN.md | done |
 | 2 | 09-03 | Seven prompt files, versioned | done |
 | 3 | 09-04 | Orchestrator in TypeScript; mode A runs locally | done |
-| 4 | 09-06 | Two verification gates; failures surface as failures | not started |
+| 4 | 09-07 | Two verification gates; failures surface as failures | done |
 | 5 | 09-05 | Go live: model discovery, one live run of mode A, evidence recorded | done |
 | 6 | 09-07 | One-button screen, deployed to Vercel | done |
 | 7 | 09-08 | README, LESSONS.md, merge-ready | not started |
@@ -111,6 +111,32 @@ Work continues in Claude Code, opened on this folder in VS Code.
       deployed URL itself (not the local harness)
 - [x] URL added to README.md and PLAN.md, pushed
 
+## Day 4 checklist
+- [x] src/contract-patterns.ts — word range, enum, object-count and keyed-object
+      parsing shared between the mock generator and the new gate, so they
+      cannot drift apart
+- [x] Gate 1 (src/gates.ts, checkContractConformance): word ranges, protocol_steps
+      count, factors_addressed completeness as DEVIATIONs; verdict/stance
+      outside the field's own contract enum as a FAILURE
+- [x] Gate 2 (checkFactGrounding): every fact id in facts_relied_on and in
+      prose must exist in agreed_facts; a fabricated one is a FAILURE
+- [x] Proven that a real, repeated citation of an agreed fact is never
+      flagged — the specific distinction asked for, tested directly rather
+      than only its opposite
+- [x] CallRecord.deviations, independent of .failure; wired into the
+      orchestrator after the existing checks, before status is set to ok
+- [x] Deviations shown next to the seat in runs/<id>.md and on the web page,
+      regardless of that seat's own status
+- [x] fabricated_fact mock fault added, matching illegal_verdict's existing
+      pattern, so gate 2's failure path is reproducible on demand
+- [x] 20 new smoke checks (77 total): every boundary tested directly against
+      the pure gate functions, plus two end-to-end checks proving both gates
+      are wired into deliberate(), not only correct in isolation
+- [x] npm run verify-runs — re-applies both gates to every committed run in
+      runs/ without rewriting any of them; run for real, findings recorded
+      below and in the log
+- [x] No prompt file touched
+
 ## Day 3 checklist
 - [x] TypeScript scaffold: package.json, tsconfig, dependencies (yaml, tsx)
 - [x] Input layer: every file read and validated at run time, nothing hardcoded
@@ -167,6 +193,9 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | D37 | Verified the frontend in an actual headless browser (Playwright, temporarily installed with `--no-save`, package-lock.json reverted after) against a throwaway local harness that runs the real `api/runs.ts` handler — not just by reading the code | `vercel dev` requires an authenticated CLI session, which wasn't available yet at this point in the build. The harness let the real handler and real committed run files be exercised end to end, screenshots included, without needing that login or touching any committed file |
 | D38 | After deploying, re-verified against the live URL itself — static page, both API paths, the path-traversal guard, and a full browser render — rather than trusting a green build log | A successful `vercel --prod` proves the build compiled, not that `includeFiles` actually bundled `runs/` correctly in the deployed function or that the deployed page behaves like the local one. Confirmed live: the default selection, the not-combined notice, and zero console errors all matched the local result |
 | D39 | GitHub auto-deploy-on-push was left unset after the CLI's own attempt to wire it failed at deploy time | Not something this task asked for. Fixing a GitHub-Vercel integration failure is a separate decision with its own authorization step (granting Vercel access to the repo); every future push needs `vercel --prod` run again until that's set up deliberately |
+| D40 | "The values the charge sheet permits" is checked against each agent's own contract enum, not one hardcoded list | Judges' verdict enum is exactly the charge sheet's permitted_verdicts (already enforced structurally). Advocates' stance contract additionally permits "uncertain", a value the charge sheet's permitted_verdicts does not list because it governs the tribunal's verdict, not an advocate's hedge. Hardcoding the charge sheet's 2-value list against stance would have turned a value every advocate prompt explicitly permits into a fault |
+| D41 | `npm run verify-runs` audits already-committed run files against today's gates; it never rewrites them | A committed run file is the record of what the orchestrator actually produced, gates included, at the time it ran. Retroactively editing that record to add gate results it didn't have would misrepresent history. The audit is read-only by design |
+| D42 | Word-count deviations are recorded and shown; the prompts are not touched in response | Explicit instruction. The gate report (10 runs, 8 deviations, all word-count, zero illegal verdicts, zero fabricated facts) is now real evidence for a separate decision about whether to fix the prompt wording, the gate's tolerance, or neither |
 
 ## Open questions
 - [x] OpenRouter account — created, key in .env.local, first live run committed.
@@ -182,11 +211,16 @@ Work continues in Claude Code, opened on this folder in VS Code.
 - [x] Whether the seven models chosen for mode B's second free-tier attempt
       were a fair test — closed for the same reason: moot once the free tier
       itself was abandoned rather than one selection within it.
-- [ ] Whether the two judges that overran the 300-500 word opinion range on
-      09-05 do so consistently or only that once — Day 4's gates need to
-      catch it either way, but it affects whether prompt wording (not just
-      the gate) is worth revisiting. Still open with paid models: nothing
-      about switching provider fixes a contract the models aren't held to.
+- [x] Whether the word-count deviation is consistent or a one-off — answered
+      by `npm run verify-runs` across all 10 committed runs (8 of them live):
+      of 9 live judge opinions ever produced, 6 (67%) missed the 300-500
+      word range, in both directions (over on 09-05's free-tier run, under
+      on 09-06's paid mode A run, one over on 09-07's paid mode B run).
+      Advocates missed far less often: 2 of 19 live arguments (~11%). This
+      is consistent, not a one-off, and concentrated in judges. The fix
+      itself — prompt wording, gate tolerance, or neither — is explicitly a
+      separate decision for the user to make now that the gate has reported
+      real data, per instruction.
 - [x] What mode A and mode B cost against paid models — mode A $0.013167
       (09-06, openai/gpt-5-nano, all seven seats); mode B $0.025956 (09-07,
       seven distinct models, roughly double mode A's, over half of it one
@@ -209,6 +243,34 @@ Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-07 (gates) — Day 4 finished, last of the seven days. Two gates
+  built: contract conformance (word ranges, protocol_steps counts,
+  factors_addressed completeness — all DEVIATIONs; verdict/stance outside
+  the field's own contract enum — a FAILURE) and fact grounding (every fact
+  id in facts_relied_on and in prose must exist in agreed_facts — a
+  FAILURE if not). Judges' verdict enum equals the charge sheet's
+  permitted_verdicts by construction; advocates' stance additionally
+  permits "uncertain", so the check validates against each agent's own
+  contract rather than one hardcoded list, keeping "uncertain" legal
+  rather than turning it into a fault. Proved directly, per instruction,
+  that a real fact quoted any number of times is never mistaken for a
+  fabrication. 20 new smoke checks (77 total), including two end-to-end
+  checks that both gates are wired into deliberate() and not only correct
+  as pure functions. No prompt touched.
+
+  `npm run verify-runs` built to prove both gates against real data
+  without rewriting any committed run file, then run for real over all 10
+  runs. Result: 8 deviations, all word-count, zero fabricated facts, zero
+  illegal verdicts, zero findings that would newly fail a call any run
+  already recorded as ok. Restricting to the 8 live (non-mock) runs: 6 of
+  9 live judge opinions (67%) missed the 300-500 word range — in both
+  directions, on both free and paid tiers — against 2 of 19 live advocate
+  arguments (~11%). One deviation was new even to us: tyrion_lannister at
+  342 words in the 09-06 mode B free-tier attempt had not been checked
+  before. Deviations now render next to the seat in runs/<id>.md and the
+  web page regardless of that seat's status. Whether to fix the prompts,
+  the gate's tolerance, or neither is left as the user's decision, per
+  instruction — nothing was changed in response.
 - 2026-09-07 (deploy) — Day 6 finished. User authenticated the Vercel CLI;
   deployed straight after: https://tribunal-green.vercel.app, project
   shugga/tribunal. GitHub auto-deploy-on-push failed at connect time and was
