@@ -87,6 +87,20 @@ function extraFields(record: CallRecord, prompt: PromptFile | undefined, handled
   return `\n${blocks.join("\n\n")}\n`;
 }
 
+/**
+ * Shown next to the seat regardless of status: a deviation never disqualifies
+ * a reply, so it appears whether the seat's record is otherwise "ok" or
+ * failed for an unrelated reason.
+ */
+function deviationsBlock(record: CallRecord): string {
+  if (record.deviations.length === 0) return "";
+  const lines = ["", "**Deviations from the contract**", ""];
+  for (const deviation of record.deviations) {
+    lines.push(`- \`${deviation.field}\` (${deviation.kind}): ${cell(deviation.message)}`);
+  }
+  return lines.join("\n");
+}
+
 function failureBlock(record: CallRecord): string {
   const lines: string[] = [];
   const kind = record.failure?.kind ?? "unknown";
@@ -119,7 +133,7 @@ function advocateSection(record: CallRecord, prompt: PromptFile | undefined): st
   const heading = `### ${record.display_name} — ${seat}`;
 
   if (record.status !== "ok") {
-    return [heading, "", failureBlock(record)].join("\n");
+    return [heading, "", failureBlock(record), deviationsBlock(record)].join("\n");
   }
 
   const lines = [
@@ -136,6 +150,7 @@ function advocateSection(record: CallRecord, prompt: PromptFile | undefined): st
   ];
   const extras = extraFields(record, prompt, ADVOCATE_HANDLED);
   if (extras !== "") lines.push(extras);
+  lines.push(deviationsBlock(record));
   return lines.join("\n");
 }
 
@@ -149,6 +164,7 @@ function opinionSection(record: CallRecord, prompt: PromptFile | undefined): str
       "",
       ...(disclaimer === undefined || disclaimer === null ? [] : [`_${disclaimer.trim()}_`, ""]),
       failureBlock(record),
+      deviationsBlock(record),
     ].join("\n");
   }
 
@@ -169,6 +185,7 @@ function opinionSection(record: CallRecord, prompt: PromptFile | undefined): str
   lines.push("**Opinion**", "", paragraphs(field(record, "opinion")));
   const extras = extraFields(record, prompt, JUDGE_HANDLED);
   if (extras !== "") lines.push(extras);
+  lines.push(deviationsBlock(record));
   return lines.join("\n");
 }
 

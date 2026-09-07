@@ -25,7 +25,9 @@ export type FaultKind =
   /** The agent declares, in the designated field, that it could not answer. */
   | "declared_refusal"
   /** The call never comes back. */
-  | "transport_error";
+  | "transport_error"
+  /** A fact identifier that does not exist in the charge sheet's agreed_facts. */
+  | "fabricated_fact";
 
 export const FAULT_KINDS: readonly FaultKind[] = [
   "invalid_json",
@@ -35,6 +37,7 @@ export const FAULT_KINDS: readonly FaultKind[] = [
   "fenced_json",
   "declared_refusal",
   "transport_error",
+  "fabricated_fact",
 ];
 
 export interface Fault {
@@ -182,6 +185,37 @@ export function applyFault(
       }
       faulty["refusal"] =
         fault.argument ?? "Injected refusal: the record does not let me answer the question put.";
+      return JSON.stringify(faulty, null, 2);
+    }
+
+    case "fabricated_fact": {
+      // "facts_relied_on" plants the fault in the citation list; anything
+      // else (the default) plants it in prose, since the gate is built to
+      // catch the fluent failure — a well-written opinion resting on a fact
+      // that was never in the record, not only a bad citation list.
+      const target = fault.argument ?? "prose";
+      const bogusId = "F99"; // never a real agreed fact in this charge sheet
+
+      if (target === "facts_relied_on") {
+        if (!("facts_relied_on" in faulty) || !Array.isArray(faulty["facts_relied_on"])) {
+          throw new TribunalError(
+            `cannot inject a fabricated fact into facts_relied_on: ${context.agentId} has none`,
+            WHERE,
+          );
+        }
+        faulty["facts_relied_on"] = [...(faulty["facts_relied_on"] as unknown[]), bogusId];
+        return JSON.stringify(faulty, null, 2);
+      }
+
+      const proseField = "opinion" in faulty ? "opinion" : "argument" in faulty ? "argument" : null;
+      if (proseField === null) {
+        throw new TribunalError(
+          `cannot inject a fabricated fact into prose: ${context.agentId} produces neither opinion nor argument`,
+          WHERE,
+        );
+      }
+      faulty[proseField] =
+        `${String(faulty[proseField])} This also rests on ${bogusId}, which does not appear in the charge sheet.`;
       return JSON.stringify(faulty, null, 2);
     }
   }

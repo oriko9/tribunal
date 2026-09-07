@@ -8,6 +8,7 @@
 // Its text is unmistakably synthetic. No mock output should ever be readable
 // as a judicial opinion.
 
+import { parseEnum, parseKeyedObjectFields, parseWordRange } from "../contract-patterns.js";
 import type { ChargeSheet, PromptFile, Usage } from "../types.js";
 import type { ModelProvider, ModelReply, ModelRequest } from "./types.js";
 import { applyFault, type Fault } from "./faults.js";
@@ -84,12 +85,8 @@ function generateField(
   }
 
   // "one of: justified | not_justified | uncertain"
-  const oneOf = /one of:\s*(.+)/i.exec(description);
-  if (oneOf?.[1] !== undefined) {
-    const options = oneOf[1]
-      .split("|")
-      .map((option) => option.trim())
-      .filter((option) => option.length > 0);
+  const options = parseEnum(description);
+  if (options !== null) {
     return choose(options, seed) ?? options[0] ?? "";
   }
 
@@ -100,13 +97,9 @@ function generateField(
   }
 
   // "object with keys Q1, Q2, Q3, Q4, each a one-sentence answer"
-  const keyed = /keys\s+(.+?),\s*each/i.exec(description);
-  if (keyed?.[1] !== undefined) {
-    const entries = keyed[1]
-      .split(",")
-      .map((key) => key.trim())
-      .filter((key) => key.length > 0);
-    return Object.fromEntries(entries.map((key) => [key, sentence(`${seed}:${key}`, facts)]));
+  const keys = parseKeyedObjectFields(description);
+  if (keys !== null) {
+    return Object.fromEntries(keys.map((key) => [key, sentence(`${seed}:${key}`, facts)]));
   }
 
   // "ordered array of 4 to 7 objects, each {step, finding}"
@@ -128,10 +121,9 @@ function generateField(
   }
 
   // "200 to 320 words, first person, in character"
-  const wordRange = /(\d+)\s*to\s*(\d+)\s*words/i.exec(description);
-  if (wordRange?.[1] !== undefined && wordRange[2] !== undefined) {
-    const low = Number(wordRange[1]);
-    const high = Number(wordRange[2]);
+  const wordRange = parseWordRange(description);
+  if (wordRange !== null) {
+    const [low, high] = wordRange;
     return syntheticText(low + (hash(seed) % Math.max(1, high - low + 1)), seed, facts);
   }
 

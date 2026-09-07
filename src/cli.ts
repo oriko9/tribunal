@@ -16,11 +16,15 @@ import type { CallRecord } from "./types.js";
 
 function seatLine(record: CallRecord): string {
   const duration = record.duration_ms === null ? "" : ` ${record.duration_ms}ms`;
+  const deviationNote =
+    record.deviations.length > 0
+      ? ` [${record.deviations.length} deviation${record.deviations.length === 1 ? "" : "s"}: ${record.deviations.map((d) => d.field).join(", ")}]`
+      : "";
   if (record.status === "ok") {
     const note = record.parse === "extracted" ? " (JSON recovered from a fenced reply)" : "";
-    return `  ok      ${record.agent_id}${duration}${note}`;
+    return `  ok      ${record.agent_id}${duration}${note}${deviationNote}`;
   }
-  return `  ${record.status === "not_run" ? "skipped" : "FAILED "} ${record.agent_id}${duration} — ${record.failure?.kind}: ${record.failure?.message ?? ""}`;
+  return `  ${record.status === "not_run" ? "skipped" : "FAILED "} ${record.agent_id}${duration} — ${record.failure?.kind}: ${record.failure?.message ?? ""}${deviationNote}`;
 }
 
 async function main(): Promise<void> {

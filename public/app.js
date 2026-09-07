@@ -132,6 +132,21 @@ function extraFields(output, handled) {
 }
 
 /** A seat that did not return usable output. Never omitted, never substituted. */
+/** Shown next to the seat regardless of status — a deviation never disqualifies a reply. */
+function deviationsBlock(record) {
+  if (!record.deviations || record.deviations.length === 0) return el("span", { text: "" });
+  const box = el("div", { class: "deviation" });
+  box.appendChild(el("strong", { text: "Deviations from the contract" }));
+  box.appendChild(
+    el(
+      "ul",
+      {},
+      record.deviations.map((d) => el("li", { html: `<code>${d.field}</code> (${d.kind}): ${cell(d.message)}` })),
+    ),
+  );
+  return box;
+}
+
 function failureCard(record) {
   const card = el("section", { class: "card failed" });
   card.appendChild(el("h3", { text: record.display_name }));
@@ -144,6 +159,7 @@ function failureCard(record) {
     card.appendChild(el("pre", { text: record.raw_text.slice(0, 2000) }));
   }
   card.appendChild(el("p", { class: "meta", text: "Nothing has been substituted for this seat." }));
+  card.appendChild(deviationsBlock(record));
   return card;
 }
 
@@ -158,6 +174,7 @@ function advocateCard(record) {
   card.appendChild(el("h4", { text: "Concessions" }));
   card.appendChild(bulletList(out.concessions));
   for (const node of extraFields(out, ADVOCATE_HANDLED)) card.appendChild(node);
+  card.appendChild(deviationsBlock(record));
   return card;
 }
 
@@ -178,6 +195,7 @@ function opinionCard(record) {
   card.appendChild(el("h4", { text: "Opinion" }));
   card.appendChild(el("p", { text: out.opinion || "" }));
   for (const node of extraFields(out, JUDGE_HANDLED)) card.appendChild(node);
+  card.appendChild(deviationsBlock(record));
   return card;
 }
 

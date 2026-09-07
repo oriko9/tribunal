@@ -97,10 +97,29 @@ export type FailureKind =
   | "malformed_json"
   | "contract_mismatch"
   | "declared_refusal"
+  | "illegal_verdict"
+  | "fabricated_fact"
   | "not_run";
 
 export interface FailureRecord {
   kind: FailureKind;
+  message: string;
+}
+
+/**
+ * A way the reply did not follow the shape its contract described, without
+ * being wrong enough to disqualify it. The opinion or argument is still a
+ * result: it is shown in full, and it never affects a run's exit code.
+ */
+export type DeviationKind =
+  | "word_count_out_of_range"
+  | "protocol_steps_count_out_of_range"
+  | "factors_addressed_incomplete";
+
+export interface DeviationRecord {
+  kind: DeviationKind;
+  /** The contract field the deviation was found in, e.g. "argument", "opinion". */
+  field: string;
   message: string;
 }
 
@@ -124,5 +143,7 @@ export interface CallRecord {
   /** "strict" when raw_text parsed directly, "extracted" when a JSON object had to be located inside it. */
   parse: "strict" | "extracted" | null;
   failure: FailureRecord | null;
+  /** Independent of `failure`: a record can be "ok" and still carry deviations. */
+  deviations: DeviationRecord[];
   usage: Usage | null;
 }

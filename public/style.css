@@ -106,3 +106,15 @@ h3 {
 
 .status-ok { color: #1a7a1a; font-weight: bold; }
 .status-bad { color: var(--fail-border); font-weight: bold; }
+
+.deviation {
+  border-left: 4px solid #b8860b;
+  background: #fff8e1;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.deviation ul {
+  margin: 0.25rem 0 0;
+}

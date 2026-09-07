@@ -19,6 +19,7 @@ import { ProviderError, TribunalError } from "./errors.js";
 import { loadRunInputs, repoRoot } from "./load.js";
 import { buildAdvocateMessages, buildJudgeMessages } from "./messages.js";
 import type { AdvocateSubmission } from "./messages.js";
+import { checkContractConformance, checkFactGrounding } from "./gates.js";
 import { deliberate } from "./orchestrator.js";
 import { FAULT_ENV_VAR, FAULT_KINDS, parseFaultSpec } from "./providers/faults.js";
 import { renderProtocol } from "./protocol.js";
@@ -436,6 +437,27 @@ async function checkProviders(inputs: RunInputs): Promise<void> {
     }
     must(thrown instanceof ProviderError, "a transport fault must throw a ProviderError");
   });
+  await checkAsync("fabricated_fact plants an id outside agreed_facts in prose", async () => {
+    const raw = await runMock(inputs, advocate, `${advocate.id}=fabricated_fact`);
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    must(
+      String(parsed["argument"]).includes("F99"),
+      "the prose does not contain the planted fabricated fact id",
+    );
+    must(
+      !inputs.chargeSheet.agreed_fact_ids.includes("F99"),
+      "F99 is in fact a real agreed fact, so it is not a fabrication",
+    );
+  });
+  await checkAsync("fabricated_fact can also plant an id in facts_relied_on", async () => {
+    const raw = await runMock(inputs, advocate, `${advocate.id}=fabricated_fact:facts_relied_on`);
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    must(
+      Array.isArray(parsed["facts_relied_on"]) &&
+        (parsed["facts_relied_on"] as unknown[]).includes("F99"),
+      "F99 was not added to facts_relied_on",
+    );
+  });
   check("every documented fault kind is exercised above", () => {
     // Guards against a fault kind being added without a check to go with it.
     const exercised = [
@@ -446,6 +468,7 @@ async function checkProviders(inputs: RunInputs): Promise<void> {
       "fenced_json",
       "declared_refusal",
       "transport_error",
+      "fabricated_fact",
     ];
     for (const kind of FAULT_KINDS) {
       must(exercised.includes(kind), `fault kind [${kind}] has no smoke check`);
@@ -455,6 +478,212 @@ async function checkProviders(inputs: RunInputs): Promise<void> {
     refuses(() => parseFaultSpec("no_such_agent=empty", agentIds), "no_such_agent");
     refuses(() => parseFaultSpec(`${agentIds[0]}=no_such_fault`, agentIds), "no_such_fault");
   });
+}
+
+function words(count: number): string {
+  return Array.from({ length: count }, () => "word").join(" ");
+}
+
+/**
+ * Gate 1 and Gate 2, tested directly against the pure functions with
+ * hand-built fixtures — not through the mock, so every boundary (exactly the
+ * minimum word count, exactly the maximum, a value a seat's own contract
+ * declares legal even though the charge sheet's permitted_verdicts does not
+ * list it) can be placed exactly on the line that matters.
+ */
+function checkGates(inputs: RunInputs): void {
+  const { chargeSheet, advocates, judges } = inputs;
+  const advocate = advocates.find((prompt) => prompt.id === "jon_snow") ?? advocates[0];
+  const grader = judges.find((prompt) => prompt.id === "judge_barak_model") ?? judges[0];
+  must(advocate !== undefined && grader !== undefined, "no prompts to test the gates with");
+  // Reassigned outside the nested closures below: TypeScript does not carry
+  // narrowing from an outer assertion into a separately-declared function body.
+  const advocateName = advocate.display_name;
+  const graderName = grader.display_name;
+
+  const argumentRange = parseWordRangeForTest(advocate);
+  const opinionRange = parseWordRangeForTest(grader);
+  const stepsRange = parseObjectCountRangeForTest(grader);
+
+  function validAdvocateOutput(): Record<string, unknown> {
+    return {
+      speaker: advocateName,
+      stance: "not_justified",
+      argument: words(argumentRange[0]),
+      facts_relied_on: ["F1", "F2"],
+      concessions: ["a concession"],
+      refusal: null,
+    };
+  }
+
+  function validJudgeOutput(): Record<string, unknown> {
+    return {
+      judge: graderName,
+      verdict: "not_justified",
+      protocol_steps: Array.from({ length: stepsRange[0] }, (_unused, index) => ({
+        step: `step ${index + 1}`,
+        finding: `finding ${index + 1}`,
+      })),
+      opinion: words(opinionRange[0]),
+      factors_addressed: { Q1: "a", Q2: "b", Q3: "c", Q4: "d" },
+      facts_relied_on: ["F3"],
+      strongest_opposing_point: "the other side's best point",
+      refusal: null,
+    };
+  }
+
+  section("Gate 1 — contract conformance");
+
+  check("a word count at the minimum boundary is not a deviation", () => {
+    const result = checkContractConformance(validAdvocateOutput(), advocate);
+    must(result.failure === null, "a valid advocate output was flagged as a failure");
+    must(result.deviations.length === 0, `unexpected deviations: ${JSON.stringify(result.deviations)}`);
+  });
+  check("a word count one below the minimum is a deviation, not a failure", () => {
+    const output = { ...validAdvocateOutput(), argument: words(argumentRange[0] - 1) };
+    const result = checkContractConformance(output, advocate);
+    must(result.failure === null, "a short argument was treated as a failure");
+    must(
+      result.deviations.some((d) => d.kind === "word_count_out_of_range" && d.field === "argument"),
+      "no word_count_out_of_range deviation was recorded",
+    );
+  });
+  check("a word count one above the maximum is a deviation, not a failure", () => {
+    const output = { ...validAdvocateOutput(), argument: words(argumentRange[1] + 1) };
+    const result = checkContractConformance(output, advocate);
+    must(result.failure === null, "a long argument was treated as a failure");
+    must(
+      result.deviations.some((d) => d.kind === "word_count_out_of_range"),
+      "no deviation was recorded for an over-length argument",
+    );
+  });
+  check("a word count exactly at the maximum boundary is not a deviation", () => {
+    const output = { ...validAdvocateOutput(), argument: words(argumentRange[1]) };
+    const result = checkContractConformance(output, advocate);
+    must(result.deviations.length === 0, "the upper boundary itself was flagged");
+  });
+  check("an opinion outside its 300-500-style range is a deviation", () => {
+    const output = { ...validJudgeOutput(), opinion: words(opinionRange[1] + 50) };
+    const result = checkContractConformance(output, grader);
+    must(
+      result.deviations.some((d) => d.field === "opinion"),
+      "an over-length opinion produced no deviation",
+    );
+  });
+  check("too few protocol_steps is a deviation, not a failure", () => {
+    const output = { ...validJudgeOutput(), protocol_steps: [{ step: "only one", finding: "x" }] };
+    const result = checkContractConformance(output, grader);
+    must(result.failure === null, "too few protocol_steps was treated as a failure");
+    must(
+      result.deviations.some((d) => d.kind === "protocol_steps_count_out_of_range"),
+      "no deviation recorded for too few protocol_steps",
+    );
+  });
+  check("too many protocol_steps is a deviation, not a failure", () => {
+    const tooMany = Array.from({ length: stepsRange[1] + 3 }, (_unused, index) => ({
+      step: `s${index}`,
+      finding: `f${index}`,
+    }));
+    const result = checkContractConformance({ ...validJudgeOutput(), protocol_steps: tooMany }, grader);
+    must(
+      result.deviations.some((d) => d.kind === "protocol_steps_count_out_of_range"),
+      "no deviation recorded for too many protocol_steps",
+    );
+  });
+  check("a factors_addressed missing a required factor is a deviation", () => {
+    const output = { ...validJudgeOutput(), factors_addressed: { Q1: "a", Q2: "b", Q3: "c" } };
+    const result = checkContractConformance(output, grader);
+    must(
+      result.deviations.some((d) => d.kind === "factors_addressed_incomplete" && d.message.includes("Q4")),
+      "a missing Q4 was not reported",
+    );
+  });
+  check("a judge verdict outside justified/not_justified is a FAILURE", () => {
+    const result = checkContractConformance({ ...validJudgeOutput(), verdict: "guilty" }, grader);
+    must(result.failure?.kind === "illegal_verdict", "an illegal verdict was not reported as a failure");
+  });
+  check(
+    "an advocate stance of 'uncertain' is legal, even though the charge sheet's permitted_verdicts does not list it",
+    () => {
+      must(
+        !chargeSheet.permitted_verdicts.includes("uncertain"),
+        "this test assumes 'uncertain' is not one of the charge sheet's permitted_verdicts",
+      );
+      const result = checkContractConformance({ ...validAdvocateOutput(), stance: "uncertain" }, advocate);
+      must(
+        result.failure === null,
+        "a value the advocate's own contract explicitly permits was rejected as illegal",
+      );
+    },
+  );
+  check("an advocate stance outside its own contract's enum is a FAILURE", () => {
+    const result = checkContractConformance({ ...validAdvocateOutput(), stance: "guilty" }, advocate);
+    must(result.failure?.kind === "illegal_verdict", "an illegal stance was not reported as a failure");
+  });
+
+  section("Gate 2 — fact grounding");
+
+  check("citing only real agreed facts, however many times, is never flagged", () => {
+    // Directly proves the distinction the charge sheet's own text depends on:
+    // F1-F5 appear throughout agreed_facts and are quoted throughout real
+    // opinions. Repetition of a real id must never look like fabrication.
+    const heavilyCited = {
+      ...validJudgeOutput(),
+      facts_relied_on: [...chargeSheet.agreed_fact_ids],
+      opinion: chargeSheet.agreed_fact_ids
+        .flatMap((id) => [id, id, id]) // each real id quoted three times over
+        .join(" is discussed here. ")
+        .concat(" ", words(opinionRange[0])),
+    };
+    const failure = checkFactGrounding(heavilyCited, chargeSheet);
+    must(failure === null, `a legitimate, repeated citation was flagged: ${failure?.message}`);
+  });
+  check("a fabricated id in facts_relied_on is a FAILURE", () => {
+    const output = { ...validJudgeOutput(), facts_relied_on: ["F1", "F99"] };
+    const failure = checkFactGrounding(output, chargeSheet);
+    must(failure?.kind === "fabricated_fact", "a fabricated fact id in facts_relied_on was not caught");
+    must(failure.message.includes("F99"), "the failure message does not name the fabricated id");
+  });
+  check("a fabricated id embedded only in prose is a FAILURE — the fluent-failure case", () => {
+    const output = {
+      ...validJudgeOutput(),
+      facts_relied_on: ["F1"], // the citation list itself is clean
+      opinion: `${words(opinionRange[0])} This conclusion also rests on F99, which was never in the record.`,
+    };
+    const failure = checkFactGrounding(output, chargeSheet);
+    must(
+      failure?.kind === "fabricated_fact",
+      "a fact id fabricated only in prose, with a clean facts_relied_on, was not caught",
+    );
+  });
+  check("a real id embedded in a longer number is not mistaken for a different real id", () => {
+    // "F12" must not be misread as "F1" plus a stray "2".
+    const output = {
+      ...validJudgeOutput(),
+      facts_relied_on: ["F1"],
+      opinion: `${words(opinionRange[0])} There is no fact F12 in this record.`,
+    };
+    const failure = checkFactGrounding(output, chargeSheet);
+    must(failure?.kind === "fabricated_fact", "F12 should be read as its own token, not as F1");
+    must(failure.message.includes("F12"), `expected F12 to be named, got: ${failure.message}`);
+    must(!failure.message.includes("F1,"), "F1 must not be reported as fabricated merely because F12 appears");
+  });
+}
+
+function parseWordRangeForTest(prompt: PromptFile): [number, number] {
+  for (const description of Object.values(prompt.output_contract.fields)) {
+    const match = /(\d+)\s*to\s*(\d+)\s*words/i.exec(description);
+    if (match?.[1] !== undefined && match[2] !== undefined) return [Number(match[1]), Number(match[2])];
+  }
+  throw new Error(`${prompt.id} has no word-range field to test against`);
+}
+
+function parseObjectCountRangeForTest(prompt: PromptFile): [number, number] {
+  for (const description of Object.values(prompt.output_contract.fields)) {
+    const match = /(\d+)\s*to\s*(\d+)\s*objects/i.exec(description);
+    if (match?.[1] !== undefined && match[2] !== undefined) return [Number(match[1]), Number(match[2])];
+  }
+  throw new Error(`${prompt.id} has no object-count-range field to test against`);
 }
 
 async function checkDeliberation(inputs: RunInputs): Promise<void> {
@@ -478,6 +707,15 @@ async function checkDeliberation(inputs: RunInputs): Promise<void> {
   check("every seat returned usable output", () => {
     for (const record of [...runFile.advocates, ...Object.values(runFile.opinions)]) {
       must(record.status === "ok", `${record.agent_id} is ${record.status}`);
+    }
+  });
+
+  check("clean mock output carries no deviations", () => {
+    for (const record of [...runFile.advocates, ...Object.values(runFile.opinions)]) {
+      must(
+        record.deviations.length === 0,
+        `${record.agent_id} has unexpected deviations: ${JSON.stringify(record.deviations)}`,
+      );
     }
   });
 
@@ -587,6 +825,44 @@ async function checkDeliberation(inputs: RunInputs): Promise<void> {
       must(record.output === null, `${record.agent_id} produced an opinion without four arguments`);
     }
   });
+
+  section("The gates, wired end to end through the orchestrator");
+
+  const illegalVerdictJudge = inputs.judges[2]?.id;
+  must(illegalVerdictJudge !== undefined, "no third judge to fault");
+  const illegalVerdictProvider = new MockProvider(
+    parseFaultSpec(`${illegalVerdictJudge}=illegal_verdict`, agentIdsOf(inputs)),
+  );
+  const illegalVerdictReport = await deliberate(inputs, illegalVerdictProvider);
+  check("gate 1 fails a real illegal verdict, not only the mock's own fault-shape check", () => {
+    const record = illegalVerdictReport.judges.find((r) => r.agent_id === illegalVerdictJudge);
+    must(record?.status === "failed", `${illegalVerdictJudge} is ${record?.status}, expected failed`);
+    must(
+      record.failure?.kind === "illegal_verdict",
+      `expected failure kind illegal_verdict, got ${record.failure?.kind}`,
+    );
+    must(record.output !== null, "an illegal verdict should still be parsed and recorded, not discarded");
+  });
+
+  const fabricatingAdvocate = inputs.advocates[3]?.id;
+  must(fabricatingAdvocate !== undefined, "no fourth advocate to fault");
+  const fabricatedFactProvider = new MockProvider(
+    parseFaultSpec(`${fabricatingAdvocate}=fabricated_fact`, agentIdsOf(inputs)),
+  );
+  const fabricatedFactReport = await deliberate(inputs, fabricatedFactProvider);
+  check("gate 2 fails a real fabricated fact citation end to end", () => {
+    const record = fabricatedFactReport.advocates.find((r) => r.agent_id === fabricatingAdvocate);
+    must(record?.status === "failed", `${fabricatingAdvocate} is ${record?.status}, expected failed`);
+    must(
+      record.failure?.kind === "fabricated_fact",
+      `expected failure kind fabricated_fact, got ${record.failure?.kind}`,
+    );
+    // One advocate down still means the judges do not sit — the two failure
+    // gates plug into the same all-four-or-nothing rule as a transport error.
+    for (const opinion of Object.values(fabricatedFactReport.judges)) {
+      must(opinion.status === "not_run", `${opinion.agent_id} sat despite a failed advocate`);
+    }
+  });
 }
 
 const SECRET_PATTERNS: readonly RegExp[] = [
@@ -690,6 +966,7 @@ async function main(): Promise<void> {
   checkInputs(single);
   checkMessages(single);
   await checkProviders(single);
+  checkGates(single);
   await checkDeliberation(single);
   await checkSecrets();
 

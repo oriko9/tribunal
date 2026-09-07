@@ -8,6 +8,7 @@
 // records what each seat returned and stops. Three opinions in, three out.
 
 import { ProviderError } from "./errors.js";
+import { checkContractConformance, checkFactGrounding } from "./gates.js";
 import { buildAdvocateMessages, buildJudgeMessages } from "./messages.js";
 import type { AdvocateSubmission } from "./messages.js";
 import type { ModelProvider } from "./providers/types.js";
@@ -65,6 +66,7 @@ function baseRecord(prompt: PromptFile, model: string): CallRecord {
     output: null,
     parse: null,
     failure: null,
+    deviations: [],
     usage: null,
   };
 }
@@ -145,6 +147,30 @@ async function callAgent(
   if (typeof refusal === "string" && refusal.trim() !== "") {
     record.status = "failed";
     record.failure = { kind: "declared_refusal", message: refusal };
+    return record;
+  }
+
+  // Gate 1: the reply parsed and carries every required field, but does it
+  // say what its own contract permits, in the shape that contract describes?
+  // A shape deviation (a word count, a step count, a missing factor) is
+  // recorded and the opinion stands. An illegal verdict or stance is not a
+  // result the tribunal can use.
+  const conformance = checkContractConformance(returned, prompt);
+  record.deviations = conformance.deviations;
+  if (conformance.failure !== null) {
+    record.status = "failed";
+    record.failure = conformance.failure;
+    return record;
+  }
+
+  // Gate 2: every fact identifier the reply cites, in facts_relied_on or
+  // anywhere in its prose, must exist in the charge sheet. Built for the
+  // fluent failure: a well-written opinion resting on a fact that was never
+  // in the record.
+  const grounding = checkFactGrounding(returned, chargeSheet);
+  if (grounding !== null) {
+    record.status = "failed";
+    record.failure = grounding;
     return record;
   }
 
