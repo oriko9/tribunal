@@ -18,17 +18,20 @@ mirror is read from here; it never writes back. If the two disagree, this file
 wins.
 
 ## Current status
-All seven days are now done. Days 5 (go live) and 6 (the web app) ran out of
-order, spanning 09-05 through 09-07; Day 4 (verification gates) closed last,
-on real evidence gathered from the days before it. Two gates now check what a
-live model actually returned — contract shape (word ranges, step counts,
-factor completeness) as recorded deviations, and fact grounding (every cited
+All seven days are now done, including Day 7 (closing): docs/LESSONS.md
+written as evidence, README.md brought to its final state, and the tree
+verified merge-ready. Days 5 (go live) and 6 (the web app) ran out of order,
+spanning 09-05 through 09-07; Day 4 (verification gates) closed on real
+evidence gathered from the days before it. Two gates check what a live model
+actually returned — contract shape (word ranges, step counts, factor
+completeness) as recorded deviations, and fact grounding (every cited
 identifier must be real) as a failure when it isn't. Run for real against all
 10 committed runs: 8 deviations, all word-count, none of them a fabricated
 fact or an illegal verdict anywhere. Judges miss their word range far more
-than advocates do (6 of 9 live opinions vs. 2 of 19 live arguments) — real
-data now sitting behind the one open decision left: whether to fix the
-prompts, loosen the gate, or leave both as they are.
+than advocates do (6 of 9 live opinions vs. 2 of 19 live arguments); one
+prompt change (1.1.0) aimed at it and the one live run made against it was
+inconclusive. Whether to change the prompts further, loosen the gate, or
+leave both as they are is left open — docs/LESSONS.md, section 3.
 Work continues in Claude Code, opened on this folder in VS Code.
 
 ## The seven-day plan
@@ -41,7 +44,7 @@ Work continues in Claude Code, opened on this folder in VS Code.
 | 4 | 09-07 | Two verification gates; failures surface as failures | done |
 | 5 | 09-05 | Go live: model discovery, one live run of mode A, evidence recorded | done |
 | 6 | 09-07 | One-button screen, deployed to Vercel | done |
-| 7 | 09-08 | README, LESSONS.md, merge-ready | not started |
+| 7 | 09-08 | README, LESSONS.md, merge-ready | done |
 
 ## Day 1 checklist
 - [x] Repository initialised
@@ -90,6 +93,17 @@ Work continues in Claude Code, opened on this folder in VS Code.
       section compares the paid mode A and mode B runs on verdicts, opinion
       alikeness, word counts, tokens, cost and wall-clock time, under the
       same "anecdote, not a result" framing
+
+## Day 7 checklist
+- [x] Tree verified before any file was touched: `git status` clean, local
+      HEAD and `origin/main` both at `49fbcce`, `npm run typecheck` clean,
+      `npm run smoke` 77/77
+- [x] docs/LESSONS.md — five evidence-backed sections, every claim citing a
+      run file or a number already committed
+- [x] README.md brought to its final state: live URL, "what to open first",
+      layout, how to run, closing status
+- [x] Merge-ready: typecheck and smoke green, tree clean, origin/main
+      matching local HEAD, verified again after the commit and push below
 
 ## Day 6 checklist
 - [x] CLAUDE.md corrected: no longer claims a serverless function runs the
@@ -251,6 +265,23 @@ Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-08 (Day 7, closing) — Verified the tree before writing anything:
+  `git status` clean, local HEAD and `origin/main` both at `49fbcce`,
+  `npm run typecheck` clean, `npm run smoke` 77/77. Then wrote
+  docs/LESSONS.md — five sections, each claim citing a run file or a number
+  already recorded in this file or docs/models.md, docs/mode-a-vs-b.md and
+  docs/PROMPT-CHANGELOG.md: the four real failure kinds no mock predicted,
+  mode B's one-success-in-three record, the word-count contract's 67%
+  judge / 11% advocate split and the inconclusive 1.1.0 change, the
+  failure-vs-deviation boundary and why collapsing it would be worse than no
+  gate, and what the mock could and couldn't prove. No new evidence
+  gathered — everything cited was already committed. Brought README.md to
+  its final state: live URL, a "what to open first" section pointing a
+  reader at docs/LESSONS.md and the one complete mode B run before anything
+  else, the four graded requirements each pointed at their file, and a
+  closing status line replacing "work in progress." Closed with one atomic
+  commit (docs/LESSONS.md, README.md, this file) and a push, both reported
+  below.
 - 2026-09-07 (prompts 1.1.0, verified live) — Ran mode A live at 1.1.0
   (openai/gpt-5-nano, all seven seats) straight after the bump below.
   Result: Barak 302 words (in range), Elon 248 and Shamgar 239 (both

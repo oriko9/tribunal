@@ -18,6 +18,26 @@ intermittently and spend real money on every click. See
 `docs/mode-a-vs-b.md` for why, and `api/runs.ts` for the one function this
 site calls — it only reads a run file and never touches the OpenRouter key.
 
+## What to open first
+
+To judge this work without running anything: **`docs/LESSONS.md`**. It is
+the evidence this project actually produced — four real failure kinds no
+mock predicted, mode B's one-success-in-three live record, the word-count
+contract missed in both directions and a prompt change that didn't
+measurably fix it, and why the gates separate a failure from a deviation
+instead of collapsing them. Every claim in it points at a run file or a
+number already committed. From there:
+
+- `specs/charge-sheet.yaml` — requirement #1, the case as a specification.
+- `prompts/**/*.yaml` and `docs/PROMPT-CHANGELOG.md` — requirement #2, the
+  seven agent prompts and why each version changed.
+- Any `runs/<id>.md` — a full protocol, three opinions side by side,
+  requirement #3. `runs/2026-09-07T09-59-57-177Z.md` is the one complete
+  mode B run, all seven seats on distinct models.
+- `config/run-single.yaml` vs `config/run-multi.yaml` — requirement #4, one
+  model versus seven, the progression the course asks to see.
+- `PLAN.md` — the day-by-day log and every decision taken, with why.
+
 ## The case
 T-001, The Realm v. Jon Snow. See `specs/charge-sheet.yaml` — the charge sheet
 is a structured specification, not prose, and it is the only source of
@@ -53,4 +73,5 @@ already-committed run in `runs/` without rewriting any of them, and is how
 they were proven against real data rather than only synthetic fixtures.
 
 ## Status
-Work in progress. See PLAN.md.
+All seven days done. See `PLAN.md` for the day-by-day record and every
+decision taken, and `docs/LESSONS.md` for what the project actually taught.
