@@ -9,6 +9,12 @@
   --fail-border: #c0392b;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --muted: #999;
+  }
+}
+
 body {
   font-family: system-ui, sans-serif;
   max-width: 880px;
@@ -69,6 +75,12 @@ section.card {
 section.card.failed {
   background: var(--fail-bg);
   border-color: var(--fail-border);
+  /* This background stays light in both themes, so the text on it must too —
+     it does not follow color-scheme's automatic light/dark text swap. That
+     includes --muted: the dark-theme value tuned for the page's dark canvas
+     is too light against this fixed light background, so it's reset here. */
+  color: #1a1a1a;
+  --muted: #666;
 }
 
 .notice {
@@ -110,6 +122,11 @@ h3 {
 .deviation {
   border-left: 4px solid #b8860b;
   background: #fff8e1;
+  /* Fixed light background in both themes, same reasoning as .card.failed:
+     a deviation is a real finding and must stay legible whether the page
+     is light or dark. The border-left color keeps it visually distinct
+     from a failure card (amber vs. red). */
+  color: #1a1a1a;
   padding: 0.5rem 0.75rem;
   margin-top: 0.75rem;
   font-size: 0.85rem;
