@@ -29,13 +29,18 @@
   <section id="live-controls">
     <h2>Run it live</h2>
     <p class="meta">
-      Mode A only (one model, seven prompts) — mode B is slower, costs more,
-      and the archive above already shows a real mode B run. One serverless
-      call per seat: four advocates in parallel, then, only if all four
-      succeed, three judges in parallel. Nothing here is written to
+      One serverless call per seat: four advocates in parallel, then, only if
+      all four succeed, three judges in parallel. Nothing here is written to
       <code>runs/</code> — a live run renders in the browser and is gone when
       you leave the page. The committed files in <code>runs/</code> remain
       the record.
+    </p>
+    <p class="meta">
+      Mode A only: this design works within one 60-second limit per
+      serverless call, and mode B's slowest seat took 74.7s in a real run
+      (<code>runs/2026-09-07T09-59-57-177Z.json</code>) at roughly twice mode
+      A's cost per run on a page anyone can click — a real mode B run with
+      seven different models is already in the archive above.
     </p>
     <p class="meta">
       Cost, for reference: the last committed mode A run cost <strong>$0.013167</strong>
