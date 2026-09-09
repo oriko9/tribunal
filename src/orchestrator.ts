@@ -75,8 +75,12 @@ function baseRecord(prompt: PromptFile, model: string): CallRecord {
  * Runs one seat and records what came back. It never throws: a failed seat is
  * a recorded failure, not an exception that takes the run down. It never
  * substitutes content for a call that failed.
+ *
+ * Exported so the live-run endpoint (api/live-seat.ts) can call exactly this
+ * function for one seat, rather than a second copy of it. Both paths share
+ * every gate and every failure shape by construction.
  */
-async function callAgent(
+export async function callAgent(
   provider: ModelProvider,
   prompt: PromptFile,
   model: string,

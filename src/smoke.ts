@@ -980,6 +980,39 @@ async function main(): Promise<void> {
     }
   });
 
+  // The one property on the live-run path (api/live-seat.ts) where a
+  // regression would be silent and would matter: this is what stops a
+  // stranger pointing the OpenRouter key at model B's pricier lineup, or any
+  // model outside config/run-single.yaml, by sending a "mode" or "model"
+  // field the endpoint was never meant to read.
+  section("Live-run endpoint — api/live-seat.ts");
+  await checkAsync(
+    "a client-supplied mode or model is not honoured — the live endpoint always resolves against config/run-single.yaml",
+    async () => {
+      const { resolveLiveSeat } = await import("../api/live-seat.js");
+      const honest = await resolveLiveSeat({ agentId: "jon_snow" });
+      must(honest.ok, "expected jon_snow to resolve from an honest request body");
+      const spoofed = await resolveLiveSeat({
+        agentId: "jon_snow",
+        mode: "multi_model",
+        model: "anthropic/claude-haiku-4.5",
+        config: "config/run-multi.yaml",
+      });
+      must(spoofed.ok, "expected jon_snow to resolve even with extra, unread fields present");
+      if (honest.ok && spoofed.ok) {
+        must(
+          honest.model === spoofed.model,
+          `a client-supplied mode/model changed which model resolved (${honest.model} vs ${spoofed.model}) — ` +
+            "the live endpoint must ignore both and always use config/run-single.yaml",
+        );
+        must(
+          honest.model === single.config.models["jon_snow"],
+          "the resolved model should match config/run-single.yaml, the only config the live endpoint ever loads",
+        );
+      }
+    },
+  );
+
   console.log(`\n${passed} passed, ${failed} failed`);
   if (failed > 0) {
     console.error("Smoke checks failed. Do not run the Tribunal on this tree.");

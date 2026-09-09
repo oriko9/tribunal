@@ -18,19 +18,21 @@ mirror is read from here; it never writes back. If the two disagree, this file
 wins.
 
 ## Current status
-All seven days are now done, including Day 7 (closing): docs/LESSONS.md
-written as evidence, README.md brought to its final state, and the tree
-verified merge-ready. Days 5 (go live) and 6 (the web app) ran out of order,
-spanning 09-05 through 09-07; Day 4 (verification gates) closed on real
-evidence gathered from the days before it. Two gates check what a live model
-actually returned — contract shape (word ranges, step counts, factor
-completeness) as recorded deviations, and fact grounding (every cited
-identifier must be real) as a failure when it isn't. Run for real against all
-10 committed runs: 8 deviations, all word-count, none of them a fabricated
-fact or an illegal verdict anywhere. Judges miss their word range far more
-than advocates do (6 of 9 live opinions vs. 2 of 19 live arguments); one
-prompt change (1.1.0) aimed at it, and two live runs made against it (mode A,
-1 of 3 judges in range; mode B, 3 of 3) still don't settle whether it helped.
+All seven days are done, closed on 09-08. Work after the close, on 09-09: a
+live-run button on the deployed page, additive to the archive — one
+serverless invocation per seat (api/live-seat.ts), browser-orchestrated,
+mode A only, so no single call approaches Vercel's 60s free-function limit.
+Days 5 (go live) and 6 (the web app) ran out of order, spanning 09-05
+through 09-07; Day 4 (verification gates) closed on real evidence gathered
+from the days before it. Two gates check what a live model actually
+returned — contract shape (word ranges, step counts, factor completeness) as
+recorded deviations, and fact grounding (every cited identifier must be
+real) as a failure when it isn't. Run for real against all 10 committed
+runs: 8 deviations, all word-count, none of them a fabricated fact or an
+illegal verdict anywhere. Judges miss their word range far more than
+advocates do (6 of 9 live opinions vs. 2 of 19 live arguments); one prompt
+change (1.1.0) aimed at it, and two live runs made against it (mode A, 1 of
+3 judges in range; mode B, 3 of 3) still don't settle whether it helped.
 Whether to change the prompts further, loosen the gate, or leave both as
 they are is left open — docs/LESSONS.md, section 3.
 Work continues in Claude Code, opened on this folder in VS Code.
@@ -274,6 +276,46 @@ Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-09 (live-run button, after close) — Added a live-run button to the
+  deployed page, additive only: the archive selector, api/runs.ts, and every
+  existing render path are untouched. Design constraint carried over from
+  docs/mode-a-vs-b.md: a full deliberation runs 56-96s and Vercel's free
+  functions time out at 60s, so the obvious "one button, one long call"
+  design was rejected before writing anything. Instead: api/live-seat.ts, one
+  serverless invocation per seat (5-33s each in mode A's live runs, well
+  inside the limit), orchestrated from the browser — four advocates in
+  parallel, then, only if all four succeed, three judges in parallel. It
+  calls callAgent (now exported from src/orchestrator.ts) directly, the same
+  function the CLI calls per seat, so every gate and failure shape is shared
+  by construction, not reimplemented. Mode is fixed server-side to mode A
+  (config/run-single.yaml); resolveLiveSeat() reads only `agentId` from the
+  request body, so a client-supplied "mode" or "model" field has no code
+  path that reaches the model choice — checked directly by one new smoke
+  check (78 total), per instruction, since a silent regression there is what
+  would let a stranger point the key at model B's pricier lineup.
+  Spend protection: an in-memory, best-effort, per-instance cap of 8
+  concurrent seat calls in api/live-seat.ts (documented as best-effort, not
+  a database — this project keeps none, by design); the real hard backstop
+  is the OpenRouter key's own account-level spending cap, already proven in
+  production (09-07's 402 payment-cap incident). A static cost reference
+  ($0.013167, the last committed mode A run) sits next to the button,
+  labeled as history, not a promise — real cost is reported per-run exactly
+  as it is for a committed run, via the same cost table.
+  Trust boundary, per instruction, documented rather than hidden: because
+  each invocation is stateless, the judge phase receives advocate raw_text
+  relayed by the browser rather than held in memory for the whole run —
+  closing that needs server-side state, which this project has none of, by
+  design. Written up in a comment in api/live-seat.ts and in a line on the
+  page itself: a live run is a demonstration, the committed archive remains
+  the record.
+  Verified before spending anything: dry-run against a stubbed endpoint
+  (Playwright, zero cost) for both the all-succeed and one-advocate-fails
+  paths — progress list updates seat by seat as each call resolves, the
+  skip-the-judges path renders three "did not sit" cards with the exact
+  reason text orchestrator.ts uses, zero console errors either way. Then
+  `OPENROUTER_API_KEY` added to Vercel's production environment (not set
+  there before — the key had only ever lived in git-ignored .env.local) and
+  a real live run verified against the deployed site itself.
 - 2026-09-09 (one last live run) — Ran mode B live at 1.1.0, seven distinct
   paid models (`runs/2026-09-09T09-36-49-975Z`): the missing evidence, since
   the only prior 1.1.0 run was mode A on one model. All three judges landed

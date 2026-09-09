@@ -31,20 +31,36 @@ earns nothing.
 - A model failure must surface as a visible failure, never as a result.
 - The OpenRouter API key lives on the server only. It never reaches the browser.
 - Most of this system is plain code. The model is called exactly seven times per
-  run and nowhere else.
+  run, from exactly two entry points: the CLI (`src/cli.ts`) and the live-run
+  endpoint (`api/live-seat.ts`), both calling the same `callAgent` — never
+  anywhere else.
 
 ## Stack
-TypeScript, deployed on Vercel. No database: each run is written to
-runs/<timestamp>.json (and a matching .md protocol) and committed.
+TypeScript, deployed on Vercel. No database: each run of the CLI is written
+to runs/<timestamp>.json (and a matching .md protocol) and committed — this
+remains the only record.
 
-The deliberation itself does not run on Vercel. A live run takes 56-96s
-depending on mode, and Vercel's free serverless functions time out at 60s —
-a screen that triggered a live run on a click would fail intermittently and
-spend real money on every attempt. Deliberation runs from the CLI
-(`npm run tribunal`) against `src/cli.ts`, and its output is committed before
-anyone can view it. The one serverless function on Vercel (`api/runs.ts`)
-only reads an already-committed run file and returns it; it never calls a
-model and never touches the OpenRouter key.
+A full deliberation takes 56-96s depending on mode, and Vercel's free
+serverless functions time out at 60s, so a screen that triggered one long
+call on a click would fail intermittently and spend real money on every
+attempt. Two paths exist because of that constraint, and they answer to
+different requirements:
+
+- **The archive** (`api/runs.ts`, one function). Deliberation runs from the
+  CLI (`npm run tribunal`) and its output is committed before anyone can view
+  it. `api/runs.ts` only reads an already-committed run file and returns it;
+  it never calls a model and never touches the OpenRouter key.
+- **The live run** (`api/live-seat.ts`, mode A only). One serverless
+  invocation per seat — comfortably under the 60s limit, since every live
+  mode A call has run in 5-33s — orchestrated from the browser: four
+  advocates in parallel, then, only if all four succeed, three judges in
+  parallel. The key is read only inside this function. Nothing it produces
+  is written to `runs/`; it renders in the browser and is gone. Because each
+  invocation is stateless, the judge phase reads advocate text relayed back
+  by the browser rather than held in memory for the whole run the way the
+  CLI holds it — an explicit, documented trust boundary (see the comment in
+  `api/live-seat.ts` and the note on the page itself), which is exactly why
+  the committed archive, not a live run, remains the record.
 
 ## Working discipline
 - Commit before invoking the agent on a task, and after.

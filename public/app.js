@@ -9,6 +9,10 @@ const loadBtn = document.getElementById("load-btn");
 const statusEl = document.getElementById("status");
 const result = document.getElementById("result");
 
+const liveBtn = document.getElementById("live-btn");
+const liveStatusEl = document.getElementById("live-status");
+const liveProgressEl = document.getElementById("live-progress");
+
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);
   for (const [key, value] of Object.entries(attrs)) {
@@ -314,6 +318,292 @@ async function loadSelectedRun() {
 }
 
 loadBtn.addEventListener("click", loadSelectedRun);
+
+// --- live runs ---------------------------------------------------------
+//
+// Additive: everything above this line is the archive view, unchanged.
+// A live run calls /api/live-seat once per seat — four advocates in
+// parallel, then, only if all four succeed, three judges in parallel — and
+// assembles a run object shaped exactly like a committed run file, so it can
+// be handed to the same renderRun() the archive uses. Nothing here writes to
+// runs/; a live run exists only in this page until it is replaced or the
+// page is closed.
+
+const ADVOCATE_IDS = ["daenerys_targaryen", "grey_worm", "jon_snow", "tyrion_lannister"];
+const JUDGE_IDS = ["judge_barak_model", "judge_elon_model", "judge_shamgar_model"];
+
+/** meta.seats identity for one agent id, or an honest stand-in if meta hasn't arrived yet. */
+function seatIdentity(agentId, meta) {
+  const found = meta && Array.isArray(meta.seats) ? meta.seats.find((s) => s.agent_id === agentId) : null;
+  if (found) return found;
+  return {
+    agent_id: agentId,
+    display_name: agentId,
+    role: agentId.startsWith("judge_") ? "judge" : "advocate",
+    seat: null,
+    prompt_path: null,
+    prompt_version: null,
+    model: null,
+  };
+}
+
+/** Used only if every single live call failed before any server response carried meta. */
+function fallbackMeta() {
+  return {
+    case: { id: "T-001", title: "The Realm v. Jon Snow", spec: "specs/charge-sheet.yaml", spec_version: "—" },
+    mode: "single_model",
+    label: "A — one model, seven prompts",
+    config: "config/run-single.yaml",
+    provider: { name: "openrouter", pricing: "provider", description: "openrouter — live calls" },
+    shared_rules: { path: "prompts/_shared.yaml", version: "—" },
+    budget_usd: null,
+    seats: [],
+  };
+}
+
+/** A seat call that failed before the server could return a real CallRecord: network error, rate limit, misconfiguration. */
+function syntheticFailure(agentId, message, meta) {
+  const identity = seatIdentity(agentId, meta);
+  const now = new Date().toISOString();
+  return {
+    agent_id: identity.agent_id,
+    display_name: identity.display_name,
+    role: identity.role,
+    seat: identity.seat,
+    prompt_path: identity.prompt_path,
+    prompt_version: identity.prompt_version,
+    model: identity.model,
+    status: "failed",
+    started_at: now,
+    ended_at: now,
+    duration_ms: 0,
+    raw_text: null,
+    output: null,
+    parse: null,
+    failure: { kind: "transport", message },
+    deviations: [],
+    usage: null,
+  };
+}
+
+/** Mirrors orchestrator.ts's own not-run judge record, word for word, for the client-side skip path. */
+function notRunJudgeRecord(agentId, reason, meta) {
+  const identity = seatIdentity(agentId, meta);
+  return {
+    agent_id: identity.agent_id,
+    display_name: identity.display_name,
+    role: identity.role,
+    seat: identity.seat,
+    prompt_path: identity.prompt_path,
+    prompt_version: identity.prompt_version,
+    model: identity.model,
+    status: "not_run",
+    started_at: null,
+    ended_at: null,
+    duration_ms: null,
+    raw_text: null,
+    output: null,
+    parse: null,
+    failure: { kind: "not_run", message: reason },
+    deviations: [],
+    usage: null,
+  };
+}
+
+async function fetchSeat(agentId, submissions, meta) {
+  try {
+    const response = await fetch("/api/live-seat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(submissions ? { agentId, submissions } : { agentId }),
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      return { record: syntheticFailure(agentId, body.error || `HTTP ${response.status}`, meta), meta: null };
+    }
+    return { record: body.record, meta: body.meta };
+  } catch (cause) {
+    return { record: syntheticFailure(agentId, cause.message || "network error", meta), meta: null };
+  }
+}
+
+function statusLabel(status) {
+  if (status === "pending") return "waiting…";
+  if (status === "ok") return "ok";
+  if (status === "not_run") return "did not sit";
+  return "failed";
+}
+
+function renderLiveProgress(progress, meta) {
+  liveProgressEl.innerHTML = "";
+  for (const [agentId, status] of progress) {
+    const identity = seatIdentity(agentId, meta);
+    const cls = status === "ok" ? "seat-ok" : status === "pending" ? "seat-pending" : "seat-failed";
+    liveProgressEl.appendChild(
+      el("li", { class: cls, text: `${identity.display_name} — ${statusLabel(status)}` }),
+    );
+  }
+}
+
+function sumField(rows, key) {
+  return rows.reduce((total, row) => total + (row[key] || 0), 0);
+}
+
+/** Builds a run object in exactly the shape of a committed run file, so renderRun() needs no changes at all. */
+function assembleLiveRun({ meta, advocates, judges, startedAt, endedAt, durationMs }) {
+  const m = meta || fallbackMeta();
+  const all = [...advocates, ...judges];
+  const rows = all.map((record) => ({
+    agent_id: record.agent_id,
+    role: record.role,
+    model: record.model,
+    status: record.status,
+    prompt_tokens: record.usage ? record.usage.prompt_tokens : null,
+    completion_tokens: record.usage ? record.usage.completion_tokens : null,
+    total_tokens: record.usage ? record.usage.total_tokens : null,
+    cost_usd: record.usage ? record.usage.cost_usd : null,
+  }));
+
+  const totals = {
+    prompt_tokens: sumField(rows, "prompt_tokens"),
+    completion_tokens: sumField(rows, "completion_tokens"),
+    total_tokens: sumField(rows, "total_tokens"),
+    cost_usd: Number(rows.reduce((total, row) => total + (row.cost_usd || 0), 0).toFixed(8)),
+    cost_is_partial: all.some((record) => record.status === "ok" && (record.usage ? record.usage.cost_usd : null) == null),
+    pricing: m.provider.pricing,
+    calls_ok: all.filter((record) => record.status === "ok").length,
+    calls_failed: all.filter((record) => record.status !== "ok").length,
+    budget_usd: m.budget_usd,
+    budget_exceeded: false,
+  };
+  totals.budget_exceeded = totals.budget_usd !== null && totals.cost_usd > totals.budget_usd;
+
+  const promptVersions = {};
+  for (const record of all) promptVersions[record.agent_id] = record.prompt_version;
+
+  const failures = all
+    .filter((record) => record.status !== "ok")
+    .map((record) => `${record.agent_id}: ${record.failure ? record.failure.kind : "unknown"} — ${record.failure ? record.failure.message : ""}`);
+
+  const opinions = {};
+  for (const record of judges) opinions[record.agent_id] = record;
+
+  return {
+    schema_version: 1,
+    run: {
+      id: `live-${startedAt.replace(/[:.]/g, "-")}`,
+      case: m.case,
+      mode: m.mode,
+      label: m.label,
+      config: m.config,
+      provider: m.provider,
+      shared_rules: m.shared_rules,
+      prompt_versions: promptVersions,
+      started_at: startedAt,
+      ended_at: endedAt,
+      duration_ms: durationMs,
+      status: failures.length === 0 ? "complete" : "incomplete",
+      failures,
+    },
+    advocates,
+    opinions,
+    usage: { calls: rows, totals },
+  };
+}
+
+async function runLive() {
+  liveBtn.disabled = true;
+  liveStatusEl.textContent = "Starting live run — mode A, one model, seven seats…";
+
+  const startedAt = new Date().toISOString();
+  const t0 = performance.now();
+  let meta = null;
+
+  const progress = new Map();
+  for (const agentId of [...ADVOCATE_IDS, ...JUDGE_IDS]) progress.set(agentId, "pending");
+  renderLiveProgress(progress, meta);
+
+  try {
+    const advocateRecords = new Map();
+    await Promise.all(
+      ADVOCATE_IDS.map(async (agentId) => {
+        const outcome = await fetchSeat(agentId, undefined, meta);
+        if (outcome.meta && !meta) meta = outcome.meta;
+        advocateRecords.set(agentId, outcome.record);
+        progress.set(agentId, outcome.record.status);
+        renderLiveProgress(progress, meta);
+      }),
+    );
+
+    const orderedAdvocates = ADVOCATE_IDS.map((agentId) => advocateRecords.get(agentId));
+    const failedAdvocates = orderedAdvocates.filter((record) => record.status !== "ok");
+
+    const judgeRecords = new Map();
+    if (failedAdvocates.length > 0) {
+      // Mirrors orchestrator.ts exactly: all four arguments or the judges do
+      // not sit. There is no path here that calls a judge on an incomplete set.
+      const reason =
+        `the judges did not sit: ${failedAdvocates.length} of ${orderedAdvocates.length} advocates ` +
+        `failed (${failedAdvocates.map((record) => record.agent_id).join(", ")}), and the protocol ` +
+        `has every judge read all four arguments`;
+      for (const agentId of JUDGE_IDS) {
+        judgeRecords.set(agentId, notRunJudgeRecord(agentId, reason, meta));
+        progress.set(agentId, "not_run");
+      }
+      renderLiveProgress(progress, meta);
+    } else {
+      const submissions = orderedAdvocates.map((record) => ({
+        agent_id: record.agent_id,
+        raw_text: record.raw_text || "",
+      }));
+      await Promise.all(
+        JUDGE_IDS.map(async (agentId) => {
+          const outcome = await fetchSeat(agentId, submissions, meta);
+          if (outcome.meta && !meta) meta = outcome.meta;
+          judgeRecords.set(agentId, outcome.record);
+          progress.set(agentId, outcome.record.status);
+          renderLiveProgress(progress, meta);
+        }),
+      );
+    }
+
+    const endedAt = new Date().toISOString();
+    const durationMs = Math.round(performance.now() - t0);
+    const run = assembleLiveRun({
+      meta,
+      advocates: orderedAdvocates,
+      judges: JUDGE_IDS.map((agentId) => judgeRecords.get(agentId)),
+      startedAt,
+      endedAt,
+      durationMs,
+    });
+
+    renderRun(run);
+    result.insertBefore(
+      el("div", {
+        class: "notice",
+        text:
+          "This is a live run, rendered in your browser just now — it is not saved anywhere and is gone if " +
+          "you reload this page. It is a demonstration of the pipeline, not a new source of record: because " +
+          "each seat is one stateless serverless call, the judges here read advocate text relayed back by " +
+          "this page rather than held server-side for the whole run. The committed runs in the archive above, " +
+          "each produced by one process holding everything in memory end to end, remain the record.",
+      }),
+      result.firstChild,
+    );
+
+    liveStatusEl.textContent =
+      run.run.status === "complete"
+        ? `Live run complete in ${(durationMs / 1000).toFixed(1)}s.`
+        : `Live run incomplete in ${(durationMs / 1000).toFixed(1)}s — see the run above; nothing was substituted for a seat that didn't return.`;
+  } catch (cause) {
+    liveStatusEl.textContent = `Live run failed unexpectedly: ${cause.message}`;
+  } finally {
+    liveBtn.disabled = false;
+  }
+}
+
+liveBtn.addEventListener("click", runLive);
 
 loadRunList().catch((cause) => {
   statusEl.textContent = `Could not load the list of runs: ${cause.message}`;

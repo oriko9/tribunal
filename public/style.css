@@ -135,3 +135,49 @@ h3 {
 .deviation ul {
   margin: 0.25rem 0 0;
 }
+
+#live-controls {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+#live-controls h2 {
+  margin-top: 0;
+}
+
+#live-progress {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+#live-progress li {
+  padding: 0.15rem 0;
+}
+
+.seat-pending {
+  color: var(--muted);
+}
+
+.seat-ok {
+  color: #1a7a1a;
+  font-weight: bold;
+}
+
+.seat-failed {
+  color: var(--fail-border);
+  font-weight: bold;
+}
+
+@media (prefers-color-scheme: dark) {
+  .seat-ok {
+    color: #2ecc71;
+  }
+
+  .seat-failed {
+    color: #ff6b5b;
+  }
+}

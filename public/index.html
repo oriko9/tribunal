@@ -26,6 +26,37 @@
     <span id="status" role="status"></span>
   </section>
 
+  <section id="live-controls">
+    <h2>Run it live</h2>
+    <p class="meta">
+      Mode A only (one model, seven prompts) — mode B is slower, costs more,
+      and the archive above already shows a real mode B run. One serverless
+      call per seat: four advocates in parallel, then, only if all four
+      succeed, three judges in parallel. Nothing here is written to
+      <code>runs/</code> — a live run renders in the browser and is gone when
+      you leave the page. The committed files in <code>runs/</code> remain
+      the record.
+    </p>
+    <p class="meta">
+      Cost, for reference: the last committed mode A run cost <strong>$0.013167</strong>
+      for all seven seats (<code>runs/2026-09-06T07-51-57-229Z.json</code>).
+      That is history, not a promise — this run's real cost is reported below
+      once it completes, exactly as it is for a committed run.
+    </p>
+    <p class="meta">
+      A live run is a demonstration of the pipeline, not a new source of
+      record. Because each serverless call is stateless, the judge phase
+      receives the advocates' text relayed back by this page rather than held
+      server-side for the whole run — the committed files in
+      <code>runs/</code> are the only runs produced by one process holding
+      everything in memory end to end, and they remain the record for that
+      reason.
+    </p>
+    <button id="live-btn">Run live now</button>
+    <span id="live-status" role="status"></span>
+    <ul id="live-progress"></ul>
+  </section>
+
   <main id="result"></main>
 
   <script src="app.js"></script>
