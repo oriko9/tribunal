@@ -1,0 +1,501 @@
+{
+  "schema_version": 1,
+  "run": {
+    "id": "2026-09-09T09-36-49-975Z",
+    "case": {
+      "id": "T-001",
+      "title": "The Realm v. Jon Snow",
+      "spec": "specs/charge-sheet.yaml",
+      "spec_version": "1.0.0"
+    },
+    "mode": "multi_model",
+    "label": "B — seven prompts, several models",
+    "config": "config/run-multi.yaml",
+    "provider": {
+      "name": "openrouter",
+      "pricing": "provider",
+      "description": "openrouter — live calls, real cost, key from OPENROUTER_API_KEY, timeout 120000ms"
+    },
+    "shared_rules": {
+      "path": "prompts/_shared.yaml",
+      "version": "1.0.0"
+    },
+    "prompt_versions": {
+      "daenerys_targaryen": "1.1.0",
+      "grey_worm": "1.1.0",
+      "jon_snow": "1.1.0",
+      "tyrion_lannister": "1.1.0",
+      "judge_barak_model": "1.1.0",
+      "judge_elon_model": "1.1.0",
+      "judge_shamgar_model": "1.1.0"
+    },
+    "started_at": "2026-09-09T09:36:49.975Z",
+    "ended_at": "2026-09-09T09:37:41.154Z",
+    "duration_ms": 51179,
+    "status": "complete",
+    "failures": []
+  },
+  "advocates": [
+    {
+      "agent_id": "daenerys_targaryen",
+      "display_name": "Daenerys Targaryen",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/daenerys-targaryen.yaml",
+      "prompt_version": "1.1.0",
+      "model": "openai/gpt-oss-120b",
+      "status": "ok",
+      "started_at": "2026-09-09T09:36:49.976Z",
+      "ended_at": "2026-09-09T09:37:14.751Z",
+      "duration_ms": 24775,
+      "raw_text": "{\n  \"speaker\": \"Daenerys Targaryen\",\n  \"stance\": \"not_justified\",\n  \"argument\": \"I stand before this Tribunal not as a victim, but as the embodiment of a vision for a liberated realm. Jon Snow, though once my ally, chose murder over mercy, and his act cannot be deemed justified. He acted with full knowledge of the danger I posed: F1 records the indiscriminate slaughter of civilians in King's Landing, and F2 confirms that I declared the campaign of \\\"liberation\\\" would continue beyond the city, a threat Jon witnessed. Moreover, F3 shows that Tyrion, my own Hand, warned Jon that I would treat any perceived obstacle—his sisters, dissenters, even him—as enemies. Jon's request for mercy, noted in F4, was met with my refusal to share judgment, demonstrating my absolute resolve. Yet, Jon killed me while I was defenseless, as F5 states I was unarmed and not attacking. He used intimacy to strike, bypassing any council, any attempt at detention, any public surrender of power. The absence of safer alternatives, the lack of formal authority, and the premeditated nature of his act render his killing a betrayal, not a defense. The realm deserves lawful governance, not the bloodied sword of a desperate lover. Jon's knowledge of the imminent threat, combined with his unilateral violence, fails the criteria of necessity and proportionality. Therefore, his act was not justified as a defense of others or the realm.\",\n  \"facts_relied_on\": [\"F1\", \"F2\", \"F3\", \"F4\", \"F5\"],\n  \"concessions\": [\n    \"Jon knew of Daenerys's intent to continue violent \\\"liberation\\\" (F2)\",\n    \"Tyrion warned Jon that Daenerys would treat obstacles as enemies (F3)\",\n    \"Daenerys was unarmed and not attacking at the moment of the killing (F5)\",\n    \"Jon lacked formal authority to act (F5)\"\n  ],\n  \"refusal\": null\n}",
+      "output": {
+        "speaker": "Daenerys Targaryen",
+        "stance": "not_justified",
+        "argument": "I stand before this Tribunal not as a victim, but as the embodiment of a vision for a liberated realm. Jon Snow, though once my ally, chose murder over mercy, and his act cannot be deemed justified. He acted with full knowledge of the danger I posed: F1 records the indiscriminate slaughter of civilians in King's Landing, and F2 confirms that I declared the campaign of \"liberation\" would continue beyond the city, a threat Jon witnessed. Moreover, F3 shows that Tyrion, my own Hand, warned Jon that I would treat any perceived obstacle—his sisters, dissenters, even him—as enemies. Jon's request for mercy, noted in F4, was met with my refusal to share judgment, demonstrating my absolute resolve. Yet, Jon killed me while I was defenseless, as F5 states I was unarmed and not attacking. He used intimacy to strike, bypassing any council, any attempt at detention, any public surrender of power. The absence of safer alternatives, the lack of formal authority, and the premeditated nature of his act render his killing a betrayal, not a defense. The realm deserves lawful governance, not the bloodied sword of a desperate lover. Jon's knowledge of the imminent threat, combined with his unilateral violence, fails the criteria of necessity and proportionality. Therefore, his act was not justified as a defense of others or the realm.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "Jon knew of Daenerys's intent to continue violent \"liberation\" (F2)",
+          "Tyrion warned Jon that Daenerys would treat obstacles as enemies (F3)",
+          "Daenerys was unarmed and not attacking at the moment of the killing (F5)",
+          "Jon lacked formal authority to act (F5)"
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "deviations": [],
+      "usage": {
+        "prompt_tokens": 1802,
+        "completion_tokens": 905,
+        "total_tokens": 2707,
+        "cost_usd": 0.000220524,
+        "pricing": "provider"
+      }
+    },
+    {
+      "agent_id": "grey_worm",
+      "display_name": "Grey Worm",
+      "role": "advocate",
+      "seat": "prosecution",
+      "prompt_path": "prompts/advocates/grey-worm.yaml",
+      "prompt_version": "1.1.0",
+      "model": "openai/gpt-oss-20b",
+      "status": "ok",
+      "started_at": "2026-09-09T09:36:50.005Z",
+      "ended_at": "2026-09-09T09:36:59.071Z",
+      "duration_ms": 9066,
+      "raw_text": "{\"speaker\":\"Grey Worm\",\"stance\":\"not_justified\",\"argument\":\"I see what Jon Snow did. He approached Daenerys, trusting their intimacy, and stabbed her while she was unarmed and not threatening him. He did not use any force to take her life that would be necessary to protect himself. He had no formal authority to order her death, and he did not even use the power he possessed to try another route. \\n\\nFact F5 tells the sequence: Daenerys was unarmed; Jon used closeness to strike; he did not convene a council, detain her, or even ask her to surrender power. No safer alternative was pursued. \\n\\nFact F3 and F4 show Jon’s awareness: he heard Tyrion warn that Daenerys would treat him and his sisters as enemies, and he knew she would not let anyone decide what was right. The threat of her future cruelty was known. Fact F1 confirms the scale of harm she already caused—burning streets and civilians with a dragon. Fact F2 confirms that after her victory, her intention to continue a campaign of “liberation” was proclaimed to her forces. \\n\\nTherefore Jon acted with full knowledge that Daenerys could kill his people and that the harm she posed was massive. Yet he chose an opportunistic, lethal act rather than seeking peaceful or lawful means. That is not a justified defense.\",\"facts_relied_on\":[\"F1\",\"F2\",\"F3\",\"F4\",\"F5\"],\"concessions\":[\"The threat that Daenerys might have turned against Jon’s family was real and potentially imminent\"],\"refusal\":null}",
+      "output": {
+        "speaker": "Grey Worm",
+        "stance": "not_justified",
+        "argument": "I see what Jon Snow did. He approached Daenerys, trusting their intimacy, and stabbed her while she was unarmed and not threatening him. He did not use any force to take her life that would be necessary to protect himself. He had no formal authority to order her death, and he did not even use the power he possessed to try another route. \n\nFact F5 tells the sequence: Daenerys was unarmed; Jon used closeness to strike; he did not convene a council, detain her, or even ask her to surrender power. No safer alternative was pursued. \n\nFact F3 and F4 show Jon’s awareness: he heard Tyrion warn that Daenerys would treat him and his sisters as enemies, and he knew she would not let anyone decide what was right. The threat of her future cruelty was known. Fact F1 confirms the scale of harm she already caused—burning streets and civilians with a dragon. Fact F2 confirms that after her victory, her intention to continue a campaign of “liberation” was proclaimed to her forces. \n\nTherefore Jon acted with full knowledge that Daenerys could kill his people and that the harm she posed was massive. Yet he chose an opportunistic, lethal act rather than seeking peaceful or lawful means. That is not a justified defense.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "The threat that Daenerys might have turned against Jon’s family was real and potentially imminent"
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "deviations": [],
+      "usage": {
+        "prompt_tokens": 1825,
+        "completion_tokens": 794,
+        "total_tokens": 2619,
+        "cost_usd": 0.00017321,
+        "pricing": "provider"
+      }
+    },
+    {
+      "agent_id": "jon_snow",
+      "display_name": "Jon Snow",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/jon-snow.yaml",
+      "prompt_version": "1.1.0",
+      "model": "openai/gpt-5-nano",
+      "status": "ok",
+      "started_at": "2026-09-09T09:36:50.006Z",
+      "ended_at": "2026-09-09T09:37:23.109Z",
+      "duration_ms": 33103,
+      "raw_text": "{\n  \"speaker\": \"Jon Snow\",\n  \"stance\": \"justified\",\n  \"argument\": \"I acted to defend the realm and those who cannot defend themselves. The agreed facts show a clear pattern: after surrender, Daenerys unleashed Drogon on civilians (F1), turning victory into massacre. I also knew from F2 that she intended to press a campaign of “liberation” beyond King's Landing, a threat to many more lives, and Tyrion warned me she would treat my sisters as enemies (F3). Her refusal to let mercy or restraint govern her rule, and her insistence that her own judgment alone would decide what is good (F4), demonstrated that any ordinary check on her power would fail. In those conditions, the scale of the harm she threatened was not hypothetical; it was imminent if she were allowed to continue. The question then becomes whether there existed any safer alternative. I did not convene a council, attempt detention, or seek a public surrender (F5). Daenerys was unarmed and not attacking me at that moment, yet she posed a future danger to countless lives unless checked. The lack of formal authority to act (F5) weighs against me on a procedural level, but the record compels a different judgment: the danger to the innocent rendered those conventional avenues insufficient. The tribunal must weigh what I knew at the time (Q1), the scale of harm (Q2), the absence of safer alternatives (Q3), and my lack of formal authority (Q4). Taken together, they justify the act as a necessary defense of others and of the realm. I do not seek praise or absolution; I acted under a bound duty to protect those who could not protect themselves when Daenerys signaled a future of mass harm and absolute rule.\",\n  \"facts_relied_on\": [\"F1\", \"F2\", \"F3\", \"F4\", \"F5\"],\n  \"concessions\": [\n    \"I did not convene a council or seek a public surrender prior to acting.\",\n    \"I acted without formal authority to do so.\"\n  ],\n  \"refusal\": null\n}",
+      "output": {
+        "speaker": "Jon Snow",
+        "stance": "justified",
+        "argument": "I acted to defend the realm and those who cannot defend themselves. The agreed facts show a clear pattern: after surrender, Daenerys unleashed Drogon on civilians (F1), turning victory into massacre. I also knew from F2 that she intended to press a campaign of “liberation” beyond King's Landing, a threat to many more lives, and Tyrion warned me she would treat my sisters as enemies (F3). Her refusal to let mercy or restraint govern her rule, and her insistence that her own judgment alone would decide what is good (F4), demonstrated that any ordinary check on her power would fail. In those conditions, the scale of the harm she threatened was not hypothetical; it was imminent if she were allowed to continue. The question then becomes whether there existed any safer alternative. I did not convene a council, attempt detention, or seek a public surrender (F5). Daenerys was unarmed and not attacking me at that moment, yet she posed a future danger to countless lives unless checked. The lack of formal authority to act (F5) weighs against me on a procedural level, but the record compels a different judgment: the danger to the innocent rendered those conventional avenues insufficient. The tribunal must weigh what I knew at the time (Q1), the scale of harm (Q2), the absence of safer alternatives (Q3), and my lack of formal authority (Q4). Taken together, they justify the act as a necessary defense of others and of the realm. I do not seek praise or absolution; I acted under a bound duty to protect those who could not protect themselves when Daenerys signaled a future of mass harm and absolute rule.",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "I did not convene a council or seek a public surrender prior to acting.",
+          "I acted without formal authority to do so."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "deviations": [],
+      "usage": {
+        "prompt_tokens": 1772,
+        "completion_tokens": 3761,
+        "total_tokens": 5533,
+        "cost_usd": 0.001593,
+        "pricing": "provider"
+      }
+    },
+    {
+      "agent_id": "tyrion_lannister",
+      "display_name": "Tyrion Lannister",
+      "role": "advocate",
+      "seat": "defence",
+      "prompt_path": "prompts/advocates/tyrion-lannister.yaml",
+      "prompt_version": "1.1.0",
+      "model": "openai/gpt-5.4-mini",
+      "status": "ok",
+      "started_at": "2026-09-09T09:36:50.007Z",
+      "ended_at": "2026-09-09T09:36:55.508Z",
+      "duration_ms": 5501,
+      "raw_text": "{\"speaker\":\"Tyrion Lannister\",\"stance\":\"justified\",\"argument\":\"I resigned my office and was imprisoned, so I do not ask the Tribunal to trust me because I am virtuous; I ask it to trust me because I had reason to fear what Daenerys would do, and I had nothing to gain by saying it lightly. [F3] When I warned Jon, I did so after Daenerys had already burned a surrendered city and its civilians on a vast scale, and after she declared the campaign of “liberation” would continue. [F1][F2][F3]\\n\\nThat matters. A ruler who has just shown she will destroy a surrendered population, then announces more of the same, has not presented a remote danger. [F1][F2] Jon had seen the destruction and heard the speech. [F2] He also heard my warning that she would treat his sisters and other obstacles as enemies. [F3] That is knowledge at the moment of action, not hindsight. [Q1][F3]\\n\\nCould he have done more? In a perfect world, yes. But the record denies him the luxury of perfect worlds. Daenerys refused to let others choose what was good and made her own judgment decisive. [F4] Jon had asked for mercy, and she refused. [F4] The record also says she was unarmed, not attacking him, and that he used intimacy to get close. [F5] That is ugly, and I concede it. [F5]\\n\\nYet necessity is not prettiness. If the question is whether there were safer alternatives, the charge sheet gives me no established safer path that would have protected others in time. [F5] He did not convene a council or attempt detention, but that may reflect the very absence of any authority or reliable restraint once a victorious dragon-queen had made her will final. [F5][Q4]\\n\\nSo I cannot pretend this was clean. I can only say it was justified defense of others against an imminent and catastrophic threat. [F1][F2][F3][F4]\",\"facts_relied_on\":[\"F1\",\"F2\",\"F3\",\"F4\",\"F5\"],\"concessions\":[\"Daenerys was unarmed and not attacking Jon when he killed her.\",\"Jon used their intimacy to get close enough to strike.\",\"Jon did not convene a council, attempt detention, or seek a public surrender of power.\",\"The act was not pretty, lawful in form, or free of moral cost.\"],\"refusal\":null}",
+      "output": {
+        "speaker": "Tyrion Lannister",
+        "stance": "justified",
+        "argument": "I resigned my office and was imprisoned, so I do not ask the Tribunal to trust me because I am virtuous; I ask it to trust me because I had reason to fear what Daenerys would do, and I had nothing to gain by saying it lightly. [F3] When I warned Jon, I did so after Daenerys had already burned a surrendered city and its civilians on a vast scale, and after she declared the campaign of “liberation” would continue. [F1][F2][F3]\n\nThat matters. A ruler who has just shown she will destroy a surrendered population, then announces more of the same, has not presented a remote danger. [F1][F2] Jon had seen the destruction and heard the speech. [F2] He also heard my warning that she would treat his sisters and other obstacles as enemies. [F3] That is knowledge at the moment of action, not hindsight. [Q1][F3]\n\nCould he have done more? In a perfect world, yes. But the record denies him the luxury of perfect worlds. Daenerys refused to let others choose what was good and made her own judgment decisive. [F4] Jon had asked for mercy, and she refused. [F4] The record also says she was unarmed, not attacking him, and that he used intimacy to get close. [F5] That is ugly, and I concede it. [F5]\n\nYet necessity is not prettiness. If the question is whether there were safer alternatives, the charge sheet gives me no established safer path that would have protected others in time. [F5] He did not convene a council or attempt detention, but that may reflect the very absence of any authority or reliable restraint once a victorious dragon-queen had made her will final. [F5][Q4]\n\nSo I cannot pretend this was clean. I can only say it was justified defense of others against an imminent and catastrophic threat. [F1][F2][F3][F4]",
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "concessions": [
+          "Daenerys was unarmed and not attacking Jon when he killed her.",
+          "Jon used their intimacy to get close enough to strike.",
+          "Jon did not convene a council, attempt detention, or seek a public surrender of power.",
+          "The act was not pretty, lawful in form, or free of moral cost."
+        ],
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "deviations": [],
+      "usage": {
+        "prompt_tokens": 1765,
+        "completion_tokens": 540,
+        "total_tokens": 2305,
+        "cost_usd": 0.00375375,
+        "pricing": "provider"
+      }
+    }
+  ],
+  "opinions": {
+    "judge_barak_model": {
+      "agent_id": "judge_barak_model",
+      "display_name": "The Barak model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/barak-model.yaml",
+      "prompt_version": "1.1.0",
+      "model": "openai/gpt-5.6-luna",
+      "status": "ok",
+      "started_at": "2026-09-09T09:37:23.109Z",
+      "ended_at": "2026-09-09T09:37:36.693Z",
+      "duration_ms": 13584,
+      "raw_text": "{\n  \"judge\": \"The Barak model\",\n  \"verdict\": \"not_justified\",\n  \"protocol_steps\": [\n    {\n      \"step\": \"1. Proper purpose\",\n      \"finding\": \"Defending civilians and the realm is a proper purpose, given the destruction of surrendered King's Landing in F1 and the announced continuation of the campaign in F2.\"\n    },\n    {\n      \"step\": \"2. Rational connection\",\n      \"finding\": \"Removing Daenerys was rationally connected to preventing further harm, because F1 records the scale of prior destruction and F2 records her stated intention to continue.\"\n    },\n    {\n      \"step\": \"3. Lawful authority\",\n      \"finding\": \"This requirement weighs against justification: F5 establishes that Jon lacked formal authority to act and did not pursue a public surrender of power.\"\n    },\n    {\n      \"step\": \"4. Necessity and safer alternatives\",\n      \"finding\": \"Necessity is not established, because F5 records no attempt at detention, council, or public surrender, while F4 records only Daenerys's refusal to let others choose what was good.\"\n    },\n    {\n      \"step\": \"5. Proportionality\",\n      \"finding\": \"The threatened harm was grave under F1 and F2, but the deliberate killing of an unarmed, non-attacking person by exploiting intimacy, as recorded in F5, was not shown to be proportionate to an insufficiently established immediate threat.\"\n    }\n  ],\n  \"opinion\": \"The question is not whether Daenerys's conduct was alarming, or whether Jon's fear was sincere. It is whether an intentional taking of life was justified as necessary defense of others and the realm. In a democratic legal order, public power is constrained by law even when the danger is grave. Necessity therefore requires more than a proper purpose: lawful authority, rational connection, the absence of an actually available less harmful means, and a defensible relation between the benefit sought and the life taken.\\n\\nThe purpose here was proper. F1 establishes destruction on a vast scale after King's Landing had surrendered, and F2 establishes that Daenerys announced continuation of the campaign. Those facts rationally connect preventing further destruction with disabling the person who had caused it. F3 also records a warning that Daenerys would treat Jon's sisters and other obstacles as enemies. Thus, Jon's knowledge was substantial, and the danger cannot be dismissed as imaginary.\\n\\nBut rational connection does not prove necessity. F5 establishes that Daenerys was unarmed and not attacking Jon when he acted. The same fact establishes that he did not convene a council, attempt detention, or seek a public surrender of power, and that he used intimacy to get close enough to strike. F4 shows that Daenerys refused mercy and claimed decisive judgment; it does not establish that every less harmful avenue had become impossible. Nor does F5 establish that Jon possessed lawful authority to execute a ruler. The absence of formal authority is not conclusive against emergency defense, but it demands especially persuasive proof that no safer constitutional or physical restraint was available. That proof is missing.\\n\\nThe strongest opposing point is that F1 and F2 together show a ruler who had already inflicted mass harm and openly promised more, while F3 supplied a warning directed even at Jon's family. That argument makes the choice genuinely open: the scale of danger may justify exceptional action in some circumstances. Yet the record does not establish the required immediacy, nor does it establish the failure of alternatives beyond Jon's decision not to try them. Because the life taken was that of an unarmed, non-attacking person and the act bypassed every recorded institutional safeguard, the balance remains unjustified.\",\n  \"factors_addressed\": {\n    \"Q1\": \"Under F1, F2, F3, and F4, Jon knew of prior mass destruction, a declared continuing campaign, a warning concerning obstacles including his sisters, and Daenerys's refusal to share moral judgment.\",\n    \"Q2\": \"F1 establishes exceptionally grave past harm, and F2 establishes a serious prospective threat, though neither fact alone proves the precise imminence required for lethal defense.\",\n    \"Q3\": \"F5 records that Jon did not attempt detention, convene a council, or seek a public surrender, so the absence of safer alternatives was not established.\",\n    \"Q4\": \"F5 establishes that Jon lacked formal authority, which weighs materially against unilateral lethal action even if the emergency purpose was proper.\"\n  },\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\",\n    \"F3\",\n    \"F4\",\n    \"F5\"\n  ],\n  \"strongest_opposing_point\": \"F1 and F2 show that Daenerys had already destroyed a surrendered city and publicly announced further liberation campaigns, while F3 records a warning that she would treat Jon's sisters and other obstacles as enemies; therefore, lethal action could be argued to have been necessary to prevent catastrophic and continuing harm.\",\n  \"refusal\": null\n}",
+      "output": {
+        "judge": "The Barak model",
+        "verdict": "not_justified",
+        "protocol_steps": [
+          {
+            "step": "1. Proper purpose",
+            "finding": "Defending civilians and the realm is a proper purpose, given the destruction of surrendered King's Landing in F1 and the announced continuation of the campaign in F2."
+          },
+          {
+            "step": "2. Rational connection",
+            "finding": "Removing Daenerys was rationally connected to preventing further harm, because F1 records the scale of prior destruction and F2 records her stated intention to continue."
+          },
+          {
+            "step": "3. Lawful authority",
+            "finding": "This requirement weighs against justification: F5 establishes that Jon lacked formal authority to act and did not pursue a public surrender of power."
+          },
+          {
+            "step": "4. Necessity and safer alternatives",
+            "finding": "Necessity is not established, because F5 records no attempt at detention, council, or public surrender, while F4 records only Daenerys's refusal to let others choose what was good."
+          },
+          {
+            "step": "5. Proportionality",
+            "finding": "The threatened harm was grave under F1 and F2, but the deliberate killing of an unarmed, non-attacking person by exploiting intimacy, as recorded in F5, was not shown to be proportionate to an insufficiently established immediate threat."
+          }
+        ],
+        "opinion": "The question is not whether Daenerys's conduct was alarming, or whether Jon's fear was sincere. It is whether an intentional taking of life was justified as necessary defense of others and the realm. In a democratic legal order, public power is constrained by law even when the danger is grave. Necessity therefore requires more than a proper purpose: lawful authority, rational connection, the absence of an actually available less harmful means, and a defensible relation between the benefit sought and the life taken.\n\nThe purpose here was proper. F1 establishes destruction on a vast scale after King's Landing had surrendered, and F2 establishes that Daenerys announced continuation of the campaign. Those facts rationally connect preventing further destruction with disabling the person who had caused it. F3 also records a warning that Daenerys would treat Jon's sisters and other obstacles as enemies. Thus, Jon's knowledge was substantial, and the danger cannot be dismissed as imaginary.\n\nBut rational connection does not prove necessity. F5 establishes that Daenerys was unarmed and not attacking Jon when he acted. The same fact establishes that he did not convene a council, attempt detention, or seek a public surrender of power, and that he used intimacy to get close enough to strike. F4 shows that Daenerys refused mercy and claimed decisive judgment; it does not establish that every less harmful avenue had become impossible. Nor does F5 establish that Jon possessed lawful authority to execute a ruler. The absence of formal authority is not conclusive against emergency defense, but it demands especially persuasive proof that no safer constitutional or physical restraint was available. That proof is missing.\n\nThe strongest opposing point is that F1 and F2 together show a ruler who had already inflicted mass harm and openly promised more, while F3 supplied a warning directed even at Jon's family. That argument makes the choice genuinely open: the scale of danger may justify exceptional action in some circumstances. Yet the record does not establish the required immediacy, nor does it establish the failure of alternatives beyond Jon's decision not to try them. Because the life taken was that of an unarmed, non-attacking person and the act bypassed every recorded institutional safeguard, the balance remains unjustified.",
+        "factors_addressed": {
+          "Q1": "Under F1, F2, F3, and F4, Jon knew of prior mass destruction, a declared continuing campaign, a warning concerning obstacles including his sisters, and Daenerys's refusal to share moral judgment.",
+          "Q2": "F1 establishes exceptionally grave past harm, and F2 establishes a serious prospective threat, though neither fact alone proves the precise imminence required for lethal defense.",
+          "Q3": "F5 records that Jon did not attempt detention, convene a council, or seek a public surrender, so the absence of safer alternatives was not established.",
+          "Q4": "F5 establishes that Jon lacked formal authority, which weighs materially against unilateral lethal action even if the emergency purpose was proper."
+        },
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "strongest_opposing_point": "F1 and F2 show that Daenerys had already destroyed a surrendered city and publicly announced further liberation campaigns, while F3 records a warning that she would treat Jon's sisters and other obstacles as enemies; therefore, lethal action could be argued to have been necessary to prevent catastrophic and continuing harm.",
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "deviations": [],
+      "usage": {
+        "prompt_tokens": 4025,
+        "completion_tokens": 1287,
+        "total_tokens": 5312,
+        "cost_usd": 0.0025505,
+        "pricing": "provider"
+      }
+    },
+    "judge_elon_model": {
+      "agent_id": "judge_elon_model",
+      "display_name": "The Elon model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/elon-model.yaml",
+      "prompt_version": "1.1.0",
+      "model": "anthropic/claude-haiku-4.5",
+      "status": "ok",
+      "started_at": "2026-09-09T09:37:23.111Z",
+      "ended_at": "2026-09-09T09:37:41.153Z",
+      "duration_ms": 18042,
+      "raw_text": "```json\n{\n  \"judge\": \"Elon model\",\n  \"verdict\": \"not_justified\",\n  \"protocol_steps\": [\n    {\n      \"step\": \"Competence of the tribunal\",\n      \"finding\": \"This tribunal has competence to judge whether an act of killing falls within the narrow exception of necessary defense of others—a doctrine rooted in law and moral tradition. The question is not whether Jon acted for good motives or whether the realm is better off; it is whether the specific conditions for justified necessity were met. That is a judicial question.\"\n    },\n    {\n      \"step\": \"The doctrine of necessity in defense of others\",\n      \"finding\": \"Necessity permits the use of force, including lethal force, when (1) an imminent threat of serious harm exists, (2) the threat is to persons other than the actor, (3) no safer alternative exists, and (4) the force used is proportional and not disproportionate to the harm threatened. The doctrine is narrow because it removes the ordinary requirement for authority and due process. It is not a warrant for preemptive killing of those who *might* pose a future danger.\"\n    },\n    {\n      \"step\": \"Imminence: the controlling question\",\n      \"finding\": \"F1 and F2 establish that Daenerys had burned a surrendered city and declared a continued campaign. F3 shows Jon knew she would treat obstacles as enemies. F4 shows she refused mercy and would not share judgment. These facts establish a demonstrated pattern and stated intent. However, F5 establishes that at the moment Jon acted, Daenerys was unarmed, not attacking, and in an embrace. The threat, while real and serious, was not imminent in the sense required by the doctrine: it was a threat of future acts by a person in a position to commit them, not an attack underway or about to commence.\"\n    },\n    {\n      \"step\": \"Safer alternatives and authority\",\n      \"finding\": \"F5 acknowledges that Jon did not convene a council, attempt detention, or seek a public surrender. The prosecution and Jon himself concede this. The doctrine of necessity requires that safer alternatives be exhausted or genuinely unavailable. Detention of an unarmed ruler by a military commander with the loyalty of forces is not impossible; it is difficult and politically fraught. The record does not establish that it was impossible, only that Jon chose not to attempt it.\"\n    },\n    {\n      \"step\": \"The weight of lack of authority\",\n      \"finding\": \"Jon had no formal authority to kill Daenerys and acted through deception—using intimacy to strike. This is not merely a procedural defect; it bears on the substance of necessity. A person acting without authority to kill must show that the threat was so immediate and the alternatives so closed that no other course was available. The record does not show this.\"\n    },\n    {\n      \"step\": \"Conclusion on the elements\",\n      \"finding\": \"The threat was serious and demonstrated, but not imminent at the moment of the act. Safer alternatives existed and were not attempted. Jon lacked authority and acted through deception. The act cannot be justified under the doctrine of necessity as understood in the tradition of law and moral reasoning.\"\n    }\n  ],\n  \"opinion\": \"The doctrine of necessity permits the use of force, including lethal force, when an imminent threat to innocent others exists and no safer alternative remains. But necessity is not a license for preemptive killing based on demonstrated dangerousness and stated future intent. It is a narrow exception that applies when the threat is immediate and the actor has exhausted or faces genuinely closed alternatives.\\n\\nJon knew that Daenerys had burned a surrendered city (F1), declared a campaign of continued conquest (F2), refused mercy and would not share judgment (F4), and had warned through Tyrion that she would treat obstacles as enemies (F3). This knowledge was accurate and grave. Daenerys had shown herself capable of mass slaughter and unwilling to accept restraint. The threat to the realm and to those she regarded as obstacles was real.\\n\\nHowever, the threat was not imminent. At the moment Jon acted, Daenerys was unarmed and not attacking (F5). She was in an embrace with him. The danger she posed was of future acts—further campaigns of conquest, further massacres, treatment of Jon's sisters as enemies. These were real dangers, but not imminent ones. A person standing over a sleeping or unarmed ruler may face a dilemma of conscience, but that dilemma does not satisfy the doctrine of necessity. Necessity requires that the harm be about to occur.\\n\\nMoreover, F5 establishes that Jon did not attempt detention, council, or public demand for surrender. He used intimacy to strike. The doctrine requires that safer alternatives be unavailable or exhausted. A commander with the loyalty of forces can detain an unarmed ruler, even a dragon-queen; it is difficult and politically costly, but not impossible. Jon chose not to attempt it. That choice, standing alone, may have been wise. But it means the conditions for necessity were not met.\\n\\nJon lacked formal authority to act, and he knew it. In the tradition of law, when a person without authority kills another, the burden on that person to show necessity is exacting. Jon's burden here was to show that no safer course existed. The record does not establish this. The threat was grave; the alternative to killing was not impossible, only hard.\\n\\nTherefore, the act was not justified.\",\n  \"controlling_line\": \"Necessity permits lethal force only when the threat is imminent and no safer alternative exists; a demonstrated pattern of dangerousness and stated future intent, however grave, do not satisfy imminence when the person against whom force is used is unarmed and not attacking at the moment of the act.\",\n  \"factors_addressed\": {\n    \"Q1\": \"Jon knew that Daenerys had burned civilians in a surrendered city, declared a campaign of further conquest, and would treat obstacles as enemies, but this knowledge concerned future acts, not an imminent attack.\",\n    \"Q2\": \"The scale of harm threatened was vast—potential mass slaughter and indefinite absolutist rule—but scale alone does not establish imminence.\",\n    \"Q3\": \"Safer alternatives existed, including detention of an unarmed ruler; Jon did not attempt them, and the record does not establish they were unavailable.\",\n    \"Q4\": \"Jon's lack of formal authority to act heightens his burden to show necessity; the burden was not met.\"\n  },\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\",\n    \"F3\",\n    \"F4\",\n    \"F5\"\n  ],\n  \"strongest_opposing_point\": \"Tyrion and Jon argue that once a victorious dragon-queen has demonstrated willingness to burn a surrendered city and declared her intent to continue, and has refused all counsel toward mercy, the time to act is now—before she consolidates power further and makes any challenge impossible. They contend that waiting for an explicit attack would be waiting too long, that necessity must permit action against a ruler who has shown she will not be checked by ordinary means. This argument has force: it recognizes that waiting for formal imminence can be a form of paralysis. However, it asks the tribunal to expand the doctrine of necessity beyond its proper bounds, converting it from a narrow exception for immediate threats into a preemptive authority to kill those deemed too dangerous to live.\",\n  \"refusal\": null\n}\n```",
+      "output": {
+        "judge": "Elon model",
+        "verdict": "not_justified",
+        "protocol_steps": [
+          {
+            "step": "Competence of the tribunal",
+            "finding": "This tribunal has competence to judge whether an act of killing falls within the narrow exception of necessary defense of others—a doctrine rooted in law and moral tradition. The question is not whether Jon acted for good motives or whether the realm is better off; it is whether the specific conditions for justified necessity were met. That is a judicial question."
+          },
+          {
+            "step": "The doctrine of necessity in defense of others",
+            "finding": "Necessity permits the use of force, including lethal force, when (1) an imminent threat of serious harm exists, (2) the threat is to persons other than the actor, (3) no safer alternative exists, and (4) the force used is proportional and not disproportionate to the harm threatened. The doctrine is narrow because it removes the ordinary requirement for authority and due process. It is not a warrant for preemptive killing of those who *might* pose a future danger."
+          },
+          {
+            "step": "Imminence: the controlling question",
+            "finding": "F1 and F2 establish that Daenerys had burned a surrendered city and declared a continued campaign. F3 shows Jon knew she would treat obstacles as enemies. F4 shows she refused mercy and would not share judgment. These facts establish a demonstrated pattern and stated intent. However, F5 establishes that at the moment Jon acted, Daenerys was unarmed, not attacking, and in an embrace. The threat, while real and serious, was not imminent in the sense required by the doctrine: it was a threat of future acts by a person in a position to commit them, not an attack underway or about to commence."
+          },
+          {
+            "step": "Safer alternatives and authority",
+            "finding": "F5 acknowledges that Jon did not convene a council, attempt detention, or seek a public surrender. The prosecution and Jon himself concede this. The doctrine of necessity requires that safer alternatives be exhausted or genuinely unavailable. Detention of an unarmed ruler by a military commander with the loyalty of forces is not impossible; it is difficult and politically fraught. The record does not establish that it was impossible, only that Jon chose not to attempt it."
+          },
+          {
+            "step": "The weight of lack of authority",
+            "finding": "Jon had no formal authority to kill Daenerys and acted through deception—using intimacy to strike. This is not merely a procedural defect; it bears on the substance of necessity. A person acting without authority to kill must show that the threat was so immediate and the alternatives so closed that no other course was available. The record does not show this."
+          },
+          {
+            "step": "Conclusion on the elements",
+            "finding": "The threat was serious and demonstrated, but not imminent at the moment of the act. Safer alternatives existed and were not attempted. Jon lacked authority and acted through deception. The act cannot be justified under the doctrine of necessity as understood in the tradition of law and moral reasoning."
+          }
+        ],
+        "opinion": "The doctrine of necessity permits the use of force, including lethal force, when an imminent threat to innocent others exists and no safer alternative remains. But necessity is not a license for preemptive killing based on demonstrated dangerousness and stated future intent. It is a narrow exception that applies when the threat is immediate and the actor has exhausted or faces genuinely closed alternatives.\n\nJon knew that Daenerys had burned a surrendered city (F1), declared a campaign of continued conquest (F2), refused mercy and would not share judgment (F4), and had warned through Tyrion that she would treat obstacles as enemies (F3). This knowledge was accurate and grave. Daenerys had shown herself capable of mass slaughter and unwilling to accept restraint. The threat to the realm and to those she regarded as obstacles was real.\n\nHowever, the threat was not imminent. At the moment Jon acted, Daenerys was unarmed and not attacking (F5). She was in an embrace with him. The danger she posed was of future acts—further campaigns of conquest, further massacres, treatment of Jon's sisters as enemies. These were real dangers, but not imminent ones. A person standing over a sleeping or unarmed ruler may face a dilemma of conscience, but that dilemma does not satisfy the doctrine of necessity. Necessity requires that the harm be about to occur.\n\nMoreover, F5 establishes that Jon did not attempt detention, council, or public demand for surrender. He used intimacy to strike. The doctrine requires that safer alternatives be unavailable or exhausted. A commander with the loyalty of forces can detain an unarmed ruler, even a dragon-queen; it is difficult and politically costly, but not impossible. Jon chose not to attempt it. That choice, standing alone, may have been wise. But it means the conditions for necessity were not met.\n\nJon lacked formal authority to act, and he knew it. In the tradition of law, when a person without authority kills another, the burden on that person to show necessity is exacting. Jon's burden here was to show that no safer course existed. The record does not establish this. The threat was grave; the alternative to killing was not impossible, only hard.\n\nTherefore, the act was not justified.",
+        "controlling_line": "Necessity permits lethal force only when the threat is imminent and no safer alternative exists; a demonstrated pattern of dangerousness and stated future intent, however grave, do not satisfy imminence when the person against whom force is used is unarmed and not attacking at the moment of the act.",
+        "factors_addressed": {
+          "Q1": "Jon knew that Daenerys had burned civilians in a surrendered city, declared a campaign of further conquest, and would treat obstacles as enemies, but this knowledge concerned future acts, not an imminent attack.",
+          "Q2": "The scale of harm threatened was vast—potential mass slaughter and indefinite absolutist rule—but scale alone does not establish imminence.",
+          "Q3": "Safer alternatives existed, including detention of an unarmed ruler; Jon did not attempt them, and the record does not establish they were unavailable.",
+          "Q4": "Jon's lack of formal authority to act heightens his burden to show necessity; the burden was not met."
+        },
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "strongest_opposing_point": "Tyrion and Jon argue that once a victorious dragon-queen has demonstrated willingness to burn a surrendered city and declared her intent to continue, and has refused all counsel toward mercy, the time to act is now—before she consolidates power further and makes any challenge impossible. They contend that waiting for an explicit attack would be waiting too long, that necessity must permit action against a ruler who has shown she will not be checked by ordinary means. This argument has force: it recognizes that waiting for formal imminence can be a form of paralysis. However, it asks the tribunal to expand the doctrine of necessity beyond its proper bounds, converting it from a narrow exception for immediate threats into a preemptive authority to kill those deemed too dangerous to live.",
+        "refusal": null
+      },
+      "parse": "extracted",
+      "failure": null,
+      "deviations": [],
+      "usage": {
+        "prompt_tokens": 4442,
+        "completion_tokens": 1702,
+        "total_tokens": 6144,
+        "cost_usd": 0.012952,
+        "pricing": "provider"
+      }
+    },
+    "judge_shamgar_model": {
+      "agent_id": "judge_shamgar_model",
+      "display_name": "The Shamgar model",
+      "role": "judge",
+      "seat": null,
+      "prompt_path": "prompts/judges/shamgar-model.yaml",
+      "prompt_version": "1.1.0",
+      "model": "google/gemini-3.1-flash-lite",
+      "status": "ok",
+      "started_at": "2026-09-09T09:37:23.112Z",
+      "ended_at": "2026-09-09T09:37:28.460Z",
+      "duration_ms": 5348,
+      "raw_text": "{\n  \"judge\": \"Shamgar model\",\n  \"verdict\": \"not_justified\",\n  \"protocol_steps\": [\n    {\n      \"step\": \"Chronology construction\",\n      \"finding\": \"Post-surrender of King's Landing, Daenerys burns civilians (F1); declares a continued campaign of 'liberation' (F2); expresses absolute authority (F4); Jon Snow kills her during a private meeting while she is unarmed and non-aggressive (F5).\"\n    },\n    {\n      \"step\": \"Mapping of authority\",\n      \"finding\": \"The accused held no formal office or mandate to act as a judge or executioner, nor did he attempt to engage existing institutional mechanisms for the transfer or check of power (F5).\"\n    },\n    {\n      \"step\": \"Assessment of necessity\",\n      \"finding\": \"While the threat posed by Daenerys was grave (F1, F2), the absence of any attempt to utilize public or collaborative processes (F5) renders the claim of necessity a private determination rather than an act of legal defense.\"\n    },\n    {\n      \"step\": \"Decision on justification\",\n      \"finding\": \"The Tribunal finds that the lack of procedural exhaustion and the total absence of formal authority make the act an extrajudicial killing, which cannot be sustained as a legitimate defense of the realm.\"\n    }\n  ],\n  \"opinion\": \"The question before this Tribunal is whether the intentional killing of Daenerys Targaryen by Jon Snow can be characterized as a necessary defense of the realm. To resolve this, one must distinguish between the subjective perception of necessity and the objective requirements of a legal order. \\n\\nChronologically, the facts are clear. Following the surrender of King's Landing, the deceased committed acts of destruction against a non-resisting population (F1) and signaled her intent to continue such actions under the rubric of 'liberation' (F2). These facts establish that the danger was neither speculative nor trivial. The accused, having observed this carnage and having been warned of the deceased's intent to view his kin and others as obstacles (F3), concluded that the deceased would brook no restraint (F4). \\n\\nHowever, the legal question rests upon the nature of the means employed. The accused, acting without any formal authority or public mandate, bypassed all available, albeit imperfect, collective mechanisms for the governance of the realm (F5). He did not seek to convene a council, he did not attempt to detain the ruler through formal legal or military process, and he did not seek a public or supervised surrender of power (F5). Instead, he utilized personal intimacy to facilitate a lethal strike against an unarmed individual who, at the precise moment of the act, was not engaging in an immediate physical attack (F5). \\n\\nThis Tribunal views the law as an ordered structure. A defense of necessity—even in the context of the realm—requires that the actor demonstrate that no safer, more proportional alternative existed. While the accused may have reasonably believed that the deceased posed a catastrophic threat, this belief does not vest him with the solitary right to determine her fate. By choosing an act of clandestine assassination over any attempt at institutional or public restraint, the accused functioned as an individual agent acting outside the rule of law. \\n\\nPublic ends, such as the protection of the innocent, require legal means. To justify the killing of a ruler based solely on a private assessment of her future intentions would be to replace a governing structure with the unchecked judgment of an individual. This is a value judgment that favors the maintenance of institutional process over the expediency of extralegal violence. The accused had other, albeit more difficult, paths to explore before resorting to the ultimate deprivation of life. Because he failed to engage any of these alternatives, his act remains an exercise of private force, not a justified act of state or defensive necessity.\",\n  \"chronology\": [\n    \"King's Landing surrenders, followed by mass destruction by Daenerys (F1).\",\n    \"Daenerys declares her intention to continue a campaign of 'liberation' (F2).\",\n    \"Tyrion warns Jon that Daenerys regards him and his family as obstacles (F3).\",\n    \"Jon attempts to appeal to Daenerys's mercy, which she rejects (F4).\",\n    \"Jon kills the unarmed Daenerys during a private meeting (F5).\"\n  ],\n  \"factors_addressed\": {\n    \"Q1\": \"Jon was fully aware of the deceased's prior actions and her expressed intent to continue a campaign of destruction.\",\n    \"Q2\": \"The threatened harm was massive, involving the destruction of civilian populations and the further expansion of an absolute, unchecked rule.\",\n    \"Q3\": \"The accused failed to attempt any public, council-based, or procedural alternatives to resolve the threat.\",\n    \"Q4\": \"The accused acted entirely without formal authority, choosing a private, lethal act instead of seeking a public, institutional remedy.\"\n  },\n  \"facts_relied_on\": [\n    \"F1\",\n    \"F2\",\n    \"F3\",\n    \"F4\",\n    \"F5\"\n  ],\n  \"strongest_opposing_point\": \"The argument that the deceased’s stated intent to continue a 'campaign of liberation' combined with her refusal to share moral judgment created an imminent existential threat that effectively foreclosed all conventional procedural alternatives.\",\n  \"refusal\": null\n}",
+      "output": {
+        "judge": "Shamgar model",
+        "verdict": "not_justified",
+        "protocol_steps": [
+          {
+            "step": "Chronology construction",
+            "finding": "Post-surrender of King's Landing, Daenerys burns civilians (F1); declares a continued campaign of 'liberation' (F2); expresses absolute authority (F4); Jon Snow kills her during a private meeting while she is unarmed and non-aggressive (F5)."
+          },
+          {
+            "step": "Mapping of authority",
+            "finding": "The accused held no formal office or mandate to act as a judge or executioner, nor did he attempt to engage existing institutional mechanisms for the transfer or check of power (F5)."
+          },
+          {
+            "step": "Assessment of necessity",
+            "finding": "While the threat posed by Daenerys was grave (F1, F2), the absence of any attempt to utilize public or collaborative processes (F5) renders the claim of necessity a private determination rather than an act of legal defense."
+          },
+          {
+            "step": "Decision on justification",
+            "finding": "The Tribunal finds that the lack of procedural exhaustion and the total absence of formal authority make the act an extrajudicial killing, which cannot be sustained as a legitimate defense of the realm."
+          }
+        ],
+        "opinion": "The question before this Tribunal is whether the intentional killing of Daenerys Targaryen by Jon Snow can be characterized as a necessary defense of the realm. To resolve this, one must distinguish between the subjective perception of necessity and the objective requirements of a legal order. \n\nChronologically, the facts are clear. Following the surrender of King's Landing, the deceased committed acts of destruction against a non-resisting population (F1) and signaled her intent to continue such actions under the rubric of 'liberation' (F2). These facts establish that the danger was neither speculative nor trivial. The accused, having observed this carnage and having been warned of the deceased's intent to view his kin and others as obstacles (F3), concluded that the deceased would brook no restraint (F4). \n\nHowever, the legal question rests upon the nature of the means employed. The accused, acting without any formal authority or public mandate, bypassed all available, albeit imperfect, collective mechanisms for the governance of the realm (F5). He did not seek to convene a council, he did not attempt to detain the ruler through formal legal or military process, and he did not seek a public or supervised surrender of power (F5). Instead, he utilized personal intimacy to facilitate a lethal strike against an unarmed individual who, at the precise moment of the act, was not engaging in an immediate physical attack (F5). \n\nThis Tribunal views the law as an ordered structure. A defense of necessity—even in the context of the realm—requires that the actor demonstrate that no safer, more proportional alternative existed. While the accused may have reasonably believed that the deceased posed a catastrophic threat, this belief does not vest him with the solitary right to determine her fate. By choosing an act of clandestine assassination over any attempt at institutional or public restraint, the accused functioned as an individual agent acting outside the rule of law. \n\nPublic ends, such as the protection of the innocent, require legal means. To justify the killing of a ruler based solely on a private assessment of her future intentions would be to replace a governing structure with the unchecked judgment of an individual. This is a value judgment that favors the maintenance of institutional process over the expediency of extralegal violence. The accused had other, albeit more difficult, paths to explore before resorting to the ultimate deprivation of life. Because he failed to engage any of these alternatives, his act remains an exercise of private force, not a justified act of state or defensive necessity.",
+        "chronology": [
+          "King's Landing surrenders, followed by mass destruction by Daenerys (F1).",
+          "Daenerys declares her intention to continue a campaign of 'liberation' (F2).",
+          "Tyrion warns Jon that Daenerys regards him and his family as obstacles (F3).",
+          "Jon attempts to appeal to Daenerys's mercy, which she rejects (F4).",
+          "Jon kills the unarmed Daenerys during a private meeting (F5)."
+        ],
+        "factors_addressed": {
+          "Q1": "Jon was fully aware of the deceased's prior actions and her expressed intent to continue a campaign of destruction.",
+          "Q2": "The threatened harm was massive, involving the destruction of civilian populations and the further expansion of an absolute, unchecked rule.",
+          "Q3": "The accused failed to attempt any public, council-based, or procedural alternatives to resolve the threat.",
+          "Q4": "The accused acted entirely without formal authority, choosing a private, lethal act instead of seeking a public, institutional remedy."
+        },
+        "facts_relied_on": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "strongest_opposing_point": "The argument that the deceased’s stated intent to continue a 'campaign of liberation' combined with her refusal to share moral judgment created an imminent existential threat that effectively foreclosed all conventional procedural alternatives.",
+        "refusal": null
+      },
+      "parse": "strict",
+      "failure": null,
+      "deviations": [],
+      "usage": {
+        "prompt_tokens": 4136,
+        "completion_tokens": 1175,
+        "total_tokens": 5311,
+        "cost_usd": 0.0027965,
+        "pricing": "provider"
+      }
+    }
+  },
+  "usage": {
+    "calls": [
+      {
+        "agent_id": "daenerys_targaryen",
+        "role": "advocate",
+        "model": "openai/gpt-oss-120b",
+        "status": "ok",
+        "prompt_tokens": 1802,
+        "completion_tokens": 905,
+        "total_tokens": 2707,
+        "cost_usd": 0.000220524
+      },
+      {
+        "agent_id": "grey_worm",
+        "role": "advocate",
+        "model": "openai/gpt-oss-20b",
+        "status": "ok",
+        "prompt_tokens": 1825,
+        "completion_tokens": 794,
+        "total_tokens": 2619,
+        "cost_usd": 0.00017321
+      },
+      {
+        "agent_id": "jon_snow",
+        "role": "advocate",
+        "model": "openai/gpt-5-nano",
+        "status": "ok",
+        "prompt_tokens": 1772,
+        "completion_tokens": 3761,
+        "total_tokens": 5533,
+        "cost_usd": 0.001593
+      },
+      {
+        "agent_id": "tyrion_lannister",
+        "role": "advocate",
+        "model": "openai/gpt-5.4-mini",
+        "status": "ok",
+        "prompt_tokens": 1765,
+        "completion_tokens": 540,
+        "total_tokens": 2305,
+        "cost_usd": 0.00375375
+      },
+      {
+        "agent_id": "judge_barak_model",
+        "role": "judge",
+        "model": "openai/gpt-5.6-luna",
+        "status": "ok",
+        "prompt_tokens": 4025,
+        "completion_tokens": 1287,
+        "total_tokens": 5312,
+        "cost_usd": 0.0025505
+      },
+      {
+        "agent_id": "judge_elon_model",
+        "role": "judge",
+        "model": "anthropic/claude-haiku-4.5",
+        "status": "ok",
+        "prompt_tokens": 4442,
+        "completion_tokens": 1702,
+        "total_tokens": 6144,
+        "cost_usd": 0.012952
+      },
+      {
+        "agent_id": "judge_shamgar_model",
+        "role": "judge",
+        "model": "google/gemini-3.1-flash-lite",
+        "status": "ok",
+        "prompt_tokens": 4136,
+        "completion_tokens": 1175,
+        "total_tokens": 5311,
+        "cost_usd": 0.0027965
+      }
+    ],
+    "totals": {
+      "prompt_tokens": 19767,
+      "completion_tokens": 10164,
+      "total_tokens": 29931,
+      "cost_usd": 0.02403948,
+      "cost_is_partial": false,
+      "pricing": "provider",
+      "calls_ok": 7,
+      "calls_failed": 0,
+      "budget_usd": 0.5,
+      "budget_exceeded": false
+    }
+  }
+}

@@ -29,9 +29,10 @@ identifier must be real) as a failure when it isn't. Run for real against all
 10 committed runs: 8 deviations, all word-count, none of them a fabricated
 fact or an illegal verdict anywhere. Judges miss their word range far more
 than advocates do (6 of 9 live opinions vs. 2 of 19 live arguments); one
-prompt change (1.1.0) aimed at it and the one live run made against it was
-inconclusive. Whether to change the prompts further, loosen the gate, or
-leave both as they are is left open — docs/LESSONS.md, section 3.
+prompt change (1.1.0) aimed at it, and two live runs made against it (mode A,
+1 of 3 judges in range; mode B, 3 of 3) still don't settle whether it helped.
+Whether to change the prompts further, loosen the gate, or leave both as
+they are is left open — docs/LESSONS.md, section 3.
 Work continues in Claude Code, opened on this folder in VS Code.
 
 ## The seven-day plan
@@ -254,17 +255,42 @@ Work continues in Claude Code, opened on this folder in VS Code.
       task asked for, left unset rather than chased. Every push from here
       still needs `vercel --prod` run again to update the live site.
 - [ ] Whether prompts 1.1.0 actually reduced the judge word-count deviation
-      rate — one live run at 1.1.0 (1 of 3 judges in range) is inconclusive
-      against a baseline of 67%, on a sample too small to separate a real
-      effect from noise. Would need several more live mode A runs at 1.1.0
-      to say more, which costs real money each time; not done without being
-      asked, since 09-07's run alone was the explicit ask.
+      rate — still open after a second live sample. Mode A at 1.1.0 (09-07):
+      1 of 3 judges in range, both misses under the floor. Mode B at 1.1.0
+      (09-09, `runs/2026-09-09T09-36-49-975Z`): 3 of 3 judges in range, the
+      first run in this project where every judge landed inside 300-500.
+      Combined: 4 of 6 judge opinions at 1.1.0 landed in range (67% hit,
+      33% miss) against a pre-1.1.0 baseline of 6 of 9 missing (67% miss).
+      The direction flipped between the two 1.1.0 runs (all-under, then
+      all-in-range), which six data points across two runs cannot separate
+      from noise. `judge_elon_model` (claude-haiku-4.5) fenced its reply in
+      both mode B runs regardless of whether the word count landed in range,
+      suggesting that particular deviation is a model trait, not something
+      1.1.0's wording touches. Would need several more live runs to say
+      more, each costing real money; not done without being asked.
 
 ## Out of scope, on purpose
 Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-09-09 (one last live run) — Ran mode B live at 1.1.0, seven distinct
+  paid models (`runs/2026-09-09T09-36-49-975Z`): the missing evidence, since
+  the only prior 1.1.0 run was mode A on one model. All three judges landed
+  inside 300-500 (Barak 368, Elon 367, Shamgar 418) — the opposite pattern
+  from mode A's 1.1.0 run (2 of 3 undershooting) and the first run in this
+  project where every judge hit the range. `judge_elon_model`
+  (claude-haiku-4.5) fenced its reply again (`parse: "extracted"`), as it did
+  in the 09-07 mode B run on the same model — a trait of that model on this
+  prompt, not something the word-count wording touches. Combined across both
+  1.1.0 runs: 4 of 6 judge opinions in range, against a 6-of-9 (67%) miss
+  rate pre-1.1.0. Recorded as a second data point, not a conclusion — six
+  observations across two runs with opposite failure directions still can't
+  separate a real effect from noise. Full comparison in
+  docs/PROMPT-CHANGELOG.md, 1.1.0 entry. This session's sandbox could not
+  reach openrouter.ai directly (general internet worked, that one host timed
+  out completely — an environment restriction, not a provider failure); the
+  user ran the live command locally instead and handed off the run id.
 - 2026-09-08 (Day 7, closing) — Verified the tree before writing anything:
   `git status` clean, local HEAD and `origin/main` both at `49fbcce`,
   `npm run typecheck` clean, `npm run smoke` 77/77. Then wrote

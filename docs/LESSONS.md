@@ -50,7 +50,7 @@ Four kinds, four separate days, none of them reachable by writing a better
 mock fault — each was a property of a real provider or a real account at a
 real moment, not of this project's code.
 
-## 2. Mode B reached the judges once in three live attempts
+## 2. Mode B reached the judges twice in four live attempts
 
 Mode B is the graded requirement that a different model sits behind each of
 the seven seats. Its full live record, in order:
@@ -61,16 +61,17 @@ the seven seats. Its full live record, in order:
 | 2 (free) | 2026-09-06 | 2 of 4 advocates failed (both 403); judges did not sit | `runs/2026-09-06T07-27-39-545Z.json` |
 | 3 (paid), try 1 | 2026-09-07 | 1 of 4 advocates failed (402, payment cap); judges did not sit | `runs/2026-09-07T09-46-50-573Z.json` |
 | 3 (paid), try 2 | 2026-09-07 | all 7 seats succeeded; judges sat for the first time | `runs/2026-09-07T09-59-57-177Z.json` |
+| 4 (paid, 1.1.0 prompts) | 2026-09-09 | all 7 seats succeeded; every judge landed inside 300-500 | `runs/2026-09-09T09-36-49-975Z.json` |
 
-Read as three live attempts, not four: the payment-cap failure and its
-retry the same day are one attempt, per `PLAN.md` D31 and the log entry
-answering "whether mode B can reach the judges at all" — "yes, once, on
-09-07, after two prior live failures... mode B's honest record is one
-success in three live attempts across two days." The protocol's own rule —
-all four advocate arguments or the judges do not sit (`PLAN.md`, D15) — is
-what kept every incomplete attempt from being recorded as a partial result.
-Nothing was substituted for the missing seats in any of the three failed
-attempts; each run file shows the affected seats as `not_run` or `failure`.
+Read as four live attempts, not five: the payment-cap failure and its
+retry the same day (attempt 3) are one attempt, per `PLAN.md` D31. Two of
+the four reached the judges — both after the free tier was abandoned for
+paid models, and both on the second or later try of that day. The protocol's
+own rule — all four advocate arguments or the judges do not sit (`PLAN.md`,
+D15) — is what kept every incomplete attempt from being recorded as a
+partial result. Nothing was substituted for the missing seats in any of the
+failed attempts; each run file shows the affected seats as `not_run` or
+`failure`.
 
 The free tier alone could not sustain a seven-independent-model run across
 two attempts (`docs/models.md`, "Why this project moved off the free tier"),
@@ -106,8 +107,19 @@ the pre-change baseline, on a sample of one run. What changed was the
 *direction* of the misses (both under, where the baseline mixed over and
 under) — consistent with either a real shift toward brevity or plain noise
 on three data points, and the changelog says exactly that rather than
-claiming the change worked. No further live runs were made to settle it,
-since each one costs real money and none was asked for.
+claiming the change worked.
+
+A second live run followed on 2026-09-09, mode B this time, seven distinct
+paid models — the condition the first 1.1.0 run couldn't test, since it used
+one model for all seven seats (`runs/2026-09-09T09-36-49-975Z.json`). All
+three judges landed inside 300-500 (368, 367, 418) — the opposite pattern
+from mode A's run, and the first run in this project where every judge hit
+the range. Combined, 1.1.0 now has two live samples pulling in opposite
+directions: 4 of 6 judge opinions in range across both, against a 6-of-9
+(67%) pre-1.1.0 miss rate. Two runs with opposite failure directions cannot
+separate a real effect from noise any better than one run could — this is
+recorded as a second data point, not a conclusion, in
+docs/PROMPT-CHANGELOG.md's 1.1.0 entry.
 
 ## 4. Failure vs. deviation, and why collapsing them would have been worse than no gate
 

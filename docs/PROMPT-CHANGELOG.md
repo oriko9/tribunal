@@ -69,6 +69,33 @@ looks different. Whether to run more live samples before drawing a
 conclusion, adjust the wording again, or address this in the gate instead
 is left open.
 
+**A second live run at 1.1.0, mode B, seven distinct models
+(`runs/2026-09-09T09-36-49-975Z`).** The first 1.1.0 run tested the change
+on one model repeated seven times; this one tests it on seven independent
+judge/advocate model pairings, the condition mode B exists to cover. Result:
+Barak (`openai/gpt-5.6-luna`) 368 words, Elon (`anthropic/claude-haiku-4.5`)
+367 words, Shamgar (`google/gemini-3.1-flash-lite`) 418 words — all three
+inside 300-500, zero deviations. This is the opposite pattern from the mode
+A 1.1.0 run five days earlier, where 2 of 3 judges undershot the floor. It
+is also the first run in this project's history where all three judges
+landed in range.
+
+`judge_elon_model`'s reply arrived wrapped in a markdown fence again
+(`parse: "extracted"`), the same as this judge's reply in the 09-07 mode B
+run on the same model (`anthropic/claude-haiku-4.5`) — that time 523 words,
+over the ceiling; this time 367, in range. The fence recurred independent of
+whether the word count itself was in or out of range, which points to it
+being a trait of this model on this prompt rather than something 1.1.0's
+wording change touches one way or the other.
+
+Combined, 1.1.0 now has two live samples: mode A (1 of 3 judges in range,
+both misses under) and mode B (3 of 3 in range). Across all six judge
+opinions produced at 1.1.0, 2 missed and 4 hit — compared to the pre-1.1.0
+baseline of 6 of 9 (67%) missing. Six data points, spread across two runs
+with different failure directions in each, still cannot separate a real
+improvement from noise, and this is recorded as a second data point, not
+a conclusion. Whether 1.1.0 helped remains open.
+
 ## 1.0.0 — 2026-09-03
 First version of all seven prompts and the shared rules.
 
