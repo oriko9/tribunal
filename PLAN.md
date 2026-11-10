@@ -276,6 +276,13 @@ Database, authentication, a form for entering new cases, a "past cases" page,
 visual polish, prompt caching, multi-case architecture. None of it is graded.
 
 ## Log
+- 2026-11-10 (README rewrite, after close) — README.md restructured for an
+  outside reader: overview with badges, architecture (serverless functions,
+  committed run files instead of a database, the 60s constraint, OpenRouter
+  provider layer), technical highlights (versioned prompts, failure-vs-
+  deviation gates, smoke/verify-runs) with an authorship note, and a local
+  quick start. The course-requirement map is kept as a table. No code,
+  prompt or run file changed.
 - 2026-09-09 (live-run button, after close) — Added a live-run button to the
   deployed page, additive only: the archive selector, api/runs.ts, and every
   existing render path are untouched. Design constraint carried over from
